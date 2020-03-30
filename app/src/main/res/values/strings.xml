@@ -2,14 +2,41 @@
     <string name="app_name">Blazebooks</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- -MAIN ACTIVITY MENU ITEMS -->
+    <string name="nav_header_title">User</string>
+    <string name="nav_header_subtitle">whoami@user.com</string>
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_books">Books</string>
+    <string name="menu_about">About Us</string>
 
     <string name="home_second">Home Second</string>
+
+    <!-- BOOKS FRAGMENT -->
+    <string name="new_books">New Books</string>
+    <string name="all_books">All Books</string>
+    <string name="interactive_books">Interactive Books</string>
+    <string name="authors">Authors</string>
+    <string name="genres">Genres</string>
+
+    <!-- HOME FRAGMENT -->
+    <string name="my_account">My Account</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="new_books_in_blazebooks">New Books in Blazebooks</string>
+    <string name="fav_books">Fav Books</string>
+
+    <!-- ABOUT FRAGMENT Strings-->
+    <string name="credits">CREDITS  \n\n
+        Developer I - Victor Develops  \n
+        Developer II - Mounir Zbayr Samadi \n\n
+
+        Writer I- Alfredo Panic \n
+        Writer II - Jose BulletKid \n\n
+
+        Sound Efects - Dirge Inferno \n\n
+        Composer I - Victor Develops \n
+        Composer II - Alfredo Panic</string>
+
 </resources>
