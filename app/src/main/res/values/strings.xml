@@ -39,4 +39,8 @@
         Composer I - Victor Develops \n
         Composer II - Alfredo Panic</string>
 
+    <!-- Type of Accounts-->
+    <string name="premium">PREMIUM</string>
+    <string name="free">FREE</string>
+
 </resources>

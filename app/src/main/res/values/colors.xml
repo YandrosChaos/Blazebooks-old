@@ -8,4 +8,10 @@
     <color name="blueDark">#0000CD</color>
     <color name="blueAccent">#48D1CC</color>
 
+    <color name="black">#000000</color>
+    <color name="purple">#8A2BE2</color>
+    <color name="cornflowerblue">#6495ED</color>
+    <color name="gold">#B8860B</color>
+    <color name="yellow">#FFD700</color>
+
 </resources>

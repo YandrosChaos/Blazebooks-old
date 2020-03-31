@@ -16,7 +16,8 @@
             android:background="@drawable/container_box_blue"
             android:text="@string/new_books"
 
-            android:textSize="40sp"/>
+            android:textSize="40sp"
+            android:onClick="searchBooks"/>
 
         <Button
             android:id="@+id/fragmentBooksGenres"
@@ -26,7 +27,8 @@
             android:background="@drawable/container_box_orange"
             android:text="@string/genres"
 
-            android:textSize="40sp"/>
+            android:textSize="40sp"
+            android:onClick="searchBooks"/>
 
         <Button
             android:id="@+id/fragmentBooksAuthors"
@@ -36,7 +38,8 @@
             android:background="@drawable/container_box_blue"
             android:text="@string/authors"
 
-            android:textSize="40sp"/>
+            android:textSize="40sp"
+            android:onClick="searchBooks"/>
 
         <Button
             android:id="@+id/fragmentBooksIb"
@@ -46,7 +49,8 @@
             android:background="@drawable/container_box_orange"
             android:text="@string/interactive_books"
 
-            android:textSize="40sp"/>
+            android:textSize="40sp"
+            android:onClick="searchBooks"/>
 
         <Button
             android:id="@+id/fragmentBooksAll"
@@ -56,7 +60,8 @@
             android:background="@drawable/container_box_blue"
             android:text="@string/all_books"
 
-            android:textSize="40sp"/>
+            android:textSize="40sp"
+            android:onClick="searchBooks"/>
 
     </LinearLayout>
 </ScrollView>

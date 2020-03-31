@@ -1,10 +1,11 @@
-package com.blazebooks
+package com.blazebooks.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.WindowManager
+import com.blazebooks.Constants
+import com.blazebooks.R
 
 class SplashActivity : AppCompatActivity() {
     //After completion of 2000 ms, the next activity will get started.
@@ -23,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
                 )
             //the current activity will get finished.
             finish()
-        }, Constant.SPLASH_SCREEN_TIME_OUT.toLong())
+        }, Constants.SPLASH_SCREEN_TIME_OUT.toLong())
     }
 
 }
