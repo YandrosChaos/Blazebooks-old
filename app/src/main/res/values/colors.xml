@@ -10,8 +10,10 @@
 
     <color name="black">#000000</color>
     <color name="purple">#8A2BE2</color>
+    <color name="darkPurple">#4B0082</color>
     <color name="cornflowerblue">#6495ED</color>
     <color name="gold">#B8860B</color>
     <color name="yellow">#FFD700</color>
+    <color name="white">#F8F8FF</color>
 
 </resources>

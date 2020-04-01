@@ -9,17 +9,6 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/fragmentBooksNew"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-
-            android:background="@drawable/container_box_blue"
-            android:text="@string/new_books"
-
-            android:textSize="40sp"
-            android:onClick="searchBooks"/>
-
-        <Button
             android:id="@+id/fragmentBooksGenres"
             android:layout_width="match_parent"
             android:layout_height="250dp"

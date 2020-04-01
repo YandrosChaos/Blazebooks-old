@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10sp">
+
+    <androidx.cardview.widget.CardView
+
+        android:id="@+id/showChapterCardView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:elevation="12dp"
+        app:cardCornerRadius="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/showChapterImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_launcher_foreground" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/showChapterTvNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5sp"
+        android:text="@string/chapter"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/showChapterCardView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/showChapterTvNumberAux"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5sp"
+        
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/showChapterTvNumber"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/showChapterTvTitleAux"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginStart="5sp"
+
+        app:layout_constraintStart_toEndOf="@id/showChapterCardView"
+        app:layout_constraintTop_toBottomOf="@id/showChapterTvNumber" />
+    
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,11 @@
 package com.blazebooks.model
 
-import android.media.Image
+import android.graphics.drawable.Drawable
 
-data class Chapter(val title: String, val image: Image?, val textOrConexion: Any) {
+data class Chapter(
+    val number: Int,
+    val title: String,
+    val image: Drawable?,
+    val textOrConexion: Any
+) {
 }

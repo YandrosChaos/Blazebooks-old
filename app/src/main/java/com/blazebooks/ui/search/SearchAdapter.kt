@@ -3,11 +3,14 @@ package com.blazebooks.ui.search
 import com.blazebooks.model.Book
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.ui.books.ShowBookActivity
 import kotlinx.android.synthetic.main.activity_search_book_item.view.*
 
 class SearchAdapter(private val booksList: ArrayList<Book>, val activity: Context) :
@@ -46,7 +49,10 @@ class SearchAdapter(private val booksList: ArrayList<Book>, val activity: Contex
         fun bindRanking(book: Book) {
 
             itemView.setOnClickListener {
+                Constants.CURRENT_BOOK = book
+                activity.startActivity(Intent(activity, ShowBookActivity::class.java))
             }
+
             //cargar los datos del registro para mostrarlos
             itemView.activitySearchBookName.text = book.title
             itemView.activitySearchBookGenreAux.text = book.genre
@@ -60,15 +66,15 @@ class SearchAdapter(private val booksList: ArrayList<Book>, val activity: Contex
             when (book.genre.toLowerCase()) {
                 "adventure" -> {
                     itemView.bookSearchItemCl.setBackgroundResource(R.drawable.container_round_gold)
-                    itemView.bookSearchItemCl.setPadding(60,60,60,60)
+                    itemView.bookSearchItemCl.setPadding(60, 60, 60, 60)
                 }
                 "terror" -> {
                     itemView.bookSearchItemCl.setBackgroundResource(R.drawable.container_round_purple)
-                    itemView.bookSearchItemCl.setPadding(60,60,60,60)
+                    itemView.bookSearchItemCl.setPadding(60, 60, 60, 60)
                 }
                 "sci-fy" -> {
                     itemView.bookSearchItemCl.setBackgroundResource(R.drawable.container_round_orange)
-                    itemView.bookSearchItemCl.setPadding(60,60,60,60)
+                    itemView.bookSearchItemCl.setPadding(60, 60, 60, 60)
                 }
             }
 

@@ -30,21 +30,21 @@ class SearchActivity : AppCompatActivity() {
     private fun data() {
 
         val chaptersList = arrayListOf(
-            Chapter("Chapter I", null, "Unknown"),
-            Chapter("Chapter II", null, "Unknown"),
-            Chapter("Chapter III", null, "Unknown"),
-            Chapter("Chapter IV", null, "Unknown"),
-            Chapter("Chapter V", null, "Unknown")
+            Chapter(1,"Title of the Chapter", null, "Unknown"),
+            Chapter(2,"Blah blah blah", null, "Unknown"),
+            Chapter(3,"Suck or die", null, "Unknown"),
+            Chapter(4,"Sssssspañah", null, "Unknown"),
+            Chapter(5,"Coronachapter", null, "Unknown")
         )
         bookList = arrayListOf(
-            Book("Libro Primero", null, "Anonimo", chaptersList, true, "Terror"),
-            Book("Libro Segundo", null, "Bob", chaptersList, false, "Adventure"),
-            Book("Libro Tercero", null, "M. Rajoy", chaptersList, true, "Sci-Fy"),
-            Book("Libro Cuarto", null, "Juanjo", chaptersList, true, "Terror"),
-            Book("Libro Quinto", null, "Bob", chaptersList, false, "Fantasy"),
-            Book("Libro Sexto", null, "Anonimo", chaptersList, false, "Terror"),
-            Book("Libro Septimo", null, "Bob", chaptersList, false, "Verse"),
-            Book("Libro Octavo", null, "Anonimo", chaptersList, true, "Interactive")
+            Book("Libro Primero", null, "Anonimo",getString(R.string.synopsis_example), chaptersList, true, "Terror"),
+            Book("Libro Segundo", null, "Bob",getString(R.string.synopsis_example), chaptersList, false, "Adventure"),
+            Book("Libro Tercero", null, "M. Rajoy",getString(R.string.synopsis_example), chaptersList, true, "Sci-Fy"),
+            Book("Libro Cuarto", null, "Juanjo",getString(R.string.synopsis_example), chaptersList, true, "Terror"),
+            Book("Libro Quinto", null, "Bob",getString(R.string.synopsis_example), chaptersList, false, "Fantasy"),
+            Book("Libro Sexto", null, "Anonimo",getString(R.string.synopsis_example), chaptersList, false, "Terror"),
+            Book("Libro Septimo", null, "Bob", getString(R.string.synopsis_example),chaptersList, false, "Verse"),
+            Book("Libro Octavo", null, "Anonimo", getString(R.string.synopsis_example),chaptersList, true, "Interactive")
         )
     }
 

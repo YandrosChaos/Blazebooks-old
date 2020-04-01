@@ -71,8 +71,6 @@ class MainActivity : AppCompatActivity() {
                 putExtra(
                     Constants.TOOLBAR_TITLE_CODE,
                     when (view.id) {
-                        R.id.fragmentBooksNew ->
-                            getString(R.string.new_books)
                         R.id.fragmentBooksGenres ->
                             getString(R.string.genres)
                         R.id.fragmentBooksAuthors ->

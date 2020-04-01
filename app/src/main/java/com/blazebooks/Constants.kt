@@ -1,5 +1,7 @@
 package com.blazebooks
 
+import com.blazebooks.model.Book
+
 class Constants {
     companion object{
         //SPLASH ACTIVITY
@@ -7,5 +9,8 @@ class Constants {
 
         //MAIN ACTIVITY
         const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
+
+        //CURRENT DATA
+        lateinit var CURRENT_BOOK : Book
     }
 }
