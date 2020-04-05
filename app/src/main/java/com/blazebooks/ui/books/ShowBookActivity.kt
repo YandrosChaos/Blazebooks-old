@@ -24,6 +24,9 @@ class ShowBookActivity : AppCompatActivity() {
         activityShowBookChapters.adapter = ShowBookAdapter(Constants.CURRENT_BOOK.chapters, this)
     }
 
+    /**
+     * Setup the view of thr current book.
+     */
     private fun setUp() {
         appBarShowBookTvTitle.text = Constants.CURRENT_BOOK.title
         activityShowBookTvAuthorAux.text = Constants.CURRENT_BOOK.author
@@ -31,6 +34,7 @@ class ShowBookActivity : AppCompatActivity() {
         if (!Constants.CURRENT_BOOK.premium)
             activityShowBookTvPremiumAux.text = getString(R.string.free)
 
+        //setup backgound, button and toolbar colors
         when (Constants.CURRENT_BOOK.genre.toLowerCase()) {
             "adventure" -> {
                 DrawableCompat.setTint(
@@ -80,6 +84,11 @@ class ShowBookActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Finish the activity
+     *
+     * @param view
+     */
     fun previousActivity(view: View) {
         finish()
     }

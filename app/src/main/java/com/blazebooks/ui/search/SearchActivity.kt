@@ -27,6 +27,9 @@ class SearchActivity : AppCompatActivity() {
         activitySearchRv.adapter = SearchAdapter(bookList, this)
     }
 
+    /**
+     * Load try data
+     */
     private fun data() {
 
         val chaptersList = arrayListOf(
@@ -48,6 +51,11 @@ class SearchActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Finish the activity
+     *
+     * @param view
+     */
     fun previousActivity(view: View) {
         finish()
     }

@@ -65,6 +65,12 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    /**
+     * Starts a new activity and pass a String by param
+     * depending of the view.id
+     *
+     * @param view
+     */
     fun searchBooks(view: View) {
         startActivity(
             Intent(this, SearchActivity::class.java).apply {

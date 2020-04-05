@@ -11,4 +11,14 @@ data class Book(
     val premium: Boolean,
     val genre : String
 ) {
+
+    /**
+     * Return one specific chapter from the book
+     *
+     * @param position
+     * @return Chapter
+     */
+    fun getChapter(position : Int) : Chapter {
+        return chapters[position]
+    }
 }

@@ -33,7 +33,7 @@ class SearchAdapter(private val booksList: ArrayList<Book>, val activity: Contex
 
     override fun onBindViewHolder(holder: WorkoutViewHolder, position: Int) {
         val itemRanking = booksList[position]
-        holder.bindRanking(itemRanking)
+        holder.bindBook(itemRanking)
     }
 
     /**
@@ -46,7 +46,13 @@ class SearchAdapter(private val booksList: ArrayList<Book>, val activity: Contex
 
     inner class WorkoutViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        fun bindRanking(book: Book) {
+
+        /**
+         * Setup item view and onClickListener
+         *
+         * @param book
+         */
+        fun bindBook(book: Book) {
 
             itemView.setOnClickListener {
                 Constants.CURRENT_BOOK = book

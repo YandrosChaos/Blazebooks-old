@@ -42,11 +42,17 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>, val activity:
 
     inner class WorkoutViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+
+        /**
+         * Setup item view and onClickListener
+         *
+         * @param chapter
+         */
         fun bindChapter(chapter: Chapter) {
 
             itemView.setOnClickListener {
             }
-            //cargar los datos del registro para mostrarlos
+            //cargar los datos del libro para mostrarlos
             if(chapter.image != null)
                 itemView.showChapterImageView.setImageDrawable(chapter.image)
             itemView.showChapterTvNumberAux.text = chapter.number.toString()

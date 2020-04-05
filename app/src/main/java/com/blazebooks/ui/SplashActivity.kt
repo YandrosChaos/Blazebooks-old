@@ -11,18 +11,16 @@ class SplashActivity : AppCompatActivity() {
     //After completion of 2000 ms, the next activity will get started.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //this will bind your SplashActivity.class file with activity_splash.
         setContentView(R.layout.activity_splash)
+
+        //execute this code after the time indicated
         Handler().postDelayed({
-                //invoke the MainActivity.
                 startActivity(
                     Intent(
                         this@SplashActivity,
                         MainActivity::class.java
                     )
                 )
-            //the current activity will get finished.
             finish()
         }, Constants.SPLASH_SCREEN_TIME_OUT.toLong())
     }
