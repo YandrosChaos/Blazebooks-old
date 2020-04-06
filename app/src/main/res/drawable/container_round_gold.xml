@@ -13,8 +13,8 @@
 
     <gradient
         android:angle="135"
-        android:centerColor="@color/gold"
-        android:endColor="@color/black"
-        android:startColor="@color/yellow"
+        android:centerColor="@color/yellow"
+        android:endColor="@color/gold"
+        android:startColor="@color/gold"
         android:type="linear" />
 </shape>

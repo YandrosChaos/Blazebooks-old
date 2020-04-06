@@ -33,11 +33,11 @@ class SearchActivity : AppCompatActivity() {
     private fun data() {
 
         val chaptersList = arrayListOf(
-            Chapter(1, "Title of the Chapter", null, "Unknown"),
-            Chapter(2, "Blah blah blah", null, "Unknown"),
-            Chapter(3, "Suck or die", null, "Unknown"),
-            Chapter(4, "Sssssspañah", null, "Unknown"),
-            Chapter(5, "Coronachapter", null, "Unknown")
+            Chapter(1, "Title of the Chapter", null, true, "Unknown"),
+            Chapter(2, "Blah blah blah", null, true, "Unknown"),
+            Chapter(3, "Suck or die", null, false, "Unknown"),
+            Chapter(4, "Sssssspañah", null, false, "Unknown"),
+            Chapter(5, "Coronachapter", null, false, "Unknown")
         )
         bookList = arrayListOf(
             Book(
@@ -48,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 true,
                 "Terror",
+                false,
                 "unknown"
             ),
             Book(
@@ -58,6 +59,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 false,
                 "Adventure",
+                true,
                 "unknown"
             ),
             Book(
@@ -68,6 +70,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 true,
                 "Sci-Fy",
+                false,
                 "unknown"
             ),
             Book(
@@ -78,6 +81,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 true,
                 "Terror",
+                false,
                 "unknown"
             ),
             Book(
@@ -88,6 +92,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 false,
                 "Fantasy",
+                false,
                 "unknown"
             ),
             Book(
@@ -98,6 +103,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 false,
                 "Terror",
+                false,
                 "unknown"
             ),
             Book(
@@ -108,6 +114,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 false,
                 "Verse",
+                true,
                 "unknown"
             ),
             Book(
@@ -118,6 +125,7 @@ class SearchActivity : AppCompatActivity() {
                 chaptersList,
                 true,
                 "Interactive",
+                false,
                 "unknown"
             )
         )

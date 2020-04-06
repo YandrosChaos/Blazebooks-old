@@ -65,26 +65,11 @@ class SearchAdapter(private val booksList: ArrayList<Book>, val activity: Contex
 
             if (book.premium) {
                 itemView.activitySearchBookPremium.text = activity.getString(R.string.premium)
+                itemView.bookSearchItemCl.setBackgroundResource(R.drawable.container_round_gold)
+                itemView.bookSearchItemCl.setPadding(60, 60, 60, 60)
             } else {
                 itemView.activitySearchBookPremium.text = activity.getString(R.string.free)
             }
-
-            when (book.genre.toLowerCase()) {
-                "adventure" -> {
-                    itemView.bookSearchItemCl.setBackgroundResource(R.drawable.container_round_gold)
-                    itemView.bookSearchItemCl.setPadding(60, 60, 60, 60)
-                }
-                "terror" -> {
-                    itemView.bookSearchItemCl.setBackgroundResource(R.drawable.container_round_purple)
-                    itemView.bookSearchItemCl.setPadding(60, 60, 60, 60)
-                }
-                "sci-fy" -> {
-                    itemView.bookSearchItemCl.setBackgroundResource(R.drawable.container_round_orange)
-                    itemView.bookSearchItemCl.setPadding(60, 60, 60, 60)
-                }
-            }
-
-
         }
     }
 }

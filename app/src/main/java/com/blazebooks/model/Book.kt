@@ -6,10 +6,11 @@ data class Book(
     val title: String,
     val image: Image?,
     val author: String,
-    val synopsis : String,
+    val synopsis: String,
     val chapters: ArrayList<Chapter>,
     val premium: Boolean,
-    val genre : String,
+    val genre: String,
+    var readed: Boolean = false,
     val textOrConnection: Any
 ) {
 
@@ -19,7 +20,7 @@ data class Book(
      * @param position
      * @return Chapter
      */
-    fun getChapter(position : Int) : Chapter {
+    fun getChapter(position: Int): Chapter {
         return chapters[position]
     }
 }
