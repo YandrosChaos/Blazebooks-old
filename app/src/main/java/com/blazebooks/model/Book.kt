@@ -9,7 +9,8 @@ data class Book(
     val synopsis : String,
     val chapters: ArrayList<Chapter>,
     val premium: Boolean,
-    val genre : String
+    val genre : String,
+    val textOrConnection: Any
 ) {
 
     /**

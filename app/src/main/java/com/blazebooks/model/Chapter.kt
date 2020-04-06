@@ -6,6 +6,6 @@ data class Chapter(
     val number: Int,
     val title: String,
     val image: Drawable?,
-    val textOrConexion: Any
+    val textOrConnection: Any
 ) {
 }
