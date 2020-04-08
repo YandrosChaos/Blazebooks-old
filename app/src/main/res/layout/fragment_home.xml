@@ -14,13 +14,14 @@
             android:layout_margin="5sp"
             android:background="@drawable/container_round_blue"
             android:layout_height="200dp"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:onClick="throwSearchActivity">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:text="@string/fav_books"
+                android:text="@string/my_books"
                 android:textSize="30sp"/>
 
         </RelativeLayout>

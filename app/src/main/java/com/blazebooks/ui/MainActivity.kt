@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.search.SearchActivity
+import com.blazebooks.ui.webview.WebViewerActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -72,25 +73,40 @@ class MainActivity : AppCompatActivity() {
      * @param view
      */
     fun searchBooks(view: View) {
+        when (view.id) {
+            R.id.fragmentBooksBook ->
+                startActivity(Intent(this, WebViewerActivity::class.java).apply {
+                    putExtra(
+                        Constants.URL_CODE,
+                        "file:///android_asset/index.html"
+                    )
+                })
+            R.id.fragmentBooksIb ->
+                startActivity(Intent(this, WebViewerActivity::class.java).apply {
+                    putExtra(
+                        Constants.URL_CODE,
+                        "file:///android_asset/index.html"
+                    )
+                })
+            R.id.fragmentBooksAll ->
+                startActivity(Intent(this, WebViewerActivity::class.java).apply {
+                    putExtra(
+                        Constants.URL_CODE,
+                        "file:///android_asset/index.html"
+                    )
+                })
+        }
+    }
+
+    fun throwSearchActivity(view: View) {
         startActivity(
             Intent(this, SearchActivity::class.java).apply {
                 putExtra(
                     Constants.TOOLBAR_TITLE_CODE,
-                    when (view.id) {
-                        R.id.fragmentBooksGenres ->
-                            getString(R.string.genres)
-                        R.id.fragmentBooksAuthors ->
-                            getString(R.string.authors)
-                        R.id.fragmentBooksIb ->
-                            getString(R.string.interactive_books)
-                        R.id.fragmentBooksAll ->
-                            getString(R.string.all_books)
-                        else ->
-                            "SEARCH"
-                    }
+                    getString(R.string.my_books)
+
                 )
             }
         )
-
     }
 }

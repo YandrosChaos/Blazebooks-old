@@ -9,23 +9,23 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/fragmentBooksGenres"
+            android:id="@+id/fragmentBooksAll"
             android:layout_width="match_parent"
             android:layout_height="250dp"
 
             android:background="@drawable/container_box_orange"
-            android:text="@string/genres"
+            android:text="@string/all_books"
 
             android:textSize="40sp"
             android:onClick="searchBooks"/>
 
         <Button
-            android:id="@+id/fragmentBooksAuthors"
+            android:id="@+id/fragmentBooksBook"
             android:layout_width="match_parent"
             android:layout_height="250dp"
 
             android:background="@drawable/container_box_blue"
-            android:text="@string/authors"
+            android:text="@string/books"
 
             android:textSize="40sp"
             android:onClick="searchBooks"/>
@@ -37,17 +37,6 @@
 
             android:background="@drawable/container_box_orange"
             android:text="@string/interactive_books"
-
-            android:textSize="40sp"
-            android:onClick="searchBooks"/>
-
-        <Button
-            android:id="@+id/fragmentBooksAll"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-
-            android:background="@drawable/container_box_blue"
-            android:text="@string/all_books"
 
             android:textSize="40sp"
             android:onClick="searchBooks"/>
