@@ -20,41 +20,59 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <ImageButton
+                    android:id="@+id/activitySearchToolBarBtnReturn"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_margin="10sp"
+                    android:layout_weight="1"
                     android:background="@drawable/ic_return"
-                    android:onClick="previousActivity"/>
+                    android:onClick="previousActivity" />
+
                 <TextView
                     android:id="@+id/activitySearchToolbarTv"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="6"
+                    android:layout_margin="10sp"
+                    android:layout_weight="5"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimaryDark"
-                    android:layout_margin="10sp"
-                    android:text="SEARCH"
-                    android:textSize="26sp"/>
+                    android:textSize="26sp" />
+
+                <EditText
+                    android:id="@+id/new_searchView"
+                    android:layout_width="0sp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_weight="5"
+                    android:maxLength="18"
+                    android:visibility="gone" />
+
                 <ImageButton
+                    android:id="@+id/activitySearchToolbarBtnSearch"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_search"/>
+                    android:background="@drawable/ic_search"
+                    android:onClick="showSearchBarItem" />
+
                 <ImageButton
+                    android:id="@+id/activitySearchToolBarBtnFilter"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_margin="10sp"
-                    android:background="@drawable/ic_filter"/>
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_filter" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-   <!-- <include layout="@layout/content_main" /> -->
+    <!-- <include layout="@layout/content_main" /> -->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

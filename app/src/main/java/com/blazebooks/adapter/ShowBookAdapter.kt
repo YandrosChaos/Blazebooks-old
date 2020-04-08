@@ -1,4 +1,4 @@
-package com.blazebooks.ui.books
+package com.blazebooks.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

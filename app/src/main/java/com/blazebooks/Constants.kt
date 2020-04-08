@@ -7,7 +7,7 @@ class Constants {
         //SPLASH ACTIVITY
         const val SPLASH_SCREEN_TIME_OUT = 2000
 
-        //MAIN ACTIVITY
+        //INTENT'S CODES
         const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
 
         //CURRENT DATA

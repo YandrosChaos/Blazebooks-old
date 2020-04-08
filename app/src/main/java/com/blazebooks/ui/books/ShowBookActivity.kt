@@ -1,16 +1,14 @@
 package com.blazebooks.ui.books
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.adapter.ShowBookAdapter
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.app_bar_show_book.*
 
@@ -21,7 +19,11 @@ class ShowBookActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_book)
         setUp()
         activityShowBookChapters.layoutManager = LinearLayoutManager(this)
-        activityShowBookChapters.adapter = ShowBookAdapter(Constants.CURRENT_BOOK.chapters, this)
+        activityShowBookChapters.adapter =
+            ShowBookAdapter(
+                Constants.CURRENT_BOOK.chapters,
+                this
+            )
     }
 
     /**
