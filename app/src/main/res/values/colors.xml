@@ -16,4 +16,9 @@
     <color name="yellow">#FFD700</color>
     <color name="white">#F8F8FF</color>
 
+    <!-- Login activity colors-->
+    <color name="secondary">#2C273C</color>
+    <color name="secondaryDark">#1F1C26</color>
+    <color name="secondaryAccent">#CE2A5E</color>
+
 </resources>

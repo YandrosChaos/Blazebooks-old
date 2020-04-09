@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.ui.login.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
     //After completion of 2000 ms, the next activity will get started.
@@ -18,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@SplashActivity,
-                        MainActivity::class.java
+                        LoginActivity::class.java
                     )
                 )
             finish()
