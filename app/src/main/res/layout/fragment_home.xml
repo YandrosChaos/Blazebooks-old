@@ -10,12 +10,13 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/fragmentHomeMyBooks"
             android:padding="10sp"
             android:layout_margin="5sp"
             android:background="@drawable/container_round_blue"
             android:layout_height="200dp"
             android:layout_width="match_parent"
-            android:onClick="throwSearchActivity">
+            android:onClick="searchBooks">
 
             <TextView
                 android:layout_width="wrap_content"

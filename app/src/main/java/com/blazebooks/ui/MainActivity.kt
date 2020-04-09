@@ -73,40 +73,25 @@ class MainActivity : AppCompatActivity() {
      * @param view
      */
     fun searchBooks(view: View) {
-        when (view.id) {
-            R.id.fragmentBooksBook ->
-                startActivity(Intent(this, WebViewerActivity::class.java).apply {
-                    putExtra(
-                        Constants.URL_CODE,
-                        "file:///android_asset/index.html"
-                    )
-                })
-            R.id.fragmentBooksIb ->
-                startActivity(Intent(this, WebViewerActivity::class.java).apply {
-                    putExtra(
-                        Constants.URL_CODE,
-                        "file:///android_asset/index.html"
-                    )
-                })
-            R.id.fragmentBooksAll ->
-                startActivity(Intent(this, WebViewerActivity::class.java).apply {
-                    putExtra(
-                        Constants.URL_CODE,
-                        "file:///android_asset/index.html"
-                    )
-                })
-        }
-    }
-
-    fun throwSearchActivity(view: View) {
         startActivity(
             Intent(this, SearchActivity::class.java).apply {
                 putExtra(
                     Constants.TOOLBAR_TITLE_CODE,
-                    getString(R.string.my_books)
+                    when(view.id){
+                        R.id.fragmentBooksBook ->
+                            getString(R.string.books)
+                        R.id.fragmentBooksIb ->
+                            getString(R.string.interactive_books)
+                        R.id.fragmentBooksAll ->
+                            getString(R.string.all_books)
+                        R.id.fragmentHomeMyBooks ->
+                            getString(R.string.my_books)
+                        else -> "SEARCH"
+                    }
 
                 )
             }
         )
     }
+
 }
