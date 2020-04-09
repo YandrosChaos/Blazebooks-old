@@ -28,7 +28,7 @@
                 android:background="@drawable/edit_text_background"
                 android:drawableStart="@drawable/ic_user"
                 android:drawablePadding="10dp"
-                android:hint="Username"
+                android:hint="@string/prompt_email"
                 android:padding="10dp"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="@color/white" />

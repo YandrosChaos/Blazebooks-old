@@ -3,6 +3,7 @@ package com.blazebooks.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -17,8 +18,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.ui.login.LoginActivity
 import com.blazebooks.ui.search.SearchActivity
 import com.blazebooks.ui.webview.WebViewerActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -92,6 +95,12 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         )
+    }
+
+    fun singOut(item: MenuItem) {
+        FirebaseAuth.getInstance().signOut()
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
 }

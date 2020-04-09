@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "488661084895",
+    "firebase_url": "https://blazebooks-5e827.firebaseio.com",
+    "project_id": "blazebooks-5e827",
+    "storage_bucket": "blazebooks-5e827.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488661084895:android:651e1885b2d239c432176a",
+        "android_client_info": {
+          "package_name": "com.blazebooks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "488661084895-5956r8fcqvghoilks1s8i9jkiqich5c8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blazebooks",
+            "certificate_hash": "959bd632ac28a49a1d931c9f0f81bd37cf1003ad"
+          }
+        },
+        {
+          "client_id": "488661084895-lrvls7boo7mnmrr1kjf96d8fled3hcq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoNdWLjTtwfRIvb2kf6Kfks1hoWEkdlLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "488661084895-lrvls7boo7mnmrr1kjf96d8fled3hcq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
