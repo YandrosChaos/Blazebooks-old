@@ -7,35 +7,38 @@ import android.view.View
 import com.blazebooks.R
 import com.blazebooks.ui.MainActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_sing_in.*
 
-class LoginActivity : AppCompatActivity() {
+class SingInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_sing_in)
     }
 
-    fun loginClicked(view: View) {
-        if (userExist()) {
+    fun singInClicked(view: View) {
+        if (userFormat()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         } else {
             Snackbar.make(
                 view,
-                "Username or password incorrect!",
+                "Username or password already exists!",
                 Snackbar.LENGTH_LONG
             ).show()
         }
-
     }
 
     private fun userExist(): Boolean {
-        return loginActivityUserName.text.toString() == "whoami" && loginActivityUserPasswd.text.toString() == "root"
+        return singInActivityUserName.text.toString() != "whoami"
     }
 
-    fun throwSingInActivity(view: View) {
-        startActivity(Intent(this, SingInActivity::class.java))
+    private fun userFormat(): Boolean {
+        return userExist() && singInActivityUserPasswd.text.toString() == singInActivityUserPasswdAux.text.toString()
+    }
+
+    fun goBack(view: View) {
+        startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 }

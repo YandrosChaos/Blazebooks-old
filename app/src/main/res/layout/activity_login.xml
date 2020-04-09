@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/side_nav_bar">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true">
+    android:background="@drawable/side_nav_bar"
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true">
 
         <LinearLayout
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -26,6 +22,7 @@
                 android:src="@drawable/blazebooks_logo" />
 
             <EditText
+                android:id="@+id/loginActivityUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_background"
@@ -37,6 +34,7 @@
                 android:textColorHint="@color/white" />
 
             <EditText
+                android:id="@+id/loginActivityUserPasswd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -71,11 +69,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Sing Up"
-                android:textSize="21sp" />
+                android:text="Sing In"
+                android:textSize="21sp"
+                android:onClick="throwSingInActivity"/>
 
         </LinearLayout>
 
-    </ScrollView>
-
-</RelativeLayout>
+</ScrollView>
