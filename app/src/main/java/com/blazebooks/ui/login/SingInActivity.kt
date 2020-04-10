@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import com.blazebooks.R
 import com.blazebooks.ui.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_sing_in.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class SingInActivity : AppCompatActivity() {
 
@@ -66,7 +67,9 @@ class SingInActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(singInActivityUserEmail.text.toString(), singInActivityUserPasswd.text.toString())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
+                    val updates = UserProfileChangeRequest.Builder().setDisplayName(singInActivityUserName.text.toString()).build()
+                    auth.currentUser?.updateProfile(updates)
+
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
@@ -78,16 +81,6 @@ class SingInActivity : AppCompatActivity() {
                 }//if
             }
 
-        /*if (userFormat()) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else {
-            Snackbar.make(
-                view,
-                "Username or password already exists!",
-                Snackbar.LENGTH_LONG
-            ).show()
-        }*/
     }//singInClicked
 
     private fun userExist(): Boolean {

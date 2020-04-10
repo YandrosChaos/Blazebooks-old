@@ -20,18 +20,21 @@ import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.login.LoginActivity
 import com.blazebooks.ui.search.SearchActivity
-import com.blazebooks.ui.webview.WebViewerActivity
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        auth= FirebaseAuth.getInstance()
+
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -56,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -66,6 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
+        tv_userName.text= auth.currentUser?.displayName
+        tv_userEmail.text= auth.currentUser?.email
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 

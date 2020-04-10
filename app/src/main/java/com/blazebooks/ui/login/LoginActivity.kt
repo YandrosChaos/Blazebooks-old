@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.activity_sing_in.*
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth; //Necesario para la autenticación
+    private lateinit var auth: FirebaseAuth //Necesario para la autenticación
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        auth= FirebaseAuth.getInstance();
+        auth= FirebaseAuth.getInstance()
     }
 
     fun loginClicked(view: View) {
@@ -51,18 +51,7 @@ class LoginActivity : AppCompatActivity() {
                     updateUI(null)
                 }
             }
-        /*if (userExist()) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else {
-            Snackbar.make(
-                view,
-                "Username or password incorrect!",
-                Snackbar.LENGTH_LONG
-            ).show()
-        }*/
-
-    }
+    }//loginClicked
 
     /**
      * Si el usuario no es nulo se pasa al main
@@ -79,6 +68,18 @@ class LoginActivity : AppCompatActivity() {
         // Comprueba al iniciar si el usuario es nulo. Si lo es se muestra la vista del loguin y si no pasa directo al main
         val currentUser = auth.currentUser
         updateUI(currentUser)
+    }//onStart
+
+    fun sendPasswordResetEmail(view: View){
+
+        auth.sendPasswordResetEmail(loginActivityUserName.text.toString())
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Email sent", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
+                }
+            }
     }
 
     private fun userExist(): Boolean {
