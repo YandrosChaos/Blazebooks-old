@@ -10,7 +10,7 @@
                 android:width="5dp"
                 android:color="@color/colorPrimaryDark" />
 
-            <corners android:radius="50px"/>
+            <corners android:radius="@dimen/round_corner_radious"/>
         </shape>
     </item>
 

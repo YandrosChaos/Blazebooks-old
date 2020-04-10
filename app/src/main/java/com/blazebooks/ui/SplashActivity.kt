@@ -4,6 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import coil.Coil
+import coil.ImageLoader
+import coil.api.load
+import coil.transform.RoundedCornersTransformation
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.login.LoginActivity
@@ -13,15 +17,14 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
         //execute this code after the time indicated
         Handler().postDelayed({
-                startActivity(
-                    Intent(
-                        this@SplashActivity,
-                        LoginActivity::class.java
-                    )
+            startActivity(
+                Intent(
+                    this@SplashActivity,
+                    LoginActivity::class.java
                 )
+            )
             finish()
         }, Constants.SPLASH_SCREEN_TIME_OUT.toLong())
     }

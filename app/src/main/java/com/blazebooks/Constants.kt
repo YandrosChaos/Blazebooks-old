@@ -3,7 +3,10 @@ package com.blazebooks
 import com.blazebooks.model.Book
 
 class Constants {
-    companion object{
+    companion object {
+        //GENERAL CONSTANTS
+        const val CORNER_RADIOUS: Float = 60f
+
         //SPLASH ACTIVITY
         const val SPLASH_SCREEN_TIME_OUT = 4000
 
@@ -12,7 +15,8 @@ class Constants {
         const val URL_CODE = "URL_CODE"
 
         //CURRENT DATA
-        lateinit var CURRENT_BOOK : Book
+        lateinit var CURRENT_BOOK: Book
+        lateinit var CURRENT_IMAGES: ArrayList<Any>
 
     }
 }

@@ -9,7 +9,7 @@
         android:right="1dp"
         android:bottom="1dp"/>
 
-    <corners android:radius="30px"/>
+    <corners android:radius="@dimen/round_corner_radious"/>
 
     <gradient
         android:angle="135"
