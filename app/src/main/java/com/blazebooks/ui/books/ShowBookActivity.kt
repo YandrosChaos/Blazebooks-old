@@ -27,6 +27,21 @@ class ShowBookActivity : AppCompatActivity() {
     }
 
     /**
+     * Restores toolbar to default value.
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        DrawableCompat.setTint(
+            DrawableCompat.wrap(activityShowBook.background),
+            ContextCompat.getColor(this, R.color.colorPrimaryDark)
+        );
+        DrawableCompat.setTint(
+            DrawableCompat.wrap(showBookToolbar.background),
+            ContextCompat.getColor(this, R.color.colorPrimaryDark)
+        );
+    }
+
+    /**
      * Setup the view of thr current book.
      */
     private fun setUp() {

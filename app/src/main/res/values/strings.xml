@@ -44,7 +44,9 @@
             RESOURCES\n
             icons - flaticon.com\n
             icons - Freepik\n\n
-        Libraries - MaterialSearchBar
+        Images - pixabay.com
+        Libraries - Android-SpinKit
+        Libraries - Coil
     </string>
 
     <!-- Type of Accounts-->

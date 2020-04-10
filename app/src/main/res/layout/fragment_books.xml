@@ -1,45 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/dark_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/fragmentBooksAll"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_margin="10sp"
+            android:onClick="searchBooks">
 
-            android:background="@drawable/container_box_orange"
-            android:text="@string/all_books"
+            <ImageView
+                android:id="@+id/fragmentBooksAll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            android:textSize="40sp"
-            android:onClick="searchBooks"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="@string/all_books"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/fragmentBooksBook"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_margin="10sp"
+            android:onClick="searchBooks">
 
-            android:background="@drawable/container_box_blue"
-            android:text="@string/books"
+            <ImageView
+                android:id="@+id/fragmentBooksBook"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            android:textSize="40sp"
-            android:onClick="searchBooks"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="@string/books"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/fragmentBooksIb"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_margin="10sp"
+            android:onClick="searchBooks">
 
-            android:background="@drawable/container_box_orange"
-            android:text="@string/interactive_books"
+            <ImageView
+                android:id="@+id/fragmentBooksIb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            android:textSize="40sp"
-            android:onClick="searchBooks"/>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="@string/interactive_books"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
