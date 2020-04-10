@@ -5,7 +5,7 @@ import com.blazebooks.model.Book
 class Constants {
     companion object{
         //SPLASH ACTIVITY
-        const val SPLASH_SCREEN_TIME_OUT = 2000
+        const val SPLASH_SCREEN_TIME_OUT = 4000
 
         //INTENT'S CODES
         const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
