@@ -44,9 +44,10 @@
             RESOURCES\n
             icons - flaticon.com\n
             icons - Freepik\n\n
-        Images - pixabay.com
-        Libraries - Android-SpinKit
-        Libraries - Coil
+        Images - pixabay.com\n
+        Libraries - Android-SpinKit\n
+        Libraries - Coil\n
+        Font - github.com/theleagueof/orbitron
     </string>
 
     <!-- Type of Accounts-->

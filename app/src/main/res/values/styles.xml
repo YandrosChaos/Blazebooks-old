@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="fontFamily">@font/orbitron</item>
     </style>
     <!-- Secondary theme -->
     <style name="LoginPage" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -13,6 +14,7 @@
         <item name="colorPrimaryDark">@color/secondaryDark</item>
         <item name="colorAccent">@color/secondaryAccent</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="fontFamily">@font/orbitron</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
