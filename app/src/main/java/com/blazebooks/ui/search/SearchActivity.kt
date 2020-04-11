@@ -17,6 +17,7 @@ import com.blazebooks.Utils.Companion.hideKeyboard
 import com.blazebooks.adapter.SearchAdapter
 import com.blazebooks.model.Book
 import com.blazebooks.model.Chapter
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.app_bar_search.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -66,8 +67,8 @@ class SearchActivity : AppCompatActivity() {
         val tempList: MutableList<Book> = ArrayList()
 
         for (item in bookList) {
-            if (item.title.toLowerCase(Locale.getDefault())
-                    .contains(filterItem.toLowerCase(Locale.getDefault()))
+            if (item.title?.toLowerCase(Locale.getDefault())
+                    ?.contains(filterItem.toLowerCase(Locale.getDefault()))!!
             ) {
                 tempList.add(item)
             }
@@ -183,13 +184,38 @@ class SearchActivity : AppCompatActivity() {
      */
     private fun data() {
 
+
+
         val chaptersList = arrayListOf(
             Chapter(1, "Title of the Chapter", null, true, "Unknown"),
-            Chapter(2, "Blah blah blah", null, true, "Unknown"),
+            Chapter(2, "Funciona?", null, true, "Unknown"),
             Chapter(3, "Suck or die", null, false, "Unknown"),
             Chapter(4, "Sssssspañah", null, false, "Unknown"),
             Chapter(5, "Coronachapter", null, false, "Unknown")
         )
+
+        val db = FirebaseFirestore.getInstance()
+
+
+        db.collection("Books")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val book= document.toObject(Book::class.java)
+                    val capitulos = ArrayList<Chapter>()
+                    db.collection("Chapters")
+                        .whereEqualTo("titulo", book.title)
+                        .get()
+                        .addOnSuccessListener { chapters ->
+                            for (chapter in chapters) {
+                                capitulos.add(chapter.toObject(Chapter::class.java))
+                            }
+                        }
+                    book.chapters= capitulos
+                    bookList.add(book)
+                }//for
+                mAdapter.updateList(bookList)
+            }
         bookList = arrayListOf(
             Book(
                 "Libro Primero",

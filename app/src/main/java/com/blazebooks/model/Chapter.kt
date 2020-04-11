@@ -1,12 +1,10 @@
 package com.blazebooks.model
 
-import android.graphics.drawable.Drawable
-
 data class Chapter(
-    val number: Int,
-    val title: String,
-    val image: Drawable?,
-    var readed : Boolean = false,
-    val textOrConnection: Any
+    val number: Int = 0,
+    val title: String = " ",
+    val image: String? = " ",
+    var readed: Boolean = false,
+    val textOrConnection: Any = "unknown"
 ) {
 }

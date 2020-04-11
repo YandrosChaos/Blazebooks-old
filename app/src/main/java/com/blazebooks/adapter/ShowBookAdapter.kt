@@ -54,7 +54,7 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>, val activity:
             }
             //cargar los datos del libro para mostrarlos
             if (chapter.image != null)
-                itemView.showChapterImageView.setImageDrawable(chapter.image)
+                //itemView.showChapterImageView.setImageDrawable(chapter.image)
             itemView.showChapterTvNumberAux.text = chapter.number.toString()
             itemView.showChapterTvTitleAux.text = chapter.title
 

@@ -52,7 +52,7 @@ class ShowBookActivity : AppCompatActivity() {
             activityShowBookTvPremiumAux.text = getString(R.string.free)
 
         //setup backgound, button and toolbar colors
-        when (Constants.CURRENT_BOOK.genre.toLowerCase()) {
+        when (Constants.CURRENT_BOOK.genre?.toLowerCase()) {
             "adventure" -> {
                 DrawableCompat.setTint(
                     DrawableCompat.wrap(activityShowBook.background),
