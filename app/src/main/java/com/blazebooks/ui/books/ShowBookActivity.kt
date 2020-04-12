@@ -48,6 +48,7 @@ class ShowBookActivity : AppCompatActivity() {
         appBarShowBookTvTitle.text = Constants.CURRENT_BOOK.title
         activityShowBookTvAuthorAux.text = Constants.CURRENT_BOOK.author
         activityShowBookTvGenreAux.text = Constants.CURRENT_BOOK.genre
+        activityShowBookTvSynopsisAux.text= Constants.CURRENT_BOOK.synopsis
         if (!Constants.CURRENT_BOOK.premium)
             activityShowBookTvPremiumAux.text = getString(R.string.free)
 

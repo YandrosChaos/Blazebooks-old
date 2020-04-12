@@ -194,28 +194,29 @@ class SearchActivity : AppCompatActivity() {
             Chapter(5, "Coronachapter", null, false, "Unknown")
         )
 
-        val db = FirebaseFirestore.getInstance()
+        val db = FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
 
-
-        db.collection("Books")
+        db.collection("Books") //Accede a la coleccion Books y devuelve todos los documentos
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    val book= document.toObject(Book::class.java)
-                    val capitulos = ArrayList<Chapter>()
-                    db.collection("Chapters")
-                        .whereEqualTo("titulo", book.title)
+                    val book= document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
+                    val chapterList = ArrayList<Chapter>()
+                    db.collection("Chapters") //accede a la lista Chapters (Esto cambiará cuando vea como relacionar colecciones)
+                        .whereEqualTo("titulo", book.title) //Filtra por titulo (Tengo un atributo titulo en cada capitulo con el nombre del libro para que funcione de momento)
                         .get()
                         .addOnSuccessListener { chapters ->
                             for (chapter in chapters) {
-                                capitulos.add(chapter.toObject(Chapter::class.java))
+                                chapterList.add(chapter.toObject(Chapter::class.java)) //se añaden lso capitulos de la bbdd a la lista de capitulos
                             }
                         }
-                    book.chapters= capitulos
-                    bookList.add(book)
+                    book.chapters= chapterList //añade los capitulos al libro
+                    bookList.add(book) //añade el libro a la lista
                 }//for
-                mAdapter.updateList(bookList)
+                mAdapter.updateList(bookList) //actualiza la lista
             }
+
+
         bookList = arrayListOf(
             Book(
                 "Libro Primero",
