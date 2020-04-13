@@ -185,17 +185,7 @@ class SearchActivity : AppCompatActivity() {
      */
     private fun data() {
 
-
-        val chaptersList = arrayListOf(
-            Chapter(1, "Title of the Chapter", null, true, "Unknown"),
-            Chapter(2, "Funciona?", null, true, "Unknown"),
-            Chapter(3, "Suck or die", null, false, "Unknown"),
-            Chapter(4, "Sssssspañah", null, false, "Unknown"),
-            Chapter(5, "Coronachapter", null, false, "Unknown")
-        )
-
         val db = FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
-
         db.collection("Books") //Accede a la coleccion Books y devuelve todos los documentos
             .get()
             .addOnSuccessListener { result ->
@@ -220,6 +210,13 @@ class SearchActivity : AppCompatActivity() {
                 mAdapter.updateList(bookList) //actualiza la lista
             }
 
+        val chaptersList = arrayListOf(
+            Chapter(1, "Title of the Chapter", null, true, "Unknown"),
+            Chapter(2, "Funciona?", null, true, "Unknown"),
+            Chapter(3, "Suck or die", null, false, "Unknown"),
+            Chapter(4, "Sssssspañah", null, false, "Unknown"),
+            Chapter(5, "Coronachapter", null, false, "Unknown")
+        )
 
         bookList = arrayListOf(
             Book(

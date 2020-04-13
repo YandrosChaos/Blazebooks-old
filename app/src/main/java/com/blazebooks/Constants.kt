@@ -12,11 +12,9 @@ class Constants {
 
         //INTENT'S CODES
         const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
-        const val URL_CODE = "URL_CODE"
 
         //CURRENT DATA
         lateinit var CURRENT_BOOK: Book
-        lateinit var CURRENT_IMAGES: ArrayList<Any>
 
     }
 }

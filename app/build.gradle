@@ -58,14 +58,18 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.android.support:multidex:1.0.3'
 
+    //Google extra
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
     //Firebase
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.2'
 
-
-    //Libraries
+    //Custom Spinners
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //coil
     implementation("io.coil-kt:coil:0.9.5")
 
 }

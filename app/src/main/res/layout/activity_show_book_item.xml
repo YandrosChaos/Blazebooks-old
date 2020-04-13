@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/bookSearchItemCv">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- Background IMG-->
+            <ImageView
+                android:id="@+id/showBookItemBackgroundImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/blazebooks_logo"
+                android:scaleType="centerCrop"/>
+
+            <!-- Background Filter-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/grayTransparent"/>
+
+            <!-- Premium icon-->
+            <ImageView
+                android:id="@+id/showBookItemPremiumImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_premium"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"/>
+
+            <!-- Carátula-->
+            <ImageView
+                android:id="@+id/showBookItemImg"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_margin="10dp"
+                android:src="@drawable/blazebooks_logo"
+                android:scaleType="centerCrop"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:padding="5sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/showBookItemImg"
+                android:layout_alignBottom="@id/showBookItemImg"
+                android:layout_toRightOf="@id/showBookItemImg"
+                android:layout_alignParentEnd="true"
+                android:background="@color/grayTransparent"
+                android:layout_marginEnd="10dp">
+                <TextView
+                    android:id="@+id/showBookTvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Title "
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textSize="25sp"/>
+                <TextView
+                    android:id="@+id/showBookTvAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Author: "
+                    app:layout_constraintTop_toBottomOf="@id/showBookTvTitle"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textSize="@dimen/show_book_text"/>
+
+                <TextView
+                    android:id="@+id/showBookTvAuthorAux"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Unknown"
+                    app:layout_constraintTop_toBottomOf="@id/showBookTvTitle"
+                    app:layout_constraintLeft_toRightOf="@id/showBookTvAuthor"
+                    android:textSize="@dimen/show_book_text"/>
+
+                <TextView
+                    android:id="@+id/showBookTvChapters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Chapters: "
+                    app:layout_constraintTop_toBottomOf="@id/showBookTvAuthor"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textSize="@dimen/show_book_text"/>
+                <TextView
+                    android:id="@+id/showBookTvChaptersAux"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="15"
+                    app:layout_constraintTop_toBottomOf="@id/showBookTvAuthor"
+                    app:layout_constraintLeft_toRightOf="@id/showBookTvChapters"
+                    android:textSize="@dimen/show_book_text"/>
+
+                <TextView
+                    android:id="@+id/showBookTvGenre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Genre: "
+                    app:layout_constraintTop_toBottomOf="@id/showBookTvChapters"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textSize="@dimen/show_book_text"/>
+
+                <TextView
+                    android:id="@+id/showBookTvGenreAux"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="dark, terror"
+                    app:layout_constraintTop_toBottomOf="@id/showBookTvChapters"
+                    app:layout_constraintLeft_toRightOf="@id/showBookTvGenre"
+                    android:textSize="@dimen/show_book_text"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/grayTransparent"
+                    tools:layout_editor_absoluteX="-171dp"
+                    tools:layout_editor_absoluteY="-10dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

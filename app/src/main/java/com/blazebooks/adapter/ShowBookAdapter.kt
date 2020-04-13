@@ -9,7 +9,7 @@ import com.blazebooks.R
 import com.blazebooks.model.Chapter
 import kotlinx.android.synthetic.main.activity_show_book_item_chapter.view.*
 
-class ShowBookAdapter(private val chapterList: ArrayList<Chapter>, val activity: Context) :
+class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
     RecyclerView.Adapter<ShowBookAdapter.WorkoutViewHolder>() {
 
     /**
@@ -53,7 +53,7 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>, val activity:
             itemView.setOnClickListener {
             }
             //cargar los datos del libro para mostrarlos
-            if (chapter.image != null)
+            //if (chapter.image != null)
                 //itemView.showChapterImageView.setImageDrawable(chapter.image)
             itemView.showChapterTvNumberAux.text = chapter.number.toString()
             itemView.showChapterTvTitleAux.text = chapter.title

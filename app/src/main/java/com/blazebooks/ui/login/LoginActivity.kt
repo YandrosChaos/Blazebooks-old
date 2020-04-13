@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_sing_in.*
+import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class LoginActivity : AppCompatActivity() {
 
