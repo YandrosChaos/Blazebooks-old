@@ -1,63 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5sp"
-    android:background="@drawable/container_round_blue"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:id="@+id/bookSearchItemCl">
+    android:layout_margin="5dp"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/activitySearchBookName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="@dimen/round_corner_radious"
+        app:cardElevation="5dp"
+        android:id="@+id/bookSearchItemCv">
 
-        android:text="Book Title"
-        android:textColor="@android:color/white"
-        android:textSize="40sp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/searchBookItemImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"/>
 
+            <ImageView
+                android:id="@+id/searchBookItemImgPremium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_premium"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"/>
 
-    <TextView
-        android:id="@+id/activitySearchBookGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            <!-- Title -->
+            <TextView
+                android:padding="2dp"
+                android:id="@+id/searchBookItemText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/grayTransparent"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"
+                android:textSize="22sp" />
+        </RelativeLayout>
 
-        android:text="Genre: "
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
+    </androidx.cardview.widget.CardView>
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activitySearchBookName" />
-
-    <TextView
-        android:id="@+id/activitySearchBookGenreAux"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="Fucking Hell"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-
-        app:layout_constraintStart_toEndOf="@+id/activitySearchBookGenre"
-        app:layout_constraintTop_toBottomOf="@+id/activitySearchBookName" />
-
-    <TextView
-        android:id="@+id/activitySearchBookPremium"
-        android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content"
-        android:text="PREMIUM"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activitySearchBookGenre" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

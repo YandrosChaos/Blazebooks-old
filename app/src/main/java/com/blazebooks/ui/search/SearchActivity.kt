@@ -6,10 +6,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import android.widget.GridLayout.VERTICAL
 import android.widget.ProgressBar
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.Constants
 import com.blazebooks.R
@@ -172,7 +173,7 @@ class SearchActivity : AppCompatActivity() {
 
         //load adapter and manager
         mAdapter = SearchAdapter(bookList, this)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
 
         //occult progress bar
@@ -183,7 +184,6 @@ class SearchActivity : AppCompatActivity() {
      * Charge the data into current activity
      */
     private fun data() {
-
 
 
         val chaptersList = arrayListOf(
@@ -200,17 +200,21 @@ class SearchActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    val book= document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
+                    val book =
+                        document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
                     val chapterList = ArrayList<Chapter>()
                     db.collection("Chapters") //accede a la lista Chapters (Esto cambiará cuando vea como relacionar colecciones)
-                        .whereEqualTo("titulo", book.title) //Filtra por titulo (Tengo un atributo titulo en cada capitulo con el nombre del libro para que funcione de momento)
+                        .whereEqualTo(
+                            "titulo",
+                            book.title
+                        ) //Filtra por titulo (Tengo un atributo titulo en cada capitulo con el nombre del libro para que funcione de momento)
                         .get()
                         .addOnSuccessListener { chapters ->
                             for (chapter in chapters) {
                                 chapterList.add(chapter.toObject(Chapter::class.java)) //se añaden lso capitulos de la bbdd a la lista de capitulos
                             }
                         }
-                    book.chapters= chapterList //añade los capitulos al libro
+                    book.chapters = chapterList //añade los capitulos al libro
                     bookList.add(book) //añade el libro a la lista
                 }//for
                 mAdapter.updateList(bookList) //actualiza la lista
