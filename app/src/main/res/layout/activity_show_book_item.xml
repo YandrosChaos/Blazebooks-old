@@ -61,7 +61,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="Title "
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:textSize="25sp"/>
@@ -70,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="Author: "
+                    android:text="@string/author_show_book_activity"
                     app:layout_constraintTop_toBottomOf="@id/showBookTvTitle"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:textSize="@dimen/show_book_text"/>
@@ -80,7 +79,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="Unknown"
                     app:layout_constraintTop_toBottomOf="@id/showBookTvTitle"
                     app:layout_constraintLeft_toRightOf="@id/showBookTvAuthor"
                     android:textSize="@dimen/show_book_text"/>
@@ -90,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="Chapters: "
+                    android:text="@string/chapters_show_book_activity"
                     app:layout_constraintTop_toBottomOf="@id/showBookTvAuthor"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:textSize="@dimen/show_book_text"/>
@@ -99,7 +97,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="15"
                     app:layout_constraintTop_toBottomOf="@id/showBookTvAuthor"
                     app:layout_constraintLeft_toRightOf="@id/showBookTvChapters"
                     android:textSize="@dimen/show_book_text"/>
@@ -109,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="Genre: "
+                    android:text="@string/genre_show_book_activity"
                     app:layout_constraintTop_toBottomOf="@id/showBookTvChapters"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:textSize="@dimen/show_book_text"/>
@@ -119,7 +116,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="dark, terror"
                     app:layout_constraintTop_toBottomOf="@id/showBookTvChapters"
                     app:layout_constraintLeft_toRightOf="@id/showBookTvGenre"
                     android:textSize="@dimen/show_book_text"/>

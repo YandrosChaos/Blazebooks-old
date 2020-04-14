@@ -3,16 +3,16 @@ package com.blazebooks.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Patterns
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.blazebooks.R
 import com.blazebooks.ui.MainActivity
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.dialog_forgot_passwd.view.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,18 +21,18 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        auth= FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
     }
 
     fun loginClicked(view: View) {
 
-        if(loginActivityUserName.text.toString().isEmpty()){
+        if (loginActivityUserName.text.toString().isEmpty()) {
             loginActivityUserName.error = "Please enter email"
             loginActivityUserName.requestFocus()
             return
         }
 
-        if(loginActivityUserPasswd.text.toString().isEmpty()){
+        if (loginActivityUserPasswd.text.toString().isEmpty()) {
             loginActivityUserPasswd.error = "Password cannot be empty"
             loginActivityUserPasswd.requestFocus()
             return
@@ -40,14 +40,19 @@ class LoginActivity : AppCompatActivity() {
 
 
         //Comprueba que los datos coinciden y si es así actualiza el updateUI con el usuario , si no lo pone a nulo
-        auth.signInWithEmailAndPassword(loginActivityUserName.text.toString(), loginActivityUserPasswd.text.toString())
+        auth.signInWithEmailAndPassword(
+            loginActivityUserName.text.toString(),
+            loginActivityUserPasswd.text.toString()
+        )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
-                    Toast.makeText(baseContext, "Username or password incorrect!.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Username or password incorrect!.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     updateUI(null)
                 }
             }
@@ -57,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
      * Si el usuario no es nulo se pasa al main
      */
     private fun updateUI(currentUser: FirebaseUser?) {
-        if(currentUser != null){
+        if (currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -70,23 +75,33 @@ class LoginActivity : AppCompatActivity() {
         updateUI(currentUser)
     }//onStart
 
-    fun sendPasswordResetEmail(view: View){
-        auth.sendPasswordResetEmail(loginActivityUserName.text.toString())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Email sent", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                }
+    fun sendPasswordResetEmail(view: View) {
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_forgot_passwd, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(this)
+            .setView(mDialogView)
+        //show dialog
+        val mAlertDialog = mBuilder.show()
+        //set button onClickListener
+        mDialogView.forgotPasswdBtn.setOnClickListener {
+            if (mDialogView.forgotpwdDialogUserName.text.isNotEmpty()) {
+                auth.sendPasswordResetEmail(mDialogView.forgotpwdDialogUserName.text.toString())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            mAlertDialog.dismiss()
+                            Toast.makeText(this, "Email sent =)", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+            }else{
+                Toast.makeText(this,"Please, introduce your email account.", Toast.LENGTH_LONG).show()
             }
+        }
     }
 
-    private fun userExist(): Boolean {
-        return loginActivityUserName.text.toString() == "whoami" && loginActivityUserPasswd.text.toString() == "root"
-    }
-
-    fun throwSingInActivity(view: View) {
-        startActivity(Intent(this, SingInActivity::class.java))
+    fun throwSignInActivity(view: View) {
+        startActivity(Intent(this, SignInActivity::class.java))
         finish()
     }
 }

@@ -22,6 +22,7 @@
                 android:src="@drawable/blazebooks_logo" />
 
             <EditText
+                android:inputType="textEmailAddress"
                 android:id="@+id/loginActivityUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,9 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/container_round_orange"
                 android:onClick="loginClicked"
-                android:text="Log In"
+                android:text="Login"
                 android:textAllCaps="false"
                 android:textSize="21sp" />
 
@@ -70,9 +70,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Sing In"
+                android:text="Sign In"
                 android:textSize="21sp"
-                android:onClick="throwSingInActivity"/>
+                android:onClick="throwSignInActivity"/>
 
         </LinearLayout>
 

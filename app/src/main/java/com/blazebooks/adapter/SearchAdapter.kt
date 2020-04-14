@@ -26,7 +26,7 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
     inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var titleText: TextView = view.findViewById(R.id.searchBookItemText)
         var bookImage: ImageView = view.findViewById(R.id.searchBookItemImg)
-        var bookPremiumImg : ImageView = view.findViewById(R.id.searchBookItemImgPremium)
+        var bookPremiumImg: ImageView = view.findViewById(R.id.searchBookItemImgPremium)
         var itemLayout: CardView = view.findViewById(R.id.bookSearchItemCv)
 
     }
@@ -72,9 +72,11 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val item = itemList[position]
         holder.titleText.text = item.title
-        holder.bookImage.load(item.image) {
-            crossfade(true)
-        }
+
+        if (item.image != null)
+            holder.bookImage.load(item.image) {
+                crossfade(true)
+            }
 
         if (item.premium) {
             holder.bookPremiumImg.apply {

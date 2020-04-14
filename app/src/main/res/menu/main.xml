@@ -11,7 +11,7 @@
         android:id="@+id/sing_out"
         android:onClick="singOut"
         android:orderInCategory="100"
-        android:title="@string/sing_out"
+        android:title="@string/sign_out"
         app:showAsAction="never" />
 
 </menu>

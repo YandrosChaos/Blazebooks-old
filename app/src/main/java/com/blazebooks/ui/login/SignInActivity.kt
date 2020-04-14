@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
-class SingInActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth; //Necesario para la autenticación
 

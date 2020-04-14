@@ -18,6 +18,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:src="@drawable/blazebooks_logo"
                 android:id="@+id/searchBookItemImg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
