@@ -124,12 +124,42 @@
                     app:layout_constraintLeft_toRightOf="@id/showBookTvGenre"
                     android:textSize="@dimen/show_book_text"/>
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/grayTransparent"
-                    tools:layout_editor_absoluteX="-171dp"
-                    tools:layout_editor_absoluteY="-10dp" />
+                    android:layout_height="36sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/showBookBtnDownload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_download"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"/>
+                    <ImageButton
+                        android:layout_marginStart="10sp"
+                        android:id="@+id/showBookBtnRead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_reading_big"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/showBookBtnDownload"/>
+                    <ImageView
+                        android:layout_marginStart="10sp"
+                        android:id="@+id/showBookBtnFav"
+                        android:layout_width="36sp"
+                        android:layout_height="36sp"
+                        android:src="@drawable/ic_like_add"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/showBookBtnRead"
+                        android:scaleType="centerInside"
+                        android:onClick="addFav"/>
+                </LinearLayout>
+
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

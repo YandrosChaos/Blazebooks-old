@@ -25,6 +25,7 @@ class SynopsisFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO -> set fav button
         //set the images
         if (Constants.CURRENT_BOOK.image != null) {
             showBookItemBackgroundImg.load(Constants.CURRENT_BOOK.image) {

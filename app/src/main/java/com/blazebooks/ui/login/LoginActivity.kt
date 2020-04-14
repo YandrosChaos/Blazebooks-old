@@ -71,7 +71,6 @@ class LoginActivity : AppCompatActivity() {
     }//onStart
 
     fun sendPasswordResetEmail(view: View){
-
         auth.sendPasswordResetEmail(loginActivityUserName.text.toString())
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

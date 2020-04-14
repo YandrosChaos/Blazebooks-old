@@ -8,5 +8,5 @@
     <dimen name="round_corner_radious">60px</dimen>
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
-    <dimen name="show_book_text">16sp</dimen>
+    <dimen name="show_book_text">11sp</dimen>
 </resources>
