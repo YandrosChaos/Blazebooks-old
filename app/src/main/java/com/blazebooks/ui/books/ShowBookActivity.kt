@@ -3,6 +3,7 @@ package com.blazebooks.ui.books
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import coil.api.load
 import com.blazebooks.R
 import com.blazebooks.adapter.ViewPagerAdapter
@@ -40,12 +41,14 @@ class ShowBookActivity : AppCompatActivity() {
         liked = when (liked) {
             true -> {
                 //TODO -> remove from favs
-                showBookBtnFav.load(R.drawable.ic_like_remove)
+                //showBookBtnFav.load(R.drawable.ic_like_remove)
+                showBookBtnFav.background = ContextCompat.getDrawable(this,R.drawable.ic_like_remove)
                 false
             }
             false -> {
                 //TODO -> add to favs
-                showBookBtnFav.load(R.drawable.ic_like_add)
+                //showBookBtnFav.load(R.drawable.ic_like_add)
+                showBookBtnFav.background = ContextCompat.getDrawable(this,R.drawable.ic_like_add)
                 true
             }
         }

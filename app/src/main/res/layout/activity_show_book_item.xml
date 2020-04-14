@@ -146,14 +146,14 @@
                         android:background="@drawable/ic_reading_big"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@id/showBookBtnDownload"/>
-                    <ImageView
+                    <ImageButton
                         android:layout_marginStart="10sp"
                         android:id="@+id/showBookBtnFav"
                         android:layout_width="36sp"
                         android:layout_height="36sp"
-                        android:src="@drawable/ic_like_add"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@id/showBookBtnRead"
+                        android:background="@drawable/ic_like_add"
                         android:scaleType="centerInside"
                         android:onClick="addFav"/>
                 </LinearLayout>
