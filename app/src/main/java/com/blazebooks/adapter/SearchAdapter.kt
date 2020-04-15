@@ -73,11 +73,19 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
         val item = itemList[position]
         holder.titleText.text = item.title
 
-        if (item.image != null)
+        //set image
+        if (item.image != null) {
             holder.bookImage.load(item.image) {
                 crossfade(true)
             }
+        } else {
+            //default image
+            holder.bookImage.load(R.drawable.blazebooks_logo) {
+                crossfade(true)
+            }
+        }
 
+        //set premium image
         if (item.premium) {
             holder.bookPremiumImg.apply {
                 this.visibility = View.VISIBLE

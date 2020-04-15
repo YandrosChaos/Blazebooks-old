@@ -7,74 +7,78 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10sp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10sp">
 
         <RelativeLayout
             android:id="@+id/fragmentHomeMyBooks"
-            android:padding="10sp"
-            android:layout_margin="5sp"
-            android:background="@drawable/container_round_blue"
-            android:layout_height="200dp"
-            android:layout_width="match_parent"
-            android:onClick="searchBooks">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/my_books"
-                android:textSize="30sp"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:padding="10sp"
-            android:layout_margin="5sp"
-            android:background="@drawable/container_round_orange"
-            android:layout_height="200dp"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/new_books_in_blazebooks"
-                android:textSize="30sp"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="5sp"
             android:background="@drawable/container_round_blue"
+            android:gravity="center"
+            android:onClick="searchBooks"
             android:padding="10sp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/my_books"
                 android:textColor="@android:color/white"
-                android:text="@string/recommendations"
-                android:textSize="30sp"/>
+                android:textSize="30sp" />
+
         </RelativeLayout>
 
         <RelativeLayout
-            android:padding="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:layout_margin="5sp"
             android:background="@drawable/container_round_orange"
-            android:layout_height="200dp"
-            android:layout_width="match_parent">
+            android:gravity="center"
+            android:padding="10sp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/new_books_in_blazebooks"
                 android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="5sp"
+            android:background="@drawable/container_round_blue"
+            android:gravity="center"
+            android:padding="10sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recommendations"
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="5sp"
+            android:background="@drawable/container_round_orange"
+            android:gravity="center"
+            android:padding="10sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/my_account"
-                android:textSize="30sp"/>
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
 
         </RelativeLayout>
     </LinearLayout>
-
 
 
 </ScrollView>

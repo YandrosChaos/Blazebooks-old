@@ -1,6 +1,5 @@
 package com.blazebooks.ui.books
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,27 +20,27 @@ class BooksFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_books, container, false)
-        root.fragmentBooksAll.load(R.drawable.old_books) {
+        root.fragmentBooksImgAll.load(R.drawable.old_books) {
             crossfade(true)
             transformations(
                 BlurTransformation(context!!.applicationContext!!),
-                RoundedCornersTransformation(Constants.CORNER_RADIOUS)
+                RoundedCornersTransformation(Constants.CORNER_RADIUS)
             )
         }
 
-        root.fragmentBooksBook.load(R.drawable.lamp_books) {
+        root.fragmentBooksImgBook.load(R.drawable.lamp_books) {
             crossfade(true)
             transformations(
                 BlurTransformation(context!!.applicationContext!!),
-                RoundedCornersTransformation(Constants.CORNER_RADIOUS)
+                RoundedCornersTransformation(Constants.CORNER_RADIUS)
             )
         }
 
-        root.fragmentBooksIb.load(R.drawable.skull_books){
+        root.fragmentBooksImgIb.load(R.drawable.skull_books){
             crossfade(true)
             transformations(
                 BlurTransformation(context!!.applicationContext!!),
-                RoundedCornersTransformation(Constants.CORNER_RADIOUS)
+                RoundedCornersTransformation(Constants.CORNER_RADIUS)
             )
         }
         return root

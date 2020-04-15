@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        auth= FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
-        tv_userName.text= auth.currentUser?.displayName
-        tv_userEmail.text= auth.currentUser?.email
+        tv_userName.text = auth.currentUser?.displayName
+        tv_userEmail.text = auth.currentUser?.email
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             Intent(this, SearchActivity::class.java).apply {
                 putExtra(
                     Constants.TOOLBAR_TITLE_CODE,
-                    when(view.id){
+                    when (view.id) {
                         R.id.fragmentBooksBook ->
                             getString(R.string.books)
                         R.id.fragmentBooksIb ->
@@ -104,7 +104,12 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun singOut(item: MenuItem) {
+    /**
+     *  Signs out from the current session.
+     *
+     * @param item
+     */
+    fun signOut(item: MenuItem) {
         FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()

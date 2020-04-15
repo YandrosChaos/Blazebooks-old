@@ -93,6 +93,7 @@ class SearchActivity : AppCompatActivity() {
 
             hideKeyboard()
 
+            //restore toolbar colors
             activitySearchToolbarTv.visibility = View.VISIBLE
             DrawableCompat.setTint(
                 activitySearchToolBarBtnReturn.background,
@@ -127,6 +128,7 @@ class SearchActivity : AppCompatActivity() {
             mSearchView.visibility = View.VISIBLE
             activitySearchToolbarTv.visibility = View.GONE
 
+            //set toolbar search colors
             DrawableCompat.setTint(
                 activitySearchToolBarBtnReturn.background,
                 resources.getColor(R.color.colorPrimaryDark)
@@ -144,6 +146,7 @@ class SearchActivity : AppCompatActivity() {
             //occult the bar and shows the title
             mSearchView.visibility = View.GONE
             activitySearchToolbarTv.visibility = View.VISIBLE
+            //restore toolbar colors
             DrawableCompat.setTint(
                 activitySearchToolBarBtnReturn.background,
                 resources.getColor(R.color.white)

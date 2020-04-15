@@ -5,7 +5,7 @@ import com.blazebooks.model.Book
 class Constants {
     companion object {
         //GENERAL CONSTANTS
-        const val CORNER_RADIOUS: Float = 60f
+        const val CORNER_RADIUS: Float = 60f
 
         //SPLASH ACTIVITY
         const val SPLASH_SCREEN_TIME_OUT = 4000
