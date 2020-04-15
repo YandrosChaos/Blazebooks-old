@@ -6,8 +6,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
-import android.widget.GridLayout.VERTICAL
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -97,15 +97,15 @@ class SearchActivity : AppCompatActivity() {
             activitySearchToolbarTv.visibility = View.VISIBLE
             DrawableCompat.setTint(
                 activitySearchToolBarBtnReturn.background,
-                resources.getColor(R.color.white)
+                ContextCompat.getColor(this,R.color.white)
             )//return button
             DrawableCompat.setTint(
                 activitySearchToolBarBtnFilter.background,
-                resources.getColor(R.color.white)
+                ContextCompat.getColor(this,R.color.white)
             )//filter button
             DrawableCompat.setTint(
                 activitySearchToolbarBtnSearch.background,
-                resources.getColor(R.color.white)
+                ContextCompat.getColor(this,R.color.white)
             )//search button
             filterList("")
         }
@@ -131,17 +131,16 @@ class SearchActivity : AppCompatActivity() {
             //set toolbar search colors
             DrawableCompat.setTint(
                 activitySearchToolBarBtnReturn.background,
-                resources.getColor(R.color.colorPrimaryDark)
+                ContextCompat.getColor(this,R.color.colorPrimaryDark)
             )//return button
             DrawableCompat.setTint(
                 activitySearchToolBarBtnFilter.background,
-                resources.getColor(R.color.colorPrimaryDark)
+                ContextCompat.getColor(this,R.color.colorPrimaryDark)
             )//filter button
             DrawableCompat.setTint(
                 activitySearchToolbarBtnSearch.background,
-                resources.getColor(R.color.colorPrimaryDark)
+                ContextCompat.getColor(this,R.color.colorPrimaryDark)
             )//search button
-
         } else {
             //occult the bar and shows the title
             mSearchView.visibility = View.GONE
@@ -149,15 +148,15 @@ class SearchActivity : AppCompatActivity() {
             //restore toolbar colors
             DrawableCompat.setTint(
                 activitySearchToolBarBtnReturn.background,
-                resources.getColor(R.color.white)
+                ContextCompat.getColor(this,R.color.white)
             )//return button
             DrawableCompat.setTint(
                 activitySearchToolBarBtnFilter.background,
-                resources.getColor(R.color.white)
+                ContextCompat.getColor(this,R.color.white)
             )//filter button
             DrawableCompat.setTint(
                 activitySearchToolbarBtnSearch.background,
-                resources.getColor(R.color.white)
+                ContextCompat.getColor(this,R.color.white)
             )//search button
         }
     }
