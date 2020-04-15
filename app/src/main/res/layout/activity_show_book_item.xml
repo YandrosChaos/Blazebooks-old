@@ -127,21 +127,25 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
+
                     <ImageButton
                         android:id="@+id/showBookBtnDownload"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_download"
+                        android:onClick="download"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"/>
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
                     <ImageButton
-                        android:layout_marginStart="10sp"
                         android:id="@+id/showBookBtnRead"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
                         android:background="@drawable/ic_reading_big"
+                        android:onClick="read"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/showBookBtnDownload"/>
+                        app:layout_constraintLeft_toRightOf="@id/showBookBtnDownload" />
                     <ImageButton
                         android:layout_marginStart="10sp"
                         android:id="@+id/showBookBtnFav"
