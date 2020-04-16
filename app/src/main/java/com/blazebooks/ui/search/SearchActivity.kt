@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -23,6 +25,9 @@ import kotlinx.android.synthetic.main.app_bar_search.*
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * @author  Victor Gonzalez
+ */
 class SearchActivity : AppCompatActivity() {
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mProgressBar: ProgressBar
@@ -30,6 +35,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var mAdapter: SearchAdapter
     private lateinit var mSearchView: EditText
 
+    /**
+     * @author Victor Gonzalez
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -63,6 +71,7 @@ class SearchActivity : AppCompatActivity() {
      * Filters the list by book's title and update the adapter list.
      *
      * @param filterItem
+     * @author Victor Gonzalez
      */
     private fun filterList(filterItem: String) {
         val tempList: MutableList<Book> = ArrayList()

@@ -18,12 +18,20 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth //Necesario para la autenticación
 
+    /**
+     * @param savedInstanceState
+     * @author Mounir Zbayr
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         auth = FirebaseAuth.getInstance()
     }
 
+    /**
+     *
+     * @author Mounir Zbayr
+     */
     fun loginClicked(view: View) {
 
         if (loginActivityUserName.text.toString().isEmpty()) {
@@ -60,6 +68,8 @@ class LoginActivity : AppCompatActivity() {
 
     /**
      * Si el usuario no es nulo se pasa al main
+     *
+     * @author Mounir Zbayr
      */
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
@@ -68,13 +78,24 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Comprueba al iniciar si el usuario es nulo. Si lo es se muestra
+     * la vista del loguin y si no pasa directo al main
+     *
+     * @author Mounir Zbayr
+     * @author Victor Gonzalez
+     */
     public override fun onStart() {
         super.onStart()
-        // Comprueba al iniciar si el usuario es nulo. Si lo es se muestra la vista del loguin y si no pasa directo al main
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
+        updateUI(auth.currentUser)
     }//onStart
 
+    /**
+     * Sends an email for reset the password.
+     *
+     * @param view
+     * @author Mounir Zbayr
+     */
     fun sendPasswordResetEmail(view: View) {
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_forgot_passwd, null)
         //AlertDialogBuilder
@@ -100,6 +121,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Throws SignInActivity and finish this activity
+     *
+     * @param view
+     * @author Victor Gonzalez
+     */
     fun throwSignInActivity(view: View) {
         startActivity(Intent(this, SignInActivity::class.java))
         finish()

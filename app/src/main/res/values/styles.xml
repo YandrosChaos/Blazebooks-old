@@ -1,5 +1,5 @@
 <resources>
-
+    <!-- Author: Víctor González-->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowFullscreen">true</item>
         <item name="fontFamily">@font/spartan</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
     <!-- Secondary theme -->
     <style name="LoginPage" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -15,6 +16,7 @@
         <item name="colorAccent">@color/secondaryAccent</item>
         <item name="android:windowFullscreen">true</item>
         <item name="fontFamily">@font/spartan</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

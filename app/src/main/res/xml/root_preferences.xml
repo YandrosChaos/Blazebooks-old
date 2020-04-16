@@ -1,0 +1,46 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Author: Victor Gonzalez -->
+    <PreferenceCategory android:title="USER">
+        <ListPreference
+            android:entries="@array/appTheme"
+            android:entryValues="@array/appTheme"
+            android:icon="@drawable/ic_theater_masks"
+            android:key="appTheme"
+            android:summary="Choose your favorite theme."
+            android:title="Theme" />
+        <ListPreference
+            android:entries="@array/languages"
+            android:entryValues="@array/languages"
+            android:icon="@drawable/ic_user"
+            android:key="language"
+            android:summary="Choose your favorite language. Not all books has a version for all languages."
+            android:title="Language" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="BOOKS">
+        <MultiSelectListPreference
+            android:dialogTitle="Choose between..."
+            android:entries="@array/genres"
+            android:entryValues="@array/genres"
+            android:icon="@drawable/ic_books_stack"
+            android:key="preferedGenres"
+            android:summary="Choose your favorite genres. Help to us to recommend you better books."
+            android:title="Prefered Genres" />
+        <SwitchPreference
+            android:icon="@drawable/ic_reading_big"
+            android:key="readMode"
+            android:summary="On/Off the read light filter."
+            android:title="Read Mode" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Info">
+        <PreferenceScreen
+            android:icon="@drawable/blazebooks_logo"
+            android:summary="Learn more about us and the develop team."
+            android:title="About..." />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.blazebooks.ui.SplashActivity"
+            android:targetPackage="com.blazebooks.ui" />
+    </PreferenceCategory>
+</PreferenceScreen>
