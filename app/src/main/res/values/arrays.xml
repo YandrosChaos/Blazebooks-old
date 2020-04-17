@@ -15,12 +15,8 @@
     </array>
 
     <array name="languages">
-        <item>spanish</item>
-        <item>english</item>
+        <item>Spanish</item>
+        <item>English</item>
     </array>
 
-    <array name="appTheme">
-        <item>First Theme</item>
-        <item>Second Theme</item>
-    </array>
 </resources>

@@ -1,11 +1,8 @@
 package com.blazebooks.ui.search
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -20,15 +17,19 @@ import com.blazebooks.Utils.Companion.hideKeyboard
 import com.blazebooks.adapter.SearchAdapter
 import com.blazebooks.model.Book
 import com.blazebooks.model.Chapter
+import com.blazebooks.ui.PreconfiguredActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.app_bar_search.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 /**
+ * Search book view.
+ *
+ * @see PreconfiguredActivity
  * @author  Victor Gonzalez
  */
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : PreconfiguredActivity() {
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mProgressBar: ProgressBar
     private lateinit var bookList: MutableList<Book>
@@ -36,6 +37,11 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var mSearchView: EditText
 
     /**
+     * Sets toolbar title. Gets a list of items and add the Text Change Listener, filter the list and
+     * updates the adapter.
+     *
+     * @see getItemList
+     * @see filterList
      * @author Victor Gonzalez
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +52,9 @@ class SearchActivity : AppCompatActivity() {
         mProgressBar = findViewById(R.id.progress_circular)
         mSearchView = findViewById(R.id.new_searchView)
 
-        //set the title in the toolbar
+        //set the title in the toolbar and show the progress bar
         activitySearchToolbarTv.text = intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE)
+        mProgressBar.visibility = View.VISIBLE
 
         //load the data
         getItemList()
@@ -65,134 +72,87 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
+        //occult progress bar
+        mProgressBar.visibility = View.GONE
+
     }
 
     /**
-     * Filters the list by book's title and update the adapter list.
+     * Filters the list by book's title and updates it in the adapter.
+     * If the book's title contains the character, adds the book to a
+     * temp list and passes the list to the adapter.
      *
      * @param filterItem
+     * @see SearchAdapter.updateList
      * @author Victor Gonzalez
      */
     private fun filterList(filterItem: String) {
         val tempList: MutableList<Book> = ArrayList()
-
-        for (item in bookList) {
-            if (item.title?.toLowerCase(Locale.getDefault())
+        bookList.forEach {
+            if (it.title?.toLowerCase(Locale.getDefault())
                     ?.contains(filterItem.toLowerCase(Locale.getDefault()))!!
             ) {
-                tempList.add(item)
+                tempList.add(it)
             }
         }
         mAdapter.updateList(tempList)
     }
 
     /**
-     * If search view is occult, finish the activity. Else, closes the search view, updates
+     * If search view is occult, finishes the activity. Else, closes the search view, updates
      * the view and hides the keyboard.
      *
+     * @see switchToolbarMode
+     * @see hideKeyboard
      * @param view
+     *
+     * @author Victor Gonzalez
      */
     fun previousActivity(view: View) {
         if (!mSearchView.isVisible) {
             finish()
         } else {
-            mSearchView.visibility = View.GONE
-            activitySearchToolbarTv.visibility = View.VISIBLE
-            mSearchView.visibility = View.GONE
-
             hideKeyboard()
-
-            //restore toolbar colors
-            activitySearchToolbarTv.visibility = View.VISIBLE
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnReturn.background,
-                ContextCompat.getColor(this,R.color.white)
-            )//return button
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnFilter.background,
-                ContextCompat.getColor(this,R.color.white)
-            )//filter button
-            DrawableCompat.setTint(
-                activitySearchToolbarBtnSearch.background,
-                ContextCompat.getColor(this,R.color.white)
-            )//search button
-            filterList("")
+            switchToolbarMode(true)
         }
 
     }
 
     /**
-     * <p>When the button is clicked, this method makes visible or gone
-     * the search view. In addition, makes visible or invisible the
-     * title text in toolbar.</p>
-     * <p>Changes the color of the buttons if the search view is gone or not too.</p>
+     * When the button is clicked, switches search view.
      *
+     * @see switchToolbarMode
      * @param view
+     * @author  Victor Gonzalez
      */
     fun showSearchBarItem(view: View) {
-        mSearchView.hint = "Looking for..."
-
-        if (!mSearchView.isVisible) {
-            //shows the bar and occult the title
-            mSearchView.visibility = View.VISIBLE
-            activitySearchToolbarTv.visibility = View.GONE
-
-            //set toolbar search colors
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnReturn.background,
-                ContextCompat.getColor(this,R.color.colorPrimaryDark)
-            )//return button
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnFilter.background,
-                ContextCompat.getColor(this,R.color.colorPrimaryDark)
-            )//filter button
-            DrawableCompat.setTint(
-                activitySearchToolbarBtnSearch.background,
-                ContextCompat.getColor(this,R.color.colorPrimaryDark)
-            )//search button
-        } else {
-            //occult the bar and shows the title
-            mSearchView.visibility = View.GONE
-            activitySearchToolbarTv.visibility = View.VISIBLE
-            //restore toolbar colors
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnReturn.background,
-                ContextCompat.getColor(this,R.color.white)
-            )//return button
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnFilter.background,
-                ContextCompat.getColor(this,R.color.white)
-            )//filter button
-            DrawableCompat.setTint(
-                activitySearchToolbarBtnSearch.background,
-                ContextCompat.getColor(this,R.color.white)
-            )//search button
-        }
+        mSearchView.hint = getString(R.string.looking_for)
+        switchToolbarMode(mSearchView.isVisible)
     }
 
     /**
-     * Load data, layout manager and adapter. When is loading, shows a progress bar.
+     * Loads data, layout manager and adapter. While is loading, shows a progress bar.
      *
      * @see data
+     * @author Victor Gonzalez
      */
     private fun getItemList() {
-        //show progress bar
-        mProgressBar.visibility = View.VISIBLE
-
-        //load the data
+        //load data
         data()
 
-        //load adapter and manager
+        //configure and load adapter and manager
         mAdapter = SearchAdapter(bookList, this)
         mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
-
-        //occult progress bar
-        mProgressBar.visibility = View.GONE
     }
 
     /**
-     * Charge the data into current activity
+     * Load data from database to adapter.
+     *
+     * @see SearchAdapter.updateList
+     *
+     * @author Victor Gonzalez
+     * @author Mounir
      */
     private fun data() {
 
@@ -319,6 +279,52 @@ class SearchActivity : AppCompatActivity() {
                 "unknown"
             )
         )
+    }
+
+    /**
+     * Switches the search toolbar between normal and search mode.
+     *
+     * @param searchVisible
+     * @author Victor González
+     */
+    private fun switchToolbarMode(searchVisible: Boolean) {
+        if (!searchVisible) {
+            //shows the bar and occult the title
+            mSearchView.visibility = View.VISIBLE
+            activitySearchToolbarTv.visibility = View.GONE
+
+            //set toolbar search colors
+            DrawableCompat.setTint(
+                activitySearchToolBarBtnReturn.background,
+                ContextCompat.getColor(this, R.color.colorPrimaryDark)
+            )//return button
+            DrawableCompat.setTint(
+                activitySearchToolBarBtnFilter.background,
+                ContextCompat.getColor(this, R.color.colorPrimaryDark)
+            )//filter button
+            DrawableCompat.setTint(
+                activitySearchToolbarBtnSearch.background,
+                ContextCompat.getColor(this, R.color.colorPrimaryDark)
+            )//search button
+        } else {
+            //occult the bar and shows the title
+            mSearchView.visibility = View.GONE
+            activitySearchToolbarTv.visibility = View.VISIBLE
+            //set colors
+            DrawableCompat.setTint(
+                activitySearchToolBarBtnReturn.background,
+                ContextCompat.getColor(this, R.color.white)
+            )//return button
+            DrawableCompat.setTint(
+                activitySearchToolBarBtnFilter.background,
+                ContextCompat.getColor(this, R.color.white)
+            )//filter button
+            DrawableCompat.setTint(
+                activitySearchToolbarBtnSearch.background,
+                ContextCompat.getColor(this, R.color.white)
+            )//search button
+        }
+
     }
 
 }

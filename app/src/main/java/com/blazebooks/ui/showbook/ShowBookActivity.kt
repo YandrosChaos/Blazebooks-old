@@ -1,24 +1,28 @@
-package com.blazebooks.ui.books
+package com.blazebooks.ui.showbook
 
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.blazebooks.R
 import com.blazebooks.adapter.ViewPagerAdapter
+import com.blazebooks.ui.PreconfiguredActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.activity_show_book_item.*
 import java.io.File
 
-
-class ShowBookActivity : AppCompatActivity() {
+/**
+ * @see PreconfiguredActivity
+ * @see ChapterFragment
+ * @see SynopsisFragment
+ * @author Victor Gonzalez
+ */
+class ShowBookActivity : PreconfiguredActivity() {
     private val adapter by lazy { ViewPagerAdapter(this) }
     private var liked = true
 

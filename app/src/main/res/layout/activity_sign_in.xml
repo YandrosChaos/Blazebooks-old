@@ -23,7 +23,7 @@
             android:background="@drawable/edit_text_background"
             android:drawableStart="@drawable/ic_user"
             android:drawablePadding="10dp"
-            android:hint="Username"
+            android:hint="@string/signin_username_hint"
             android:padding="10dp"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/white" />
@@ -36,7 +36,7 @@
             android:background="@drawable/edit_text_background"
             android:drawableStart="@drawable/ic_passwd"
             android:drawablePadding="10dp"
-            android:hint="Password"
+            android:hint="@string/signin_password_hint"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textColor="@color/colorAccent"
@@ -50,7 +50,7 @@
             android:background="@drawable/edit_text_background"
             android:drawableStart="@drawable/ic_passwd"
             android:drawablePadding="10dp"
-            android:hint="Repeat Password"
+            android:hint="@string/signin_repeat_password_hint"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textColor="@color/colorAccent"
@@ -64,7 +64,7 @@
             android:background="@drawable/edit_text_background"
             android:drawableStart="@drawable/ic_email"
             android:drawablePadding="10dp"
-            android:hint="Email"
+            android:hint="@string/signin_email_hint"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textColor="@color/colorAccent"
@@ -77,7 +77,7 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/container_round_orange"
             android:onClick="singInClicked"
-            android:text="Sing In"
+            android:text="@string/signin_sign_in_button"
             android:textAllCaps="false"
             android:textSize="21sp" />
 
@@ -86,8 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:onClick="goBack"
-            android:text="Go Back"
+            android:onClick="goToLogin"
+            android:text="@string/signin_go_back_button"
             android:textSize="21sp" />
 
     </LinearLayout>

@@ -16,18 +16,16 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.login.LoginActivity
 import com.blazebooks.ui.preferences.SettingsActivity
-import com.blazebooks.ui.preferences.SettingsHandler
 import com.blazebooks.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : PreconfiguredActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var auth: FirebaseAuth

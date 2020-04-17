@@ -1,7 +1,6 @@
 package com.blazebooks.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.blazebooks.R
 import com.blazebooks.ui.MainActivity
+import com.blazebooks.ui.PreconfiguredActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.dialog_forgot_passwd.view.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : PreconfiguredActivity() {
 
     private lateinit var auth: FirebaseAuth //Necesario para la autenticación
 
@@ -35,13 +35,13 @@ class LoginActivity : AppCompatActivity() {
     fun loginClicked(view: View) {
 
         if (loginActivityUserName.text.toString().isEmpty()) {
-            loginActivityUserName.error = "Please enter email"
+            loginActivityUserName.error = getString(R.string.log_email_error)
             loginActivityUserName.requestFocus()
             return
         }
 
         if (loginActivityUserPasswd.text.toString().isEmpty()) {
-            loginActivityUserPasswd.error = "Password cannot be empty"
+            loginActivityUserPasswd.error = getString(R.string.log_passwd_error)
             loginActivityUserPasswd.requestFocus()
             return
         }
@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
                     updateUI(user)
                 } else {
                     Toast.makeText(
-                        baseContext, "Username or password incorrect!.",
+                        baseContext, getString(R.string.log_general_error),
                         Toast.LENGTH_SHORT
                     ).show()
                     updateUI(null)
@@ -110,13 +110,13 @@ class LoginActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             mAlertDialog.dismiss()
-                            Toast.makeText(this, "Email sent =)", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, getString(R.string.log_dialog_email_sent), Toast.LENGTH_LONG).show()
                         } else {
                             Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                         }
                     }
             }else{
-                Toast.makeText(this,"Please, introduce your email account.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this,getString(R.string.log_dialog_email_error), Toast.LENGTH_LONG).show()
             }
         }
     }

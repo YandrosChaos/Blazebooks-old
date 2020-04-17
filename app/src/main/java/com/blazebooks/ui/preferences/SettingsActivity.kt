@@ -1,18 +1,19 @@
 package com.blazebooks.ui.preferences
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.preference.PreferenceFragmentCompat
 import com.blazebooks.R
+import com.blazebooks.ui.MainActivity
+import com.blazebooks.ui.PreconfiguredActivity
 
 /**
  * Shows the preferences that user can change into the app.
  *
- * @see SettingsHandler
  * @see SettingsFragment
  * @author Victor Gonzalez
  */
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : PreconfiguredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,5 +29,19 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        finish()
+    }
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Toast.makeText(this,getString(R.string.should_restart),Toast.LENGTH_LONG).show()
     }
 }

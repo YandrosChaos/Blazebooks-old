@@ -29,7 +29,7 @@
                 android:background="@drawable/edit_text_background"
                 android:drawableStart="@drawable/ic_user"
                 android:drawablePadding="10dp"
-                android:hint="@string/prompt_email"
+                android:hint="@string/login_email_hint"
                 android:padding="10dp"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="@color/white" />
@@ -42,7 +42,7 @@
                 android:background="@drawable/edit_text_background"
                 android:drawableStart="@drawable/ic_passwd"
                 android:drawablePadding="10dp"
-                android:hint="Password"
+                android:hint="@string/login_password_hint"
                 android:inputType="textPassword"
                 android:padding="10dp"
                 android:textColor="@color/colorAccent"
@@ -54,7 +54,7 @@
                 android:layout_gravity="end"
                 android:onClick="sendPasswordResetEmail"
                 android:padding="10dp"
-                android:text="Forgot password?" />
+                android:text="@string/login_forgot_password" />
 
             <Button
                 android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:onClick="loginClicked"
-                android:text="Login"
+                android:text="@string/login_login_button"
                 android:textAllCaps="false"
                 android:textSize="21sp" />
 
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Sign In"
+                android:text="@string/login_sign_in_button"
                 android:textSize="21sp"
                 android:onClick="throwSignInActivity"/>
 

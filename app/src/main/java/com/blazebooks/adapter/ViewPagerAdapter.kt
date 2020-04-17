@@ -3,8 +3,8 @@ package com.blazebooks.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.blazebooks.ui.books.ChapterFragment
-import com.blazebooks.ui.books.SynopsisFragment
+import com.blazebooks.ui.showbook.ChapterFragment
+import com.blazebooks.ui.showbook.SynopsisFragment
 
 class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 

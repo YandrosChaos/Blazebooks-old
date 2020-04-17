@@ -13,8 +13,12 @@ import coil.api.load
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.model.Book
-import com.blazebooks.ui.books.ShowBookActivity
+import com.blazebooks.ui.showbook.ShowBookActivity
 
+/**
+ * @see ShowBookActivity
+ * @author Victor Gonzalez
+ */
 class SearchAdapter(private var itemList: List<Book>, private val activity: Context) :
     RecyclerView.Adapter<SearchAdapter.CustomViewHolder>() {
 
@@ -22,6 +26,7 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      * Contains the book view data. Implements RecyclerView.ViewHolder.
      *
      * @param view
+     * @author Victor Gonzalez
      */
     inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var titleText: TextView = view.findViewById(R.id.searchBookItemText)
@@ -40,6 +45,8 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      * @param viewType
      *
      * @return CustomViewHolder
+     *
+     * @author Victor Gonzalez
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -51,6 +58,7 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      * Returns the list size
      *
      * @return Int
+     * @author Victor Gonzalez
      */
     override fun getItemCount(): Int {
         return itemList.size
@@ -68,6 +76,7 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      * @see CustomViewHolder
      * @see Book
      * @see ShowBookActivity
+     * @author Victor Gonzalez
      */
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val item = itemList[position]
@@ -108,6 +117,7 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      * notify that the dataset changed.
      *
      * @param list
+     * @author Victor Gonzalez
      */
     fun updateList(list: MutableList<Book>) {
         itemList = list

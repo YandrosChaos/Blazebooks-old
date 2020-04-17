@@ -73,6 +73,31 @@
     <string name="forgot_passwd">Forgot Password?</string>
     <string name="reset_passwd">Reset your password here</string>
     <string name="send_passwd">Send My Password</string>
+    <string name="log_email_error">Please enter email</string>
+    <string name="log_passwd_error">Password cannot be empty</string>
+    <string name="log_general_error">Username or password incorrect!.</string>
+    <string name="log_dialog_email_sent">Email sent =)</string>
+    <string name="log_dialog_email_error">Please, introduce your email account.</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_login_button">Login</string>
+    <string name="login_sign_in_button">Sign In</string>
+
+    <!-- SignIn Activity -->
+    <string name="signin_username_error">Username cannot be empty</string>
+    <string name="signin_passwd_empty">Password cannot be empty</string>
+    <string name="signin_passwd_length">Password must be at least 6 characters long.</string>
+    <string name="signin_passwd_not_match">Passwords don\'t match</string>
+    <string name="signin_email_empty">Email cannot be empty</string>
+    <string name="signin_email_not_valid">Please enter valid email</string>
+    <string name="auth_fail">Authentication failed.</string>
+    <string name="signin_sign_in_button">Sign In</string>
+    <string name="signin_go_back_button">Go Back</string>
+    <string name="signin_email_hint">Email</string>
+    <string name="signin_repeat_password_hint">Repeat Password</string>
+    <string name="signin_password_hint">Password</string>
+    <string name="signin_username_hint">Username</string>
 
     <!-- Show Book Activity-->
     <string name="synopsis">Synopsis</string>
@@ -81,23 +106,21 @@
     <string name="chapters_show_book_activity">Chapters:</string>
     <string name="author_show_book_activity">Author:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_settings">Settings</string>
+    <!-- Search Activity -->
+    <string name="looking_for">Looking for…</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- Settings Activity -->
+    <string name="language">Language</string>
+    <string name="language_summary">Choose your favorite language. Not all books has a version for all languages.</string>
+    <string name="user_upperCase">USER</string>
+    <string name="books_upperCase">BOOKS</string>
+    <string name="fav_genres">Favorite Genres</string>
+    <string name="fav_genres_summary">Choose your favorite genres. Help to us to recommend you better books.</string>
+    <string name="fav_genres_dialog_title">Choose between…</string>
+    <string name="read_mode">Read Mode</string>
+    <string name="read_mode_summary">On/Off the read light filter.</string>
+    <string name="sound">Sound</string>
+    <string name="sound_summary">On/Off the sound and music.</string>
+    <string name="should_restart">You should reload Blazebooks  =)</string>
 
 </resources>

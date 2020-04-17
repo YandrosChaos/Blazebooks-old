@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Blazebooks</string>
+    <string name="navigation_drawer_open">Abrir drawer</string>
+    <string name="navigation_drawer_close">Cerrar drawer</string>
+    <string name="nav_header_desc">Cabecera de Navegación</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="chapter">Capítulo</string>
+    <string name="synopsis_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</string>
+    <string name="home_second">Segunda Casa</string>
+
+    <!-- -MAIN ACTIVITY MENU ITEMS -->
+    <string name="nav_header_title">Usuario</string>
+    <string name="nav_header_subtitle">whoami@user.com</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_books">Catalogo</string>
+    <string name="menu_about">Sobre Nosotros</string>
+
+    <!-- BOOKS FRAGMENT -->
+    <string name="new_books">Nuevos Libros</string>
+    <string name="all_books">Todos</string>
+    <string name="interactive_books">Interactivos</string>
+    <string name="authors">Autores</string>
+    <string name="genres">Géneros</string>
+    <string name="books">Libros</string>
+
+    <!-- HOME FRAGMENT -->
+    <string name="my_account">Mi Cuenta</string>
+    <string name="recommendations">Recomendaciones</string>
+    <string name="new_books_in_blazebooks">Nuevo en Blazebooks</string>
+    <string name="fav_books">Libros Favoritos</string>
+    <string name="my_books">Mis Libros</string>
+
+    <!-- ABOUT FRAGMENT Strings-->
+    <string name="credits">CRÉDITOS  \n\n
+        Desarrollador I - Victor Develops  \n
+        Desarrollador II - Mounir Zbayr Samadi \n\n
+
+        Escritor I- Alfredo Panic \n
+        Escritor II - Jose BulletKid \n\n
+
+        Efectos de Sonido - Dirge Inferno \n\n
+        Compositor I - Victor Develops \n
+        Compositor II - Alfredo Panic\n\n
+
+        RECURSOS\n
+        Iconos - prettycons de flaticon.com\n
+        Iconos - Freepik de freepik.com\n
+        Fuente - github.com/theleagueof/league-spartan
+        Imágenes - pixabay.com\n\n
+
+        DEPENDENCIAS\n
+        Android-SpinKit\n
+        Firebase\n
+        Viewpager2\n
+        Material\n
+        Coil\n\n
+    </string>
+
+    <!-- Type of Accounts-->
+    <string name="premium">PREMIUM</string>
+    <string name="free">FREE</string>
+
+    <!-- Login Activity-->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Registrarse</string>
+    <string name="welcome">"Bienvenido!"</string>
+    <string name="invalid_username">Usuario no válido</string>
+    <string name="invalid_password">La contraseña debe ser >5 caracteres</string>
+    <string name="login_failed">"El login falló"</string>
+    <string name="sign_out">Logout</string>
+    <string name="forgot_passwd">¿Olvidó su clave?</string>
+    <string name="reset_passwd">Restaure su contraseña aquí</string>
+    <string name="send_passwd">Nueva clave</string>
+    <string name="log_email_error">Por favor, introduzca un email</string>
+    <string name="log_passwd_error">¡La contraseña no puede estar vacía!</string>
+    <string name="log_general_error">¡Email o contraseña incorrecto!</string>
+    <string name="log_dialog_email_sent">Email enviado =)</string>
+    <string name="log_dialog_email_error">Por favor, introduce tu email.</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="login_forgot_password">¿Olvidó su contraseña?</string>
+    <string name="login_login_button">Login</string>
+    <string name="login_sign_in_button">Registrarse</string>
+
+    <!-- SignIn Activity -->
+    <string name="signin_username_error">El usuario no puede estar vacío.</string>
+    <string name="signin_passwd_empty">La contraseña no puede estar vacía.</string>
+    <string name="signin_passwd_length">La contraseña debe tener al menos 6 caracteres.</string>
+    <string name="signin_passwd_not_match">La contraseña no coincide.</string>
+    <string name="signin_email_empty">El email no puede estar vacío.</string>
+    <string name="signin_email_not_valid">Por favor, introduzca un email válido.</string>
+    <string name="auth_fail">¡Oh, no!¡Autenticación Fallida! D:</string>
+    <string name="signin_sign_in_button">¡Regístrate!</string>
+    <string name="signin_go_back_button">Volver</string>
+    <string name="signin_email_hint">Email</string>
+    <string name="signin_repeat_password_hint">Repite la contraseña</string>
+    <string name="signin_password_hint">Contraseña</string>
+    <string name="signin_username_hint">Usuario</string>
+
+    <!-- Show Book Activity-->
+    <string name="synopsis">Sinopsis</string>
+    <string name="chapters">Capítulos</string>
+    <string name="genre_show_book_activity">Género:</string>
+    <string name="chapters_show_book_activity">Capítulos:</string>
+    <string name="author_show_book_activity">Autor:</string>
+
+    <!-- Settings Activity -->
+    <string name="looking_for">Buscando…</string>
+
+    <!-- Settings Activity -->
+    <string name="language">Idioma</string>
+    <string name="language_summary">Escoge tu idioma preferido. No todos los libros tienen versiones para todos los idiomas.</string>
+    <string name="user_upperCase">USUARIO</string>
+    <string name="books_upperCase">LIBROS</string>
+    <string name="fav_genres">Géneros Favoritos</string>
+    <string name="fav_genres_summary">Selecciona tus géneros favotitos.Ayudanos a recomendarte mejores libros.</string>
+    <string name="fav_genres_dialog_title">Escoge entre…</string>
+    <string name="read_mode">Modo Lectura</string>
+    <string name="read_mode_summary">On/Offel filtro de luz para leer.</string>
+    <string name="sound">Sound</string>
+    <string name="sound_summary">On/Off los sonidos y la música.</string>
+    <string name="should_restart">Deberías reiniciar Blazebooks =)</string>
+
+</resources>
