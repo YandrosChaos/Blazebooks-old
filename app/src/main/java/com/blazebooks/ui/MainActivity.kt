@@ -137,7 +137,7 @@ class MainActivity : PreconfiguredActivity() {
      *
      * @param item
      * @see LoginActivity
-     * @author Mounyr
+     * @author Mounir
      */
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()

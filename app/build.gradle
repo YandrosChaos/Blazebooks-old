@@ -84,4 +84,6 @@ dependencies {
     }
     implementation 'org.slf4j:slf4j-android:1.7.30'
 
+    implementation 'com.github.mertakdut:EpubParser:1.0.95'
+
 }

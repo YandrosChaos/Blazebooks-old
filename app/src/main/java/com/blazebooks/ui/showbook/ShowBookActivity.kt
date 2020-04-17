@@ -2,19 +2,29 @@ package com.blazebooks.ui.showbook
 
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.blazebooks.R
 import com.blazebooks.adapter.ViewPagerAdapter
 import com.blazebooks.ui.PreconfiguredActivity
+import com.blazebooks.ui.preferences.SettingsActivity
+import com.github.mertakdut.BookSection
+import com.github.mertakdut.Reader
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.activity_show_book_item.*
+import nl.siegmann.epublib.domain.Book
+import nl.siegmann.epublib.epub.EpubReader
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStream
+
 
 /**
  * @see PreconfiguredActivity
@@ -118,7 +128,7 @@ class ShowBookActivity : PreconfiguredActivity() {
     }
 
     /**
-     * Método de pulsado del boton leer, de momento indica si esta descargado o no
+     * Método de pulsado del boton Read, el cual lleva al libro elegido
      */
     fun read(view: View) {
 
@@ -127,9 +137,12 @@ class ShowBookActivity : PreconfiguredActivity() {
         val documentsFolder = File(this.filesDir, documents)
 
         if(documentsFolder.exists()){
-            Toast.makeText(this, documentsFolder.path.toString(), Toast.LENGTH_SHORT).show()
+            val i= Intent(this, ReaderActivity::class.java)
+            i.putExtra("path", "$documents/$titleBook.epub")
+            startActivity(i)
         }else {
             Toast.makeText(this, "Not downloaded yet", Toast.LENGTH_SHORT).show()
         }
     }
+
 }//class
