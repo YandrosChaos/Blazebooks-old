@@ -22,8 +22,12 @@ class SignInActivity : PreconfiguredActivity() {
         auth= FirebaseAuth.getInstance()
     }
 
+    /**
+     *
+     *
+     * @author Mounir Zbayr
+     */
     fun singInClicked(view: View) {
-
 
         if(singInActivityUserName.text.toString().isEmpty()){ //Comprueba que el campo username no está vacío
             singInActivityUserName.error = getString(R.string.signin_username_error)
@@ -73,8 +77,8 @@ class SignInActivity : PreconfiguredActivity() {
                     finish()
                 } else {
                     Snackbar.make(
-                        view,
-                        getString(R.string.auth_fail),
+                        view,task.exception?.message.toString()
+                        ,
                         Snackbar.LENGTH_LONG
                     ).show()
                 }//if

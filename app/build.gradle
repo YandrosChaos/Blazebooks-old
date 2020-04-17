@@ -77,4 +77,11 @@ dependencies {
     //coil
     implementation("io.coil-kt:coil:0.9.5")
 
+    //Epublib
+    implementation('nl.siegmann.epublib:epublib-core:3.1') {
+        exclude group: 'org.slf4j'
+        exclude group: 'xmlpull'
+    }
+    implementation 'org.slf4j:slf4j-android:1.7.30'
+
 }
