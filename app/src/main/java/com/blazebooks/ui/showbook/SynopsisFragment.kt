@@ -31,7 +31,7 @@ class SynopsisFragment : Fragment() {
             showBookItemBackgroundImg.load(Constants.CURRENT_BOOK.image) {
                 crossfade(true)
                 transformations(
-                    BlurTransformation(context!!.applicationContext!!)
+                    BlurTransformation(requireContext().applicationContext!!)
                 )
             }
             showBookItemImg.load(Constants.CURRENT_BOOK.image) {
