@@ -123,5 +123,8 @@
     <string name="sound">Sound</string>
     <string name="sound_summary">On/Off los sonidos y la música.</string>
     <string name="should_restart">Deberías reiniciar Blazebooks =)</string>
+    <string name="button_Next_Page_Description">Flecha página siguiente </string>
+    <string name="button_Previous_Page_Description">Flecha página anterior</string>
+    <string name="pageNumber">%1$d/%2$d</string>
 
 </resources>
