@@ -122,5 +122,8 @@
     <string name="sound">Sound</string>
     <string name="sound_summary">On/Off the sound and music.</string>
     <string name="should_restart">You should reload Blazebooks  =)</string>
+    <string name="button_Next_Page_Description">Arrow next page</string>
+    <string name="button_Previous_Page_Description">Arrow previous page</string>
+    <string name="pageNumber">%1$d/%2$d</string>
 
 </resources>

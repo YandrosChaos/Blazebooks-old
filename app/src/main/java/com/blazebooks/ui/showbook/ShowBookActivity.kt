@@ -75,6 +75,8 @@ class ShowBookActivity : PreconfiguredActivity() {
     /**
      * Método que al pulsar el botón de descarga obtiene el archivo del firebase storage y lo guarda
      * en una carpeta con el nombre del libro, creando ésta en la carpeta del proyecto
+     *
+     * @author MounirZbayr
      */
     fun download(view: View) {
 
@@ -103,6 +105,8 @@ class ShowBookActivity : PreconfiguredActivity() {
 
     /**
      * Recibe la URL y la ruta de destino y descarga el archivo usando DownloadManager
+     *
+     * @author Mounir Zbayr
      */
     private fun downloadFile(
         context: Context,
@@ -125,6 +129,8 @@ class ShowBookActivity : PreconfiguredActivity() {
 
     /**
      * Método de pulsado del boton Read, el cual lleva al libro elegido
+     *
+     * @author Mounir Zbayr
      */
     fun read(view: View) {
 
