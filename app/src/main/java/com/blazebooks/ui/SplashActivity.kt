@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
