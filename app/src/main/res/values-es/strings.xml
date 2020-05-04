@@ -32,6 +32,9 @@
     <string name="my_books">Mis Libros</string>
 
     <!-- ABOUT FRAGMENT Strings-->
+    <string name="facebook_button">Ir a Facebook</string>
+    <string name="instagram_button">Ir a Instagram</string>
+    <string name="twiter_button">Ir a Twitter</string>
     <string name="credits">CRÉDITOS  \n\n
         Desarrollador I - Victor Develops  \n
         Desarrollador II - Mounir Zbayr Samadi \n\n
@@ -113,10 +116,18 @@
     <string name="dwnloading">Descargando…</string>
     <string name="dwnload_cmplete">Descarga completada</string>
     <string name="dwnload_error">Error de dascarga</string>
+    <string name="download">Descargar</string>
+    <string name="read">Leer</string>
+    <string name="add_to_favs">Añadir a favoritos</string>
+    <string name="readied">Leído</string>
 
 
-    <!-- Settings Activity -->
+    <!-- Search Activity -->
     <string name="looking_for">Buscando…</string>
+    <string name="book_description">Descripción del Libro</string>
+    <string name="return_button">Botón de retroceder</string>
+    <string name="search_button">Botón de búsqueda</string>
+    <string name="filter_button">Botón de filtrado</string>
 
     <!-- Settings Activity -->
     <string name="language">Idioma</string>
@@ -133,8 +144,7 @@
     <string name="should_restart">Deberías reiniciar Blazebooks =)</string>
 
     <!-- Reader -->
-    <string name="button_Next_Page_Description">Flecha página siguiente </string>
-    <string name="button_Previous_Page_Description">Flecha página anterior</string>
+    <string name="button_Next_Page_Description">Página siguiente </string>
+    <string name="button_Previous_Page_Description">Página anterior</string>
     <string name="pageNumber">%1$d/%2$d</string>
-
 </resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,21 +44,24 @@
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_facebook"/>
+                android:background="@drawable/ic_facebook"
+                android:contentDescription="@string/facebook_button" />
 
             <ImageButton
                 android:layout_margin="5sp"
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_instagram"/>
+                android:background="@drawable/ic_instagram"
+                android:contentDescription="@string/instagram_button" />
 
             <ImageButton
                 android:layout_margin="5sp"
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_twitter"/>
+                android:background="@drawable/ic_twitter"
+                android:contentDescription="@string/twiter_button" />
 
 
         </LinearLayout>

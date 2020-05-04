@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -6,7 +6,6 @@
     android:layout_margin="10sp">
 
     <androidx.cardview.widget.CardView
-
         android:id="@+id/showChapterCardView"
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -38,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5sp"
-        
+
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/showChapterTvNumber"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,8 +46,8 @@
         android:id="@+id/showChapterTvTitleAux"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
         android:layout_marginStart="5sp"
+        android:textSize="15sp"
 
         app:layout_constraintStart_toEndOf="@id/showChapterCardView"
         app:layout_constraintTop_toBottomOf="@id/showChapterTvNumber" />
@@ -59,7 +58,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/readied" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.blazebooks.ui.search
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -50,12 +51,11 @@ class SearchActivity : PreconfiguredActivity() {
 
         mRecyclerView = findViewById(R.id.recyclerView_search)
         mProgressBar = findViewById(R.id.progress_circular)
-        mSearchView = findViewById(R.id.new_searchView)
+        mSearchView = findViewById(R.id.searchViewEditText)
 
         //set the title in the toolbar and show the progress bar
         activitySearchToolbarTv.text = intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE)
         mProgressBar.visibility = View.VISIBLE
-
         //load the data
         getItemList()
 

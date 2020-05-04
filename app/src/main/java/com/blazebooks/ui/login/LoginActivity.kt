@@ -1,6 +1,7 @@
 package com.blazebooks.ui.login
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,10 +22,12 @@ class LoginActivity : PreconfiguredActivity() {
     /**
      * @param savedInstanceState
      * @author Mounir Zbayr
+     * @author Victor Gonzalez
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        this.loadHints()
         auth = FirebaseAuth.getInstance()
     }
 
@@ -95,6 +98,7 @@ class LoginActivity : PreconfiguredActivity() {
      *
      * @param view
      * @author Mounir Zbayr
+     * @author Victor Gonzalez
      */
     fun sendPasswordResetEmail(view: View) {
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_forgot_passwd, null)
@@ -103,6 +107,12 @@ class LoginActivity : PreconfiguredActivity() {
             .setView(mDialogView)
         //show dialog
         val mAlertDialog = mBuilder.show()
+
+        //set autofillhint
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mDialogView.forgotpwdDialogUserName.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
+        }
+
         //set button onClickListener
         mDialogView.forgotPasswdBtn.setOnClickListener {
             if (mDialogView.forgotpwdDialogUserName.text.isNotEmpty()) {
@@ -130,5 +140,17 @@ class LoginActivity : PreconfiguredActivity() {
     fun throwSignInActivity(view: View) {
         startActivity(Intent(this, SignInActivity::class.java))
         finish()
+    }
+
+    /**
+     * Loads autohints into textview
+     *
+     * @author Victor Gonzalez
+     */
+    private fun loadHints(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            loginActivityUserName.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
+            loginActivityUserPasswd.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
+        }
     }
 }
