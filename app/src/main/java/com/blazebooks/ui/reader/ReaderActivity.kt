@@ -1,15 +1,11 @@
-package com.blazebooks.ui.showbook
+package com.blazebooks.ui.reader
 
-import android.content.Context
 import android.graphics.Color
-import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
@@ -24,6 +20,8 @@ import java.time.format.DateTimeFormatter
 
 
 /**
+ * Muestra la vista de lectura del libro y lleva el flujo de la lectura.
+ *
  * @author Mounir Zbayr+
  * @author Víctor González
  */
@@ -32,16 +30,10 @@ class ReaderActivity : PreconfiguredActivity() {
 
     private var num = 0 //representa el número de página actual
 
-    //colores RGBA del filtro
-    private val alphaColor: Float = 0.5f
-    private val redColor: Float = 0.61f
-    private val greenColor: Float = 0.53f
-    private val blueColor: Float = 0.05f
-
-    //colores RGB del filtro de compatibilidad
-    private val redColorCompat: Int = 136
-    private val greenColorCompat: Int = 101
-    private val blueColorCompat: Int = 78
+    //colores RGB del filtro de pantalla -> modo lectura
+    private val redColor: Int = 112
+    private val greenColor: Int = 66
+    private val blueColor: Int = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +42,7 @@ class ReaderActivity : PreconfiguredActivity() {
         loadLightMode()
         clock()
 
-        val path = intent.getStringExtra("path")
+        val path = intent.getStringExtra(Constants.PATH_CODE)
 
         val pages = getText(path)
 
@@ -136,9 +128,8 @@ class ReaderActivity : PreconfiguredActivity() {
                     Thread.sleep(1000)
                     runOnUiThread {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val time =
+                            tTime.text =
                                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
-                            tTime.text = time
                         }
                     }
                 }
@@ -156,24 +147,13 @@ class ReaderActivity : PreconfiguredActivity() {
     private fun loadLightMode() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         if (sharedPreferences.getBoolean(Constants.READ_MODE_KEY, false)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                readerActivityCL.setBackgroundColor(
-                    Color.argb(
-                        this.alphaColor,
-                        this.redColor,
-                        this.greenColor,
-                        this.blueColor
-                    )
+            readerActivityCL.setBackgroundColor(
+                Color.rgb(
+                    redColor,
+                    greenColor,
+                    blueColor
                 )
-            } else {
-                //VERSION.SDK_INT < O
-                readerActivityCL.setBackgroundColor(
-                    Color.rgb(
-                        redColorCompat, greenColorCompat, blueColorCompat
-                    )
-                )
-            }
-
+            )
         }
     }
 

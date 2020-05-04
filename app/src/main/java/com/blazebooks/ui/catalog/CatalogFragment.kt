@@ -26,6 +26,7 @@ class CatalogFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_books, container, false)
+
         root.fragmentBooksImgAll.load(R.drawable.old_books) {
             crossfade(true)
             transformations(

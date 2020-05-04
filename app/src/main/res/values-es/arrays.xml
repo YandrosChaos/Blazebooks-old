@@ -5,12 +5,12 @@
         author: Victor Gonzalez
     -->
     <array name="genres">
-        <item>Adventure</item>
+        <item>Aventura</item>
         <item>Terror</item>
         <item>Sci-Fy</item>
-        <item>Novel</item>
-        <item>Graphic</item>
-        <item>Interactive</item>
+        <item>Novela</item>
+        <item>Gráfico</item>
+        <item>Interactivo</item>
         <item>Western</item>
     </array>
 

@@ -22,6 +22,8 @@ import java.util.*
 class SplashActivity : PreconfiguredActivity() {
 
     private val timeOut = 4000
+    private val spanishLanguage = "es"
+    private val englishLanguage = "en"
 
     /**
      * After completion of Constants.SPLASH_SCREEN_TIME_OUT, executes the code
@@ -63,8 +65,8 @@ class SplashActivity : PreconfiguredActivity() {
             Constants.LANGUAGE_SETTING_KEY,
             Constants.DEFAULT_LANGUAGE
         )) {
-            "Spanish" -> defaultLocale = Locale("es")
-            "English" -> defaultLocale = Locale("en")
+            "Spanish" -> defaultLocale = Locale(spanishLanguage)
+            "English" -> defaultLocale = Locale(englishLanguage)
         }
     }
 

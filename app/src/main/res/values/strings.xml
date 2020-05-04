@@ -105,6 +105,14 @@
     <string name="genre_show_book_activity">Genre:</string>
     <string name="chapters_show_book_activity">Chapters:</string>
     <string name="author_show_book_activity">Author:</string>
+    <string name="not_dwnload_yet">Not downloaded yet</string>
+    <string name="rm_favs">Removed from favs</string>
+    <string name="add_favs">Added to favs</string>
+    <string name="already_dwnload">Already downloaded</string>
+    <string name="dwnloading">Downloading…</string>
+    <string name="dwnload_cmplete">Download completed</string>
+    <string name="dwnload_error">Download error</string>
+
 
     <!-- Search Activity -->
     <string name="looking_for">Looking for…</string>
@@ -122,6 +130,8 @@
     <string name="sound">Sound</string>
     <string name="sound_summary">On/Off the sound and music.</string>
     <string name="should_restart">You should reload Blazebooks  =)</string>
+
+    <!-- Reader -->
     <string name="button_Next_Page_Description">Arrow next page</string>
     <string name="button_Previous_Page_Description">Arrow previous page</string>
     <string name="pageNumber">%1$d/%2$d</string>

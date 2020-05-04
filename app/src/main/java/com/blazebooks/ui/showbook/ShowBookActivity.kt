@@ -8,17 +8,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.adapter.ViewPagerAdapter
 import com.blazebooks.ui.PreconfiguredActivity
-import com.github.mertakdut.BookSection
-import com.github.mertakdut.Reader
+import com.blazebooks.ui.reader.ReaderActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.activity_show_book_item.*
-import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.epub.EpubReader
 import java.io.File
 
 
@@ -57,15 +55,17 @@ class ShowBookActivity : PreconfiguredActivity() {
     fun addFav(view: View) {
         liked = when (liked) {
             true -> {
-                //TODO -> remove from favs
+                //TODO -> add from favs
                 //showBookBtnFav.load(R.drawable.ic_like_remove)
                 showBookBtnFav.background = ContextCompat.getDrawable(this, R.drawable.ic_like_remove)
+                Toast.makeText(this, getString(R.string.add_favs), Toast.LENGTH_SHORT).show()
                 false
             }
             false -> {
-                //TODO -> add to favs
+                //TODO -> remove to favs
                 //showBookBtnFav.load(R.drawable.ic_like_add)
                 showBookBtnFav.background = ContextCompat.getDrawable(this, R.drawable.ic_like_add)
+                Toast.makeText(this, getString(R.string.rm_favs), Toast.LENGTH_SHORT).show()
                 true
             }
         }
@@ -85,9 +85,9 @@ class ShowBookActivity : PreconfiguredActivity() {
         val documentsFolder = File(this.filesDir, documents)
 
         //si la carpeta existe solo mostrará el mensaje, si no la creará y descargará el libro
-        if(documentsFolder.exists()) Toast.makeText(this, "Already downloaded", Toast.LENGTH_SHORT).show()
+        if(documentsFolder.exists()) Toast.makeText(this, getString(R.string.already_dwnload), Toast.LENGTH_SHORT).show()
         else {
-            Toast.makeText(this, "Downloading...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.dwnloading), Toast.LENGTH_SHORT).show()
 
             documentsFolder.mkdirs() // Crea la carpeta en la direccion dada
 
@@ -95,9 +95,9 @@ class ShowBookActivity : PreconfiguredActivity() {
             //Con esto se obtiene la url del libro dependiendo de su nombre
             mStorageRef.child("Epub/$titleBook.epub").downloadUrl.addOnSuccessListener {
                 downloadFile(this, titleBook, documents, it.toString())
-                Toast.makeText(this, "Download completed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.dwnload_cmplete), Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.dwnload_error), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -140,10 +140,10 @@ class ShowBookActivity : PreconfiguredActivity() {
 
         if(documentsFolder.exists()){
             val i= Intent(this, ReaderActivity::class.java)
-            i.putExtra("path", "$documents/$titleBook.epub")
+            i.putExtra(Constants.PATH_CODE, "$documents/$titleBook.epub")
             startActivity(i)
         }else {
-            Toast.makeText(this, "Not downloaded yet", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.not_dwnload_yet), Toast.LENGTH_SHORT).show()
         }
     }
 

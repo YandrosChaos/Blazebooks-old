@@ -22,16 +22,8 @@ class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
      */
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> {
-                SynopsisFragment()
-            }
-            else -> {
-                val fragment = ChapterFragment()
-                /*fragment.arguments = Bundle().apply {
-
-                }*/
-                fragment
-            }
+            0 -> SynopsisFragment()
+            else -> ChapterFragment()
         }
     }
 }
