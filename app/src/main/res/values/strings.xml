@@ -56,7 +56,8 @@
         Firebase\n
         Viewpager2\n
         Material\n
-        Coil\n\n
+        Coil\n
+        Epublib\n\n
     </string>
 
     <!-- Type of Accounts-->

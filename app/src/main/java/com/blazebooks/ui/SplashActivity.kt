@@ -1,11 +1,12 @@
 package com.blazebooks.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import com.blazebooks.BuildConfig
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.login.LoginActivity
@@ -37,6 +38,8 @@ class SplashActivity : PreconfiguredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        setUpAppVersion()
+
         Handler().postDelayed({
             //execute this code after the time indicated
             //set language
@@ -57,6 +60,7 @@ class SplashActivity : PreconfiguredActivity() {
      * language.
      *
      * @see PreconfiguredActivity
+     * @see onCreate
      * @author  Victor Gonzalez
      */
     private fun loadLanguageConfig() {
@@ -68,6 +72,19 @@ class SplashActivity : PreconfiguredActivity() {
             "Spanish" -> defaultLocale = Locale(spanishLanguage)
             "English" -> defaultLocale = Locale(englishLanguage)
         }
+    }
+
+    /**
+     * Shows version's name in content view. The version number
+     * is stored in build.gradle (Module:app).
+     *
+     * @see onCreate
+     * @author Victor Gonzalez
+     */
+    @SuppressLint("SetTextI18n")
+    private fun setUpAppVersion() {
+        splashVersionTV.text =
+            "${resources.getString(R.string.app_name)} - ${BuildConfig.VERSION_NAME}"
     }
 
 }
