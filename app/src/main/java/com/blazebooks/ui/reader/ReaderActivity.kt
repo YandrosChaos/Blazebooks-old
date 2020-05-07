@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 /**
  * Muestra la vista de lectura del libro y lleva el flujo de la lectura.
  *
- * @author Mounir Zbayr+
+ * @author Mounir Zbayr
  * @author Víctor González
  */
 class ReaderActivity : PreconfiguredActivity() {
@@ -63,7 +63,7 @@ class ReaderActivity : PreconfiguredActivity() {
     /**
      * Método que obtiene el texto del epub correspondiente al libro seleccionado
      *
-     * @author Mounir
+     * @author Mounir Zbayr
      */
     private fun getText(filepath: String?): ArrayList<String> {
 
@@ -158,5 +158,5 @@ class ReaderActivity : PreconfiguredActivity() {
         }
     }
 
-    
+
 }//class
