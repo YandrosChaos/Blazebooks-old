@@ -81,6 +81,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-android:1.7.30'
 
     implementation 'com.github.mertakdut:EpubParser:1.0.95'
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 
     implementation 'com.airbnb.android:lottie:3.4.0'
 

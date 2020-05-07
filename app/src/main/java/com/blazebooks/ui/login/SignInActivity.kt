@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import com.blazebooks.R
-import com.blazebooks.ui.MainActivity
+import com.blazebooks.dataAccessObjects.UserDao
+import com.blazebooks.model.User
 import com.blazebooks.ui.PreconfiguredActivity
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : PreconfiguredActivity() {
@@ -20,6 +19,7 @@ class SignInActivity : PreconfiguredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+
         this.loadHints()
         auth = FirebaseAuth.getInstance()
     }
@@ -76,11 +76,17 @@ class SignInActivity : PreconfiguredActivity() {
             return
         }
 
-        // Crea el usuario en la base de Firebase y si está bien pasa directo al main
-        auth.createUserWithEmailAndPassword(
+
+        //Creacion e insercion del usuario en la base de datos
+        val pruebaDao = UserDao(view, this)
+        val user = User(
+            singInActivityUserName.text.toString(),
+            singInActivityUserPasswd.text.toString(),
             singInActivityUserEmail.text.toString(),
-            singInActivityUserPasswd.text.toString()
+            "https://example.com/jane-q-user/profile.jpg",
+            true
         )
+<<<<<<< HEAD
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val updates = UserProfileChangeRequest.Builder()
@@ -98,6 +104,10 @@ class SignInActivity : PreconfiguredActivity() {
                     ).show()
                 }//if
             }
+=======
+        pruebaDao.insert(user)
+
+>>>>>>> 0b297519348648fb3bb933e5568071163c07d3b0
 
     }//singInClicked
 

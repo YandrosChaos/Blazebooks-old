@@ -121,11 +121,13 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author Mounir Zbayr
      */
     private fun downloadFile(
+
         context: Context,
         fileName: String,
         destinationDirectory: String?,
         uri: String?
     ) {
+
         val downloadManager =
             context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val link = Uri.parse(uri)
