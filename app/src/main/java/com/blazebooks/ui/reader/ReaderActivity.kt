@@ -157,5 +157,16 @@ class ReaderActivity : PreconfiguredActivity() {
         }
     }
 
+    /**
+     * Returns to previous activity and sets custom animation transition.
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
+        finish()
+    }
+
 
 }//class

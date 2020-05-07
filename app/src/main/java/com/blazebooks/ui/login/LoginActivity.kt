@@ -70,13 +70,15 @@ class LoginActivity : PreconfiguredActivity() {
     }//loginClicked
 
     /**
-     * Si el usuario no es nulo se pasa al main
+     * Si el usuario no es nulo, se pasa al main.
      *
      * @author Mounir Zbayr
+     * @author Victor Gonzalez
      */
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java))
+            overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
             finish()
         }
     }
@@ -120,13 +122,18 @@ class LoginActivity : PreconfiguredActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             mAlertDialog.dismiss()
-                            Toast.makeText(this, getString(R.string.log_dialog_email_sent), Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.log_dialog_email_sent),
+                                Toast.LENGTH_LONG
+                            ).show()
                         } else {
                             Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                         }
                     }
-            }else{
-                Toast.makeText(this,getString(R.string.log_dialog_email_error), Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, getString(R.string.log_dialog_email_error), Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -139,6 +146,7 @@ class LoginActivity : PreconfiguredActivity() {
      */
     fun throwSignInActivity(view: View) {
         startActivity(Intent(this, SignInActivity::class.java))
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
         finish()
     }
 
@@ -147,7 +155,7 @@ class LoginActivity : PreconfiguredActivity() {
      *
      * @author Victor Gonzalez
      */
-    private fun loadHints(){
+    private fun loadHints() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             loginActivityUserName.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
             loginActivityUserPasswd.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)

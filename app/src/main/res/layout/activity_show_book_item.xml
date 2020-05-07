@@ -125,45 +125,48 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36sp"
+                    android:layout_height="50sp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
+                    android:padding="5sp"
+                    android:paddingEnd="10sp"
+                    android:paddingStart="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent">
-
-                    <ImageButton
-                        android:id="@+id/showBookBtnDownload"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_download"
-                        android:contentDescription="@string/download"
-                        android:onClick="download"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <ImageButton
                         android:id="@+id/showBookBtnRead"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10sp"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:background="@drawable/ic_reading_big"
                         android:contentDescription="@string/read"
                         android:onClick="read"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/showBookBtnDownload" />
+                        android:padding="10sp" />
 
                     <ImageButton
+                        android:id="@+id/showBookBtnDownload"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_download"
+                        android:contentDescription="@string/download"
+                        android:onClick="download"
+                        android:padding="10sp" />
+
+                    <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/showBookBtnFav"
-                        android:layout_width="36sp"
-                        android:layout_height="36sp"
-                        android:layout_marginStart="10sp"
-                        android:background="@drawable/ic_like_add"
-                        android:contentDescription="@string/add_to_favs"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:onClick="addFav"
-                        android:scaleType="centerInside"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/showBookBtnRead" />
+                        android:padding="10sp"
+                        android:scaleType="center"
+                        app:lottie_rawRes="@raw/like" />
+
                 </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

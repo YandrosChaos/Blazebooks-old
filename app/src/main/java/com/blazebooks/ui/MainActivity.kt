@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -21,8 +20,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.widget.Toolbar
 import coil.api.clear
 import coil.api.load
-import coil.transform.BlurTransformation
-import coil.transform.RoundedCornersTransformation
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.login.LoginActivity
@@ -41,8 +38,9 @@ class MainActivity : PreconfiguredActivity() {
     //img url
     private val owlImg = "https://cdn.pixabay.com/photo/2013/07/13/11/34/owl-158411_960_720.png"
     private val goatImg = "https://cdn.pixabay.com/photo/2014/04/03/00/35/goat-308775_960_720.png"
-    private val monkeyImg = "https://cdn.pixabay.com/photo/2015/01/22/12/58/monkey-607708_960_720.png"
-    private val catImg ="https://cdn.pixabay.com/photo/2013/07/12/14/32/cat-148436_960_720.png"
+    private val monkeyImg =
+        "https://cdn.pixabay.com/photo/2015/01/22/12/58/monkey-607708_960_720.png"
+    private val catImg = "https://cdn.pixabay.com/photo/2013/07/12/14/32/cat-148436_960_720.png"
     private val tuxImg = "https://cdn.pixabay.com/photo/2013/07/13/13/42/tux-161406_960_720.png"
     private val foxImg = "https://cdn.pixabay.com/photo/2016/07/15/08/02/fox-1518438_960_720.png"
 
@@ -131,6 +129,7 @@ class MainActivity : PreconfiguredActivity() {
                 )
             }
         )
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
     }
 
     /**
@@ -157,6 +156,7 @@ class MainActivity : PreconfiguredActivity() {
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginActivity::class.java))
+        overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
         finish()
     }
 
@@ -168,6 +168,7 @@ class MainActivity : PreconfiguredActivity() {
      */
     private fun goToPreferenceActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
     }
 
     /**
@@ -246,6 +247,17 @@ class MainActivity : PreconfiguredActivity() {
                 }
             }
         }
+    }
+
+    /**
+     * Returns to previous activity and sets custom animation transition.
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
+        finish()
     }
 
 }

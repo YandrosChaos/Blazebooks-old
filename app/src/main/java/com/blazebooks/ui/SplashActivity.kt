@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager
 import com.blazebooks.BuildConfig
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.model.User
 import com.blazebooks.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*
@@ -22,7 +23,7 @@ import java.util.*
  */
 class SplashActivity : PreconfiguredActivity() {
 
-    private val timeOut = 4000
+    private val timeOut = 6000
     private val spanishLanguage = "es"
     private val englishLanguage = "en"
 
@@ -38,19 +39,20 @@ class SplashActivity : PreconfiguredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
         setUpAppVersion()
+        loadLanguageConfig()
 
         Handler().postDelayed({
             //execute this code after the time indicated
-            //set language
-            loadLanguageConfig()
-            splashSpinKitView.visibility = View.GONE
+            iv_splash.visibility = View.GONE
             startActivity(
                 Intent(
                     this@SplashActivity,
                     LoginActivity::class.java
                 )
             )
+            overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
             finish()
         }, timeOut.toLong())
     }

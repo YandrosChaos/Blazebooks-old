@@ -88,6 +88,7 @@ class SignInActivity : PreconfiguredActivity() {
                     auth.currentUser?.updateProfile(updates)
 
                     startActivity(Intent(this, MainActivity::class.java))
+                    overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
                     finish()
                 } else {
                     Snackbar.make(
@@ -101,14 +102,14 @@ class SignInActivity : PreconfiguredActivity() {
     }//singInClicked
 
     /**
-     * Returns to LoginActivity and finish this one.
+     * Calls onBackPressed method.
      *
+     * @see onBackPressed
      * @see LoginActivity
      * @author  Victor Gonzalez
      */
     fun goToLogin(view: View) {
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+        onBackPressed()
     }
 
     /**
@@ -123,5 +124,17 @@ class SignInActivity : PreconfiguredActivity() {
             singInActivityUserPasswdAux.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
             singInActivityUserEmail.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
         }
+    }
+
+    /**
+     * Returns to previous activity and sets custom animation transition.
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, LoginActivity::class.java))
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
+        finish()
     }
 }

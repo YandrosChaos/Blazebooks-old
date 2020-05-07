@@ -7,11 +7,16 @@
    <include layout="@layout/activity_show_book_item"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/fragmentShowBookSynopsis"
-        android:padding="10dp"
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/synopsis_example"/>
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/fragmentShowBookSynopsis"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/synopsis_example"/>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

@@ -27,6 +27,6 @@ class ChapterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.activityShowBookChapters)
         recyclerView.adapter = ShowBookAdapter(Constants.CURRENT_BOOK.chapters)
-        recyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
     }
 }

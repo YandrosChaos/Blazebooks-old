@@ -18,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.activity_show_book_item.*
 import java.io.File
+import kotlin.math.roundToInt
 
 
 /**
@@ -28,7 +29,7 @@ import java.io.File
  */
 class ShowBookActivity : PreconfiguredActivity() {
     private val adapter by lazy { ViewPagerAdapter(this) }
-    private var liked = true
+    private var liked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,35 +38,42 @@ class ShowBookActivity : PreconfiguredActivity() {
 
         //crear las diferentes pestañas
         val tabLayoutMediator =
-        TabLayoutMediator(activityShowBookTabLayout, activityShowBookViewPager,
-            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                when (position) {
-                    0 -> {
-                        tab.text = getString(R.string.synopsis)
+            TabLayoutMediator(activityShowBookTabLayout, activityShowBookViewPager,
+                TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                    when (position) {
+                        0 -> {
+                            tab.text = getString(R.string.synopsis)
+                        }
+                        1 -> {
+                            tab.text = getString(R.string.chapters)
+                        }
                     }
-                    1 -> {
-                        tab.text = getString(R.string.chapters)
-                    }
-                }
-            })
+                })
         tabLayoutMediator.attach()
-        //default option
+
+        /*
+        TODO -> donde guardar si se ha dado like o no a un libro
+                            if (liked) {
+                                showBookBtnFav.progress = 1f
+                            }
+         */
+
     }
 
     fun addFav(view: View) {
         liked = when (liked) {
             true -> {
-                //TODO -> add from favs
-                //showBookBtnFav.load(R.drawable.ic_like_remove)
-                showBookBtnFav.background = ContextCompat.getDrawable(this, R.drawable.ic_like_remove)
-                Toast.makeText(this, getString(R.string.add_favs), Toast.LENGTH_SHORT).show()
+                //TODO -> remove from favs
+                showBookBtnFav.speed = -1f
+                showBookBtnFav.playAnimation()
+                Toast.makeText(this, getString(R.string.rm_favs), Toast.LENGTH_SHORT).show()
                 false
             }
             false -> {
-                //TODO -> remove to favs
-                //showBookBtnFav.load(R.drawable.ic_like_add)
-                showBookBtnFav.background = ContextCompat.getDrawable(this, R.drawable.ic_like_add)
-                Toast.makeText(this, getString(R.string.rm_favs), Toast.LENGTH_SHORT).show()
+                //TODO -> add to favs
+                showBookBtnFav.speed = 1f
+                showBookBtnFav.playAnimation()
+                Toast.makeText(this, getString(R.string.add_favs), Toast.LENGTH_SHORT).show()
                 true
             }
         }
@@ -79,19 +87,23 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author MounirZbayr
      */
     fun download(view: View) {
-
-        val titleBook= showBookTvTitle.text.toString() //nombre del libro
+        val titleBook = showBookTvTitle.text.toString() //nombre del libro
         val documents = "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
         val documentsFolder = File(this.filesDir, documents)
 
         //si la carpeta existe solo mostrará el mensaje, si no la creará y descargará el libro
-        if(documentsFolder.exists()) Toast.makeText(this, getString(R.string.already_dwnload), Toast.LENGTH_SHORT).show()
+        if (documentsFolder.exists()) Toast.makeText(
+            this,
+            getString(R.string.already_dwnload),
+            Toast.LENGTH_SHORT
+        ).show()
         else {
             Toast.makeText(this, getString(R.string.dwnloading), Toast.LENGTH_SHORT).show()
 
             documentsFolder.mkdirs() // Crea la carpeta en la direccion dada
 
-            val mStorageRef = FirebaseStorage.getInstance().reference //Referencia al storage de Firebase
+            val mStorageRef =
+                FirebaseStorage.getInstance().reference //Referencia al storage de Firebase
             //Con esto se obtiene la url del libro dependiendo de su nombre
             mStorageRef.child("Epub/$titleBook.epub").downloadUrl.addOnSuccessListener {
                 downloadFile(this, titleBook, documents, it.toString())
@@ -131,20 +143,34 @@ class ShowBookActivity : PreconfiguredActivity() {
      * Método de pulsado del boton Read, el cual lleva al libro elegido
      *
      * @author Mounir Zbayr
+     * @author Victor Gonzalez
      */
     fun read(view: View) {
 
-        val titleBook= showBookTvTitle.text.toString()
+        val titleBook = showBookTvTitle.text.toString()
         val documents = "books/$titleBook"
         val documentsFolder = File(this.filesDir, documents)
 
-        if(documentsFolder.exists()){
-            val i= Intent(this, ReaderActivity::class.java)
+        if (documentsFolder.exists()) {
+            val i = Intent(this, ReaderActivity::class.java)
             i.putExtra(Constants.PATH_CODE, "$documents/$titleBook.epub")
             startActivity(i)
-        }else {
+            overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+            finish()
+        } else {
             Toast.makeText(this, getString(R.string.not_dwnload_yet), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    /**
+     * Returns to previous activity and sets custom animation transition.
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
+        finish()
     }
 
 }//class

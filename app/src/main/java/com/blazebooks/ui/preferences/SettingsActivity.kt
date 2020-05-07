@@ -6,7 +6,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
-import com.blazebooks.ui.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
 import java.util.*
 
@@ -38,6 +37,7 @@ class SettingsActivity : PreconfiguredActivity() {
         super.onPause()
         finish()
     }
+
     override fun onStop() {
         super.onStop()
         finish()
@@ -51,8 +51,12 @@ class SettingsActivity : PreconfiguredActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        loadLanguageConfig()
-        Toast.makeText(this,getString(R.string.should_restart),Toast.LENGTH_LONG).show()
+        loadNewConfig()
+        Toast.makeText(
+            this,
+            getString(R.string.should_restart),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     /**
@@ -62,7 +66,7 @@ class SettingsActivity : PreconfiguredActivity() {
      * @see PreconfiguredActivity
      * @author  Victor Gonzalez
      */
-    private fun loadLanguageConfig() {
+    private fun loadNewConfig() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         when (sharedPreferences.getString(
             Constants.LANGUAGE_SETTING_KEY,
@@ -71,5 +75,15 @@ class SettingsActivity : PreconfiguredActivity() {
             "Spanish" -> defaultLocale = Locale("es")
             "English" -> defaultLocale = Locale("en")
         }
+    }
+
+    /**
+     * Returns to previous activity and sets custom animation transition.
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
     }
 }

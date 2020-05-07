@@ -31,4 +31,29 @@
             android:title="@string/sound" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="ACCOUNT">
+        <EditTextPreference
+            android:icon="@drawable/ic_reading_big"
+            android:dialogTitle="New username"
+            android:key="usernamePref"
+            android:summary="Choose new username."
+            android:title="Username"
+            android:inputType="textPersonName"/>
+        <EditTextPreference
+            android:icon="@drawable/ic_passwd"
+            android:dialogTitle="New password"
+            android:key="passwdPref"
+            android:summary="Change your password. Make sure you write it well."
+            android:title="Password"
+            android:inputType="textPassword"/>
+        <EditTextPreference
+            android:icon="@drawable/ic_email"
+            android:dialogTitle="New email"
+            android:key="emailPref"
+            android:summary="Choose a new email for your account. This email is used to login."
+            android:title="Email"
+            android:inputType="textEmailAddress"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
