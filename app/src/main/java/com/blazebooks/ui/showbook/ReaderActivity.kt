@@ -124,7 +124,4 @@ class ReaderActivity : PreconfiguredActivity() {
         thread.start()
     }
 
-
-
-
 }//class

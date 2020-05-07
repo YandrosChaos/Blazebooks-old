@@ -152,27 +152,21 @@ class SearchActivity : PreconfiguredActivity() {
      * @see SearchAdapter.updateList
      *
      * @author Victor Gonzalez
-     * @author Mounir
+     * @author Mounir Zbayr
      */
     private fun data() {
 
         val db = FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
-        db.collection("Books") //Accede a la coleccion Books y devuelve todos los documentos
+        db.collection("Books") //Accede a la colección Books y devuelve todos los documentos
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    val book =
-                        document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
+                    val book = document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
                     val chapterList = ArrayList<Chapter>()
-                    db.collection("Chapters") //accede a la lista Chapters (Esto cambiará cuando vea como relacionar colecciones)
-                        .whereEqualTo(
-                            "titulo",
-                            book.title
-                        ) //Filtra por titulo (Tengo un atributo titulo en cada capitulo con el nombre del libro para que funcione de momento)
-                        .get()
+                    db.collection("Books").document(document.id).collection("Chapters").get()
                         .addOnSuccessListener { chapters ->
                             for (chapter in chapters) {
-                                chapterList.add(chapter.toObject(Chapter::class.java)) //se añaden lso capitulos de la bbdd a la lista de capitulos
+                                chapterList.add(chapter.toObject(Chapter::class.java)) //se añaden los capitulos de la bbdd a la lista de capitulos
                             }
                         }
                     book.chapters = chapterList //añade los capitulos al libro
