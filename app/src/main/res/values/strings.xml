@@ -31,6 +31,9 @@
     <string name="my_books">My Books</string>
 
     <!-- ABOUT FRAGMENT Strings-->
+    <string name="facebook_button">Go to Facebook</string>
+    <string name="instagram_button">Go to Instagram</string>
+    <string name="twiter_button">Go to Twitter</string>
     <string name="credits">CREDITS  \n\n
         Developer I - Victor Develops  \n
         Developer II - Mounir Zbayr Samadi \n\n
@@ -53,7 +56,8 @@
         Firebase\n
         Viewpager2\n
         Material\n
-        Coil\n\n
+        Coil\n
+        Epublib\n\n
     </string>
 
     <!-- Type of Accounts-->
@@ -105,9 +109,24 @@
     <string name="genre_show_book_activity">Genre:</string>
     <string name="chapters_show_book_activity">Chapters:</string>
     <string name="author_show_book_activity">Author:</string>
+    <string name="not_dwnload_yet">Not downloaded yet</string>
+    <string name="rm_favs">Removed from favs</string>
+    <string name="add_favs">Added to favs</string>
+    <string name="already_dwnload">Already downloaded</string>
+    <string name="dwnloading">Downloading…</string>
+    <string name="dwnload_cmplete">Download completed</string>
+    <string name="dwnload_error">Download error</string>
+    <string name="add_to_favs">Add to favs</string>
+    <string name="download">Download</string>
+    <string name="read">Read</string>
+    <string name="readied">Readied</string>
 
     <!-- Search Activity -->
     <string name="looking_for">Looking for…</string>
+    <string name="book_description">Book description</string>
+    <string name="return_button">Return button</string>
+    <string name="search_button">Search Button</string>
+    <string name="filter_button">Filter Button</string>
 
     <!-- Settings Activity -->
     <string name="language">Language</string>
@@ -122,8 +141,10 @@
     <string name="sound">Sound</string>
     <string name="sound_summary">On/Off the sound and music.</string>
     <string name="should_restart">You should reload Blazebooks  =)</string>
-    <string name="button_Next_Page_Description">Arrow next page</string>
-    <string name="button_Previous_Page_Description">Arrow previous page</string>
+
+    <!-- Reader -->
+    <string name="button_Next_Page_Description">Next page</string>
+    <string name="button_Previous_Page_Description">Previous page</string>
     <string name="pageNumber">%1$d/%2$d</string>
 
 </resources>

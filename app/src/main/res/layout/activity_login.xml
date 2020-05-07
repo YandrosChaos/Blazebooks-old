@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!-- Author: Victor Gonzalez -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,74 +6,76 @@
     android:fitsSystemWindows="true"
     android:focusableInTouchMode="true">
 
-        <LinearLayout
-            android:layout_gravity="center"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:src="@drawable/blazebooks_logo" />
+
+        <EditText
+            android:id="@+id/loginActivityUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical">
+            android:autofillHints="email"
+            android:background="@drawable/edit_text_background"
+            android:drawableStart="@drawable/ic_user"
+            android:drawablePadding="10dp"
+            android:hint="@string/login_email_hint"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/white" />
 
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="20dp"
-                android:src="@drawable/blazebooks_logo" />
+        <EditText
+            android:id="@+id/loginActivityUserPasswd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:autofillHints="password"
+            android:background="@drawable/edit_text_background"
+            android:drawableStart="@drawable/ic_passwd"
+            android:drawablePadding="10dp"
+            android:hint="@string/login_password_hint"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/white" />
 
-            <EditText
-                android:inputType="textEmailAddress"
-                android:id="@+id/loginActivityUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_user"
-                android:drawablePadding="10dp"
-                android:hint="@string/login_email_hint"
-                android:padding="10dp"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:onClick="sendPasswordResetEmail"
+            android:padding="10dp"
+            android:text="@string/login_forgot_password" />
 
-            <EditText
-                android:id="@+id/loginActivityUserPasswd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_passwd"
-                android:drawablePadding="10dp"
-                android:hint="@string/login_password_hint"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:onClick="loginClicked"
+            android:text="@string/login_login_button"
+            android:textAllCaps="false"
+            android:textSize="21sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:onClick="sendPasswordResetEmail"
-                android:padding="10dp"
-                android:text="@string/login_forgot_password" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="throwSignInActivity"
+            android:text="@string/login_sign_in_button"
+            android:textSize="21sp" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:onClick="loginClicked"
-                android:text="@string/login_login_button"
-                android:textAllCaps="false"
-                android:textSize="21sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/login_sign_in_button"
-                android:textSize="21sp"
-                android:onClick="throwSignInActivity"/>
-
-        </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

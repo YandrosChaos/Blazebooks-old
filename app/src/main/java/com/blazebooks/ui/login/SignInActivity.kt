@@ -1,23 +1,29 @@
 package com.blazebooks.ui.login
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import com.blazebooks.R
 import com.blazebooks.model.User
 import com.blazebooks.dataAccessObjects.UserDao
+import com.blazebooks.ui.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : PreconfiguredActivity() {
 
-    private lateinit var auth: FirebaseAuth; //Necesario para la autenticación
+    private lateinit var auth: FirebaseAuth //Necesario para la autenticación
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+
+        this.loadHints()
         auth = FirebaseAuth.getInstance()
     }
 
@@ -73,6 +79,7 @@ class SignInActivity : PreconfiguredActivity() {
             return
         }
 
+
         //Creacion e insercion del usuario en la base de datos
         val pruebaDao = UserDao(view, this)
         val user = User(
@@ -83,6 +90,29 @@ class SignInActivity : PreconfiguredActivity() {
             true
         )
         pruebaDao.insert(user)
+
+        // Crea el usuario en la base de Firebase y si está bien pasa directo al main
+        auth.createUserWithEmailAndPassword(
+            singInActivityUserEmail.text.toString(),
+            singInActivityUserPasswd.text.toString()
+        )
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val updates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(singInActivityUserName.text.toString()).build()
+                    auth.currentUser?.updateProfile(updates)
+
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } else {
+                    Snackbar.make(
+                        view, task.exception?.message.toString()
+                        ,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }//if
+            }
+
 
     }//singInClicked
 
@@ -95,5 +125,19 @@ class SignInActivity : PreconfiguredActivity() {
     fun goToLogin(view: View) {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
+    }
+
+    /**
+     * Loads hints into textviews
+     *
+     * @author Victor Gonzalez
+     */
+    private fun loadHints() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            singInActivityUserName.setAutofillHints(View.AUTOFILL_HINT_USERNAME)
+            singInActivityUserPasswd.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
+            singInActivityUserPasswdAux.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
+            singInActivityUserEmail.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
+        }
     }
 }

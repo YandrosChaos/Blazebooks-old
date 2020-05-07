@@ -5,6 +5,11 @@ import android.view.ContextThemeWrapper
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
+/**
+ * Activity that contains preconfigured settings.
+ *
+ * @author Victor González
+ */
 open class PreconfiguredActivity : AppCompatActivity(){
 
     companion object {

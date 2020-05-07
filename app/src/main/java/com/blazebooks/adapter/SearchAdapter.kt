@@ -105,6 +105,7 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
             }
         }
 
+        //set click listener
         holder.itemLayout.setOnClickListener {
             Constants.CURRENT_BOOK = item
             activity.startActivity(Intent(activity, ShowBookActivity::class.java))

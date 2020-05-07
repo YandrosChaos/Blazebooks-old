@@ -1,6 +1,5 @@
 package com.blazebooks.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,17 +8,18 @@ import com.blazebooks.R
 import com.blazebooks.model.Chapter
 import kotlinx.android.synthetic.main.activity_show_book_item_chapter.view.*
 
+/**
+ * @see com.blazebooks.ui.showbook.ShowBookActivity
+ * @author Victor González
+ */
 class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
-    RecyclerView.Adapter<ShowBookAdapter.WorkoutViewHolder>() {
+    RecyclerView.Adapter<ShowBookAdapter.BookViewHolder>() {
 
-    /**
-     * Este es el método que crea la vista
-     */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val layoutInflate = LayoutInflater.from(parent.context)
             .inflate(R.layout.activity_show_book_item_chapter, parent, false)
 
-        return WorkoutViewHolder(layoutInflate)
+        return BookViewHolder(layoutInflate)
 
     }
 
@@ -27,7 +27,7 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
         return chapterList.size
     }
 
-    override fun onBindViewHolder(holder: WorkoutViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         val item = chapterList[position]
         holder.bindChapter(item)
     }
@@ -40,7 +40,7 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
         return position
     }
 
-    inner class WorkoutViewHolder(itemView: View) :
+    inner class BookViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         /**
@@ -54,7 +54,7 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
             }
             //cargar los datos del libro para mostrarlos
             //if (chapter.image != null)
-                //itemView.showChapterImageView.setImageDrawable(chapter.image)
+            //itemView.showChapterImageView.setImageDrawable(chapter.image)
             itemView.showChapterTvNumberAux.text = chapter.number.toString()
             itemView.showChapterTvTitleAux.text = chapter.title
 

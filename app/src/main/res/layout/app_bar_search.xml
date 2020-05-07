@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -30,7 +31,8 @@
                     android:layout_margin="10sp"
                     android:layout_weight="1"
                     android:background="@drawable/ic_return"
-                    android:onClick="previousActivity" />
+                    android:onClick="previousActivity"
+                    android:contentDescription="@string/return_button" />
 
                 <TextView
                     android:id="@+id/activitySearchToolbarTv"
@@ -43,15 +45,18 @@
                     android:textSize="26sp" />
 
                 <EditText
-                    android:id="@+id/new_searchView"
+                    android:id="@+id/searchViewEditText"
                     android:layout_width="0sp"
-                    android:textColor="@color/colorPrimary"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10sp"
                     android:layout_marginEnd="10sp"
                     android:layout_weight="5"
                     android:maxLength="18"
-                    android:visibility="gone" />
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
+                    android:autofillHints="search"
+                    android:inputType="text"
+                    tools:ignore="LabelFor" />
 
                 <ImageButton
                     android:id="@+id/activitySearchToolbarBtnSearch"
@@ -60,7 +65,8 @@
                     android:layout_margin="10sp"
                     android:layout_weight="1"
                     android:background="@drawable/ic_search"
-                    android:onClick="showSearchBarItem" />
+                    android:onClick="showSearchBarItem"
+                    android:contentDescription="@string/search_button" />
 
                 <ImageButton
                     android:id="@+id/activitySearchToolBarBtnFilter"
@@ -68,7 +74,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_filter" />
+                    android:background="@drawable/ic_filter"
+                    android:contentDescription="@string/filter_button" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 

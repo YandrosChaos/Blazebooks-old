@@ -1,10 +1,13 @@
-package com.blazebooks.ui.showbook
+package com.blazebooks.ui.reader
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import androidx.preference.PreferenceManager
+import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
 import kotlinx.android.synthetic.main.activity_reader.*
@@ -17,25 +20,33 @@ import java.time.format.DateTimeFormatter
 
 
 /**
- * @author Mounir Zbayr
+ * Muestra la vista de lectura del libro y lleva el flujo de la lectura.
+ *
+ * @author Mounir Zbayr+
+ * @author Víctor González
  */
 class ReaderActivity : PreconfiguredActivity() {
 
 
+    private var num = 0 //representa el número de página actual
 
-    private var num= 0 //representa el número de página actual
+    //colores RGB del filtro de pantalla -> modo lectura
+    private val redColor: Int = 112
+    private val greenColor: Int = 66
+    private val blueColor: Int = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reader)
 
+        loadLightMode()
         clock()
 
-        val path= intent.getStringExtra("path")
+        val path = intent.getStringExtra(Constants.PATH_CODE)
 
-        val pages= getText(path)
+        val pages = getText(path)
 
-        numPages.text= String.format(resources.getString(R.string.pageNumber),num, pages.size)
+        numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
 
         //Convierte el html sacado del epub al texto visible en el lector
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -43,9 +54,8 @@ class ReaderActivity : PreconfiguredActivity() {
         }
         textReader.movementMethod = ScrollingMovementMethod()//Añade el scroll de las páginas
 
-        buttonNext.setOnClickListener { next(pages)} //Botón para ir a la página siguiente
-        buttonPrevious.setOnClickListener { previous(pages)} //Botón para ir a la página anterior
-
+        buttonNext.setOnClickListener { next(pages) } //Botón para ir a la página siguiente
+        buttonPrevious.setOnClickListener { previous(pages) } //Botón para ir a la página anterior
 
 
     }
@@ -57,7 +67,8 @@ class ReaderActivity : PreconfiguredActivity() {
      */
     private fun getText(filepath: String?): ArrayList<String> {
 
-        val epubInputStream: InputStream = File("/storage/emulated/0/Android/data/com.blazebooks/files/$filepath").inputStream()
+        val epubInputStream: InputStream =
+            File("/storage/emulated/0/Android/data/com.blazebooks/files/$filepath").inputStream()
         val book: Book = EpubReader().readEpub(epubInputStream)
         val spine = book.spine
         val spineList = spine.spineReferences
@@ -76,13 +87,13 @@ class ReaderActivity : PreconfiguredActivity() {
     }
 
     /**
-     * Método que aporta al botón buttonNext la función de avanzar a la página siguiente
+     * Método que aporta al botón buttonNext la función de avanzar a la página siguiente.
      *
      * @author Mounir
      */
-    private fun next(pages: ArrayList<String>){
+    private fun next(pages: ArrayList<String>) {
         num++
-        numPages.text= String.format(resources.getString(R.string.pageNumber),num, pages.size)
+        numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
         }
@@ -92,12 +103,15 @@ class ReaderActivity : PreconfiguredActivity() {
      * Método que aporta al botón buttonPrevious la función de retroceder a la pagina anterior
      *
      * @author Mounir
+     * @author Víctor González
      */
-    private fun previous(pages: ArrayList<String>){
-        num--
-        numPages.text= String.format(resources.getString(R.string.pageNumber),num, pages.size)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
+    private fun previous(pages: ArrayList<String>) {
+        if (num != 0) {
+            num--
+            numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
+            }
         }
     }
 
@@ -106,7 +120,7 @@ class ReaderActivity : PreconfiguredActivity() {
      *
      * @author Mounir Zbayr
      */
-    private fun clock (){
+    private fun clock() {
 
         val thread = Thread(Runnable {
             try {
@@ -114,14 +128,35 @@ class ReaderActivity : PreconfiguredActivity() {
                     Thread.sleep(1000)
                     runOnUiThread {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
-                            tTime.text = time
+                            tTime.text =
+                                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
                         }
                     }
                 }
-            } catch (e: InterruptedException) {}
+            } catch (e: InterruptedException) {
+            }
         })
         thread.start()
     }
 
+
+    /**
+     * If ReadMode preference is switch on, then sets a dark background for the view.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun loadLightMode() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        if (sharedPreferences.getBoolean(Constants.READ_MODE_KEY, false)) {
+            readerActivityCL.setBackgroundColor(
+                Color.rgb(
+                    redColor,
+                    greenColor,
+                    blueColor
+                )
+            )
+        }
+    }
+
+    
 }//class

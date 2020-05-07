@@ -6,6 +6,7 @@ class Constants {
     companion object {
 
         //INTENT'S CODES
+        const val PATH_CODE = "PATH_CODE"
         const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
 
         //CURRENT DATA

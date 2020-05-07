@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Author: Victor Gonzalez -->
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="5sp">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:layout_margin="5sp"
+            android:layout_span="3"
+            android:text="Select your profile icon"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/dialogImg01"
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:layout_margin="5sp"
+            android:layout_span="1"
+            android:src="@drawable/ic_reading_big" />
+
+        <ImageView
+            android:id="@+id/dialogImg02"
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:layout_margin="5sp"
+            android:layout_span="1"
+            android:src="@drawable/ic_reading_big" />
+
+        <ImageView
+            android:id="@+id/dialogImg03"
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:layout_margin="5sp"
+            android:layout_span="1"
+            android:src="@drawable/ic_reading_big" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/dialogImg11"
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:layout_margin="5sp"
+            android:layout_span="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_reading_big" />
+
+        <ImageView
+            android:id="@+id/dialogImg12"
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:layout_margin="5sp"
+            android:layout_span="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_reading_big" />
+
+        <ImageView
+            android:id="@+id/dialogImg13"
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:layout_margin="5sp"
+            android:layout_span="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_reading_big" />
+
+    </TableRow>
+
+</TableLayout>
