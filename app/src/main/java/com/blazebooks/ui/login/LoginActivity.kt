@@ -19,6 +19,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.dialog_forgot_passwd.view.*
@@ -137,6 +138,20 @@ class LoginActivity : PreconfiguredActivity() {
                         )
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
+
+                            //añadir nuevo usuario a la collection users
+                            FirebaseFirestore.getInstance().collection("Users")
+                                .document(auth.currentUser?.uid.toString())
+                                .set(
+                                    User(
+                                        auth.currentUser!!.displayName.toString(),
+                                        "unknown",
+                                        auth.currentUser!!.email.toString(),
+                                        "https://example.com/jane-q-user/profile.jpg",
+                                        false
+                                    )
+                                )
+
                             updateUI(auth.currentUser)
                         } else {
                             Toast.makeText(

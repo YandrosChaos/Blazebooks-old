@@ -23,8 +23,6 @@ class SignInActivity : PreconfiguredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
-
-        this.loadHints()
         auth = FirebaseAuth.getInstance()
     }
 
@@ -126,20 +124,6 @@ class SignInActivity : PreconfiguredActivity() {
      */
     fun goToLogin(view: View) {
         onBackPressed()
-    }
-
-    /**
-     * Loads hints into textviews
-     *
-     * @author Victor Gonzalez
-     */
-    private fun loadHints() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            signInActivityUserName.setAutofillHints(View.AUTOFILL_HINT_USERNAME)
-            singInActivityUserPasswd.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
-            singInActivityUserPasswdAux.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
-            singInActivityUserEmail.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
-        }
     }
 
     /**
