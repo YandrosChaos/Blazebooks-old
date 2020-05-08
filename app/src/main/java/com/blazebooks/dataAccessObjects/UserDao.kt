@@ -16,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 
 class UserDao(
-    val view: View,
+    //val view: View,
     val context: Context
 ) : DAO<User> {
 
@@ -55,11 +55,16 @@ class UserDao(
                         context.finish()
                     }
                 } else {
+/*
                     Snackbar.make(
                         view, task.exception?.message.toString()
                         ,
                         Snackbar.LENGTH_LONG
                     ).show()
+
+ */
+
+
                 }//if
 
 

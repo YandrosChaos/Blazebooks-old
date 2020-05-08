@@ -88,6 +88,7 @@
     <string name="login_forgot_password">¿Olvidó su contraseña?</string>
     <string name="login_login_button">Login</string>
     <string name="login_sign_in_button">Registrarse</string>
+    <string name="google_auth_err">Error de autenticación con Google</string>
 
     <!-- SignIn Activity -->
     <string name="signin_username_error">El usuario no puede estar vacío.</string>
@@ -148,4 +149,5 @@
     <string name="button_Next_Page_Description">Página siguiente </string>
     <string name="button_Previous_Page_Description">Página anterior</string>
     <string name="pageNumber">%1$d/%2$d</string>
+
 </resources>

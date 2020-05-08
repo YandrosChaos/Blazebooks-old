@@ -8,8 +8,12 @@ import android.view.View
 import com.blazebooks.R
 import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
+import com.blazebooks.ui.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : PreconfiguredActivity() {
@@ -31,11 +35,11 @@ class SignInActivity : PreconfiguredActivity() {
      */
     fun singInClicked(view: View) {
 
-        if (singInActivityUserName.text.toString()
+        if (signInActivityUserName.text.toString()
                 .isEmpty()
         ) { //Comprueba que el campo username no está vacío
-            singInActivityUserName.error = getString(R.string.signin_username_error)
-            singInActivityUserName.requestFocus()
+            signInActivityUserName.error = getString(R.string.signin_username_error)
+            signInActivityUserName.requestFocus()
             return
         }
 
@@ -78,36 +82,38 @@ class SignInActivity : PreconfiguredActivity() {
 
 
         //Creacion e insercion del usuario en la base de datos
-        val pruebaDao = UserDao(view, this)
+        val pruebaDao = UserDao(this)
         val user = User(
-            singInActivityUserName.text.toString(),
+            signInActivityUserName.text.toString(),
             singInActivityUserPasswd.text.toString(),
             singInActivityUserEmail.text.toString(),
             "https://example.com/jane-q-user/profile.jpg",
             true
         )
-<<<<<<< HEAD
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val updates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(singInActivityUserName.text.toString()).build()
-                    auth.currentUser?.updateProfile(updates)
 
-                    startActivity(Intent(this, MainActivity::class.java))
-                    overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-                    finish()
-                } else {
-                    Snackbar.make(
-                        view, task.exception?.message.toString()
-                        ,
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }//if
-            }
-=======
+        /*
+        auth.signInWithEmailAndPassword(
+            loginActivityUserName.text.toString(),
+            loginActivityUserPasswd.text.toString()
+        ).addOnCompleteListener(this) { task ->
+                     if (task.isSuccessful) {
+                         val updates = UserProfileChangeRequest.Builder()
+                             .setDisplayName(signInActivityUserName.text.toString()).build()
+                         auth.currentUser?.updateProfile(updates)
+
+                         startActivity(Intent(this, MainActivity::class.java))
+                         overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+                         finish()
+                     } else {
+                         Snackbar.make(
+                             view, task.exception?.message.toString()
+                             ,
+                             Snackbar.LENGTH_LONG
+                         ).show()
+                     }//if
+                 }
+         */
         pruebaDao.insert(user)
-
->>>>>>> 0b297519348648fb3bb933e5568071163c07d3b0
 
     }//singInClicked
 
@@ -129,7 +135,7 @@ class SignInActivity : PreconfiguredActivity() {
      */
     private fun loadHints() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            singInActivityUserName.setAutofillHints(View.AUTOFILL_HINT_USERNAME)
+            signInActivityUserName.setAutofillHints(View.AUTOFILL_HINT_USERNAME)
             singInActivityUserPasswd.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
             singInActivityUserPasswdAux.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
             singInActivityUserEmail.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)

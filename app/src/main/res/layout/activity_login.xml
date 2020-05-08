@@ -50,15 +50,33 @@
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/white" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:onClick="sendPasswordResetEmail"
-            android:padding="10dp"
-            android:text="@string/login_forgot_password" />
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <Button
+            <ImageView
+                android:scaleType="fitStart"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:src="@drawable/ic_gmail"
+                android:onClick="loginByGoogle"
+                android:gravity="start" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:onClick="sendPasswordResetEmail"
+                android:text="@string/login_forgot_password" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"

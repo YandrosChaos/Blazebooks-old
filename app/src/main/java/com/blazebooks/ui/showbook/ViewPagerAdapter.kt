@@ -1,4 +1,4 @@
-package com.blazebooks.adapter
+package com.blazebooks.ui.showbook
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -6,11 +6,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.blazebooks.ui.showbook.ChapterFragment
 import com.blazebooks.ui.showbook.SynopsisFragment
 
-class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-
-    companion object {
-        private const val ARG_OBJECT = "object"
-    }
+/**
+ * @author Victor González
+ */
+class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
+    FragmentStateAdapter(fragmentActivity) {
 
     /**
      *  Indicates the number of tabs in the activity.

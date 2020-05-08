@@ -1,4 +1,4 @@
-package com.blazebooks.adapter
+package com.blazebooks.ui.search
 
 import android.content.Context
 import android.content.Intent

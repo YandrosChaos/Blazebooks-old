@@ -1,5 +1,6 @@
 package com.blazebooks.ui.login
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -8,16 +9,29 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.blazebooks.R
+import com.blazebooks.dataAccessObjects.UserDao
+import com.blazebooks.model.User
 import com.blazebooks.ui.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.dialog_forgot_passwd.view.*
+
+enum class ProviderType {
+    BASIC,
+    GOOGLE
+}
 
 class LoginActivity : PreconfiguredActivity() {
 
     private lateinit var auth: FirebaseAuth //Necesario para la autenticación
+    private val GOOGLE_SIGN_IN = 1984
 
     /**
      * @param savedInstanceState
@@ -27,7 +41,6 @@ class LoginActivity : PreconfiguredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        this.loadHints()
         auth = FirebaseAuth.getInstance()
     }
 
@@ -57,20 +70,20 @@ class LoginActivity : PreconfiguredActivity() {
         )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    updateUI(user)
+                    updateUI(auth.currentUser)
                 } else {
+                    updateUI(null)
                     Toast.makeText(
                         baseContext, getString(R.string.log_general_error),
                         Toast.LENGTH_SHORT
                     ).show()
-                    updateUI(null)
                 }
             }
     }//loginClicked
 
     /**
      * Si el usuario no es nulo, se pasa al main.
+     * Si lo es, muestra un mensaje de error
      *
      * @author Mounir Zbayr
      * @author Victor Gonzalez
@@ -84,11 +97,71 @@ class LoginActivity : PreconfiguredActivity() {
     }
 
     /**
+     * Login with Google account
+     *
+     * @author Victor Gonzalez
+     */
+    fun loginByGoogle(view: View) {
+        val googleClient = GoogleSignIn.getClient(
+            this,
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        )
+        //salir de la sesion actual de Google
+        googleClient.signOut()
+
+        //activity para loguearse con google
+        startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+    }
+
+    /**
+     * Login with google account results
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN) {
+            try {
+                val account = GoogleSignIn
+                    .getSignedInAccountFromIntent(data)
+                    .getResult(ApiException::class.java)
+
+                if (account != null) {
+                    auth.signInWithCredential(
+                        GoogleAuthProvider.getCredential(
+                            account.idToken,
+                            null
+                        )
+                    ).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            updateUI(auth.currentUser)
+                        } else {
+                            Toast.makeText(
+                                baseContext,
+                                getString(R.string.log_general_error),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            } catch (e: ApiException) {
+                Toast.makeText(
+                    baseContext,
+                    getString(R.string.google_auth_err),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    /**
      * Comprueba al iniciar si el usuario es nulo. Si lo es se muestra
-     * la vista del loguin y si no pasa directo al main
+     * la vista del login y si no pasa directo al main
      *
      * @author Mounir Zbayr
-     * @author Victor Gonzalez
      */
     public override fun onStart() {
         super.onStart()
@@ -102,18 +175,14 @@ class LoginActivity : PreconfiguredActivity() {
      * @author Mounir Zbayr
      * @author Victor Gonzalez
      */
+    @SuppressLint("InflateParams")
     fun sendPasswordResetEmail(view: View) {
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_forgot_passwd, null)
-        //AlertDialogBuilder
-        val mBuilder = AlertDialog.Builder(this)
-            .setView(mDialogView)
         //show dialog
-        val mAlertDialog = mBuilder.show()
-
-        //set autofillhint
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mDialogView.forgotpwdDialogUserName.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
-        }
+        val mAlertDialog = AlertDialog
+            .Builder(this)
+            .setView(mDialogView)
+            .show()
 
         //set button onClickListener
         mDialogView.forgotPasswdBtn.setOnClickListener {
@@ -148,17 +217,5 @@ class LoginActivity : PreconfiguredActivity() {
         startActivity(Intent(this, SignInActivity::class.java))
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
         finish()
-    }
-
-    /**
-     * Loads autohints into textview
-     *
-     * @author Victor Gonzalez
-     */
-    private fun loadHints() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            loginActivityUserName.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS)
-            loginActivityUserPasswd.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
-        }
     }
 }

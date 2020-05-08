@@ -1,6 +1,5 @@
 package com.blazebooks.ui.search
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.Utils.Companion.hideKeyboard
-import com.blazebooks.adapter.SearchAdapter
 import com.blazebooks.model.Book
 import com.blazebooks.model.Chapter
 import com.blazebooks.ui.PreconfiguredActivity

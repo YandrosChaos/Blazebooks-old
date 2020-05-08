@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -28,6 +29,7 @@ import com.blazebooks.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_set_profile_img.view.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 class MainActivity : PreconfiguredActivity() {
@@ -58,6 +60,9 @@ class MainActivity : PreconfiguredActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+        val header = navView.getHeaderView(0)
+        val name = header.findViewById<TextView>(R.id.nav_header_tv_userName)
+        val email = header.findViewById<TextView>(R.id.nav_header_tv_userEmail)
 
         setSupportActionBar(toolbar)
         auth = FirebaseAuth.getInstance()
@@ -81,6 +86,10 @@ class MainActivity : PreconfiguredActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //set username and email view
+        name.text = auth.currentUser?.displayName.toString()
+        email.text = auth.currentUser?.email.toString()
     }
 
     /**
@@ -98,9 +107,33 @@ class MainActivity : PreconfiguredActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
-        nav_view.tv_userName.text = auth.currentUser?.displayName.toString()
-        nav_view.tv_userEmail.text = auth.currentUser?.email.toString()
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    /**
+     * Switch actions depending on the menu item touched.
+     *
+     * @return Boolean
+     * @param item
+     * @author Victor Gonzalez
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_sign_out -> signOut()
+            R.id.action_settings -> goToPreferenceActivity()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Returns to previous activity and sets custom animation transition.
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
+        finish()
     }
 
     /**
@@ -108,6 +141,7 @@ class MainActivity : PreconfiguredActivity() {
      * depending of the view.id
      *
      * @param view
+     * @author Victor Gonzalez
      */
     fun searchBooks(view: View) {
         startActivity(
@@ -129,45 +163,6 @@ class MainActivity : PreconfiguredActivity() {
                 )
             }
         )
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
-    }
-
-    /**
-     * Switch actions depending on the menu item touched.
-     *
-     * @return Boolean
-     * @param item
-     * @author Victor Gonzalez
-     */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_sign_out -> signOut()
-            R.id.action_settings -> goToPreferenceActivity()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    /**
-     *  Signs out from the current session.
-     *
-     * @see LoginActivity
-     * @author Mounir
-     */
-    private fun signOut() {
-        FirebaseAuth.getInstance().signOut()
-        startActivity(Intent(this, LoginActivity::class.java))
-        overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
-        finish()
-    }
-
-    /**
-     * Goes to SettingsActivity
-     *
-     * @see SettingsActivity
-     * @author Victor Gonzalez
-     */
-    private fun goToPreferenceActivity() {
-        startActivity(Intent(this, SettingsActivity::class.java))
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
     }
 
@@ -250,14 +245,27 @@ class MainActivity : PreconfiguredActivity() {
     }
 
     /**
-     * Returns to previous activity and sets custom animation transition.
+     *  Signs out from the current session.
      *
-     * @author Victor Gonzalez
+     * @see LoginActivity
+     * @author Mounir
      */
-    override fun onBackPressed() {
-        super.onBackPressed()
+    private fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        startActivity(Intent(this, LoginActivity::class.java))
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
         finish()
+    }
+
+    /**
+     * Goes to SettingsActivity
+     *
+     * @see SettingsActivity
+     * @author Victor Gonzalez
+     */
+    private fun goToPreferenceActivity() {
+        startActivity(Intent(this, SettingsActivity::class.java))
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
     }
 
 }

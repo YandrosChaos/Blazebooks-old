@@ -7,10 +7,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.blazebooks.Constants
 import com.blazebooks.R
-import com.blazebooks.adapter.ViewPagerAdapter
 import com.blazebooks.ui.PreconfiguredActivity
 import com.blazebooks.ui.reader.ReaderActivity
 import com.google.android.material.tabs.TabLayoutMediator
@@ -18,7 +16,6 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.activity_show_book_item.*
 import java.io.File
-import kotlin.math.roundToInt
 
 
 /**
@@ -28,7 +25,11 @@ import kotlin.math.roundToInt
  * @author Victor Gonzalez
  */
 class ShowBookActivity : PreconfiguredActivity() {
-    private val adapter by lazy { ViewPagerAdapter(this) }
+    private val adapter by lazy {
+        ViewPagerAdapter(
+            this
+        )
+    }
     private var liked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -9,10 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.Constants
 import com.blazebooks.R
-import com.blazebooks.adapter.ShowBookAdapter
-import kotlinx.android.synthetic.main.fragment_show_book_chapters.*
-import kotlinx.android.synthetic.main.fragment_show_book_chapters.view.*
-import kotlinx.android.synthetic.main.fragment_show_book_chapters.view.activityShowBookChapters
 
 class ChapterFragment : Fragment() {
     override fun onCreateView(
@@ -26,7 +22,8 @@ class ChapterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.activityShowBookChapters)
-        recyclerView.adapter = ShowBookAdapter(Constants.CURRENT_BOOK.chapters)
+        recyclerView.adapter =
+            ShowBookAdapter(Constants.CURRENT_BOOK.chapters)
         recyclerView.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
     }
 }
