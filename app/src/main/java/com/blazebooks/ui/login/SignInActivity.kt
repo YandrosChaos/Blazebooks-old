@@ -86,31 +86,9 @@ class SignInActivity : PreconfiguredActivity() {
             singInActivityUserPasswd.text.toString(),
             singInActivityUserEmail.text.toString(),
             "https://example.com/jane-q-user/profile.jpg",
-            true
+            false
         )
 
-        /*
-        auth.signInWithEmailAndPassword(
-            loginActivityUserName.text.toString(),
-            loginActivityUserPasswd.text.toString()
-        ).addOnCompleteListener(this) { task ->
-                     if (task.isSuccessful) {
-                         val updates = UserProfileChangeRequest.Builder()
-                             .setDisplayName(signInActivityUserName.text.toString()).build()
-                         auth.currentUser?.updateProfile(updates)
-
-                         startActivity(Intent(this, MainActivity::class.java))
-                         overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-                         finish()
-                     } else {
-                         Snackbar.make(
-                             view, task.exception?.message.toString()
-                             ,
-                             Snackbar.LENGTH_LONG
-                         ).show()
-                     }//if
-                 }
-         */
         pruebaDao.insert(user)
 
     }//singInClicked

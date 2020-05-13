@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.view.View
+import android.widget.Toast
 import com.blazebooks.model.User
 import com.blazebooks.ui.MainActivity
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest.Builder
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,13 +17,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class UserDao(
     //val view: View,
-    val context: Context
+    private val context: Context
 ) : DAO<User> {
 
     //Necesario para la autenticación
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val firebaseUser = auth.currentUser
+
 
 
     override fun getAll(): List<User> {
@@ -41,11 +41,14 @@ class UserDao(
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
 
+                    val firebaseUser = auth.currentUser
+
                     val profileUpdates =
                         Builder()
                             .setDisplayName(user.userName)
                             .setPhotoUri(Uri.parse(user.URLprofile))
                             .build()
+
                     firebaseUser?.updateProfile(profileUpdates)
 
                     db.collection("Users").document(firebaseUser?.uid.toString()).set(user)
@@ -55,44 +58,51 @@ class UserDao(
                         context.finish()
                     }
                 } else {
-/*
-                    Snackbar.make(
+                    /*Snackbar.make(
                         view, task.exception?.message.toString()
                         ,
                         Snackbar.LENGTH_LONG
-                    ).show()
- */
+                    ).show()*/
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                 }//if
-
-
             }
-    }
+    }//insert
 
     override fun delete(user: User) {
 
+        val firebaseUser = auth.currentUser
         firebaseUser?.delete()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d(TAG, "User account deleted.")
-                }
+                    Toast.makeText(context, "User account deleted", Toast.LENGTH_SHORT).show()
+                }else Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
             }
 
     }//delete
 
     override fun update(user: User) {
         val profileUpdates = Builder()
-            .setDisplayName("Nuevo Nombre")
-            .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+            .setDisplayName(user.userName)
+            .setPhotoUri(Uri.parse(user.URLprofile))
             .build()
 
+        val firebaseUser = auth.currentUser
         firebaseUser?.updateProfile(profileUpdates)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User profile updated.")
                 }
             }
-    }//update
+        firebaseUser?.updateEmail(user.email)
 
+        firebaseUser?.updatePassword(user.password)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) Log.d(TAG, "Password updated.")
+                else Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+            }
+
+        db.collection("Users").document(firebaseUser?.uid.toString()).set(user)
+    }//update
 
 }//class
 
