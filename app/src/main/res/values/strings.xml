@@ -17,7 +17,7 @@
 
     <!-- BOOKS FRAGMENT -->
     <string name="new_books">New Books</string>
-    <string name="all_books">All Books</string>
+    <string name="all_books">All</string>
     <string name="interactive_books">Interactive</string>
     <string name="authors">Authors</string>
     <string name="genres">Genres</string>
@@ -57,7 +57,8 @@
         Viewpager2\n
         Material\n
         Coil\n
-        Epublib\n\n
+        Epublib\n
+        Airbnb Lottie Android\n\n
     </string>
 
     <!-- Type of Accounts-->
@@ -128,6 +129,11 @@
     <string name="return_button">Return button</string>
     <string name="search_button">Search Button</string>
     <string name="filter_button">Filter Button</string>
+
+    <!-- Search Activity - Filter Dialog -->
+    <string name="close_filter_dialog">CLose filter dialog</string>
+    <string name="clear_button">Clear</string>
+    <string name="apply_button">Apply</string>
 
     <!-- Settings Activity -->
     <string name="language">Language</string>

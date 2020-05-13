@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -23,28 +24,21 @@ import coil.api.clear
 import coil.api.load
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.ui.customdialogs.ProfileImageDialog
 import com.blazebooks.ui.login.LoginActivity
-import com.blazebooks.ui.preferences.SettingsActivity
+import com.blazebooks.ui.settings.SettingsActivity
 import com.blazebooks.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main_complete.*
 import kotlinx.android.synthetic.main.dialog_set_profile_img.view.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
-class MainActivity : PreconfiguredActivity() {
+class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDialogListener {
 
+    private lateinit var navView: NavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var auth: FirebaseAuth
-
-    //img url
-    private val owlImg = "https://cdn.pixabay.com/photo/2013/07/13/11/34/owl-158411_960_720.png"
-    private val goatImg = "https://cdn.pixabay.com/photo/2014/04/03/00/35/goat-308775_960_720.png"
-    private val monkeyImg =
-        "https://cdn.pixabay.com/photo/2015/01/22/12/58/monkey-607708_960_720.png"
-    private val catImg = "https://cdn.pixabay.com/photo/2013/07/12/14/32/cat-148436_960_720.png"
-    private val tuxImg = "https://cdn.pixabay.com/photo/2013/07/13/13/42/tux-161406_960_720.png"
-    private val foxImg = "https://cdn.pixabay.com/photo/2016/07/15/08/02/fox-1518438_960_720.png"
 
     /**
      * @param savedInstanceState
@@ -53,16 +47,18 @@ class MainActivity : PreconfiguredActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_complete)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val fab: FloatingActionButton = findViewById(R.id.fab)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+
+        navView = findViewById(R.id.nav_view)
         val header = navView.getHeaderView(0)
         val name = header.findViewById<TextView>(R.id.nav_header_tv_userName)
         val email = header.findViewById<TextView>(R.id.nav_header_tv_userEmail)
+        val headerImage = header.findViewById<ImageView>(R.id.nav_header_imageView)
 
         setSupportActionBar(toolbar)
         auth = FirebaseAuth.getInstance()
@@ -90,6 +86,16 @@ class MainActivity : PreconfiguredActivity() {
         //set username and email view
         name.text = auth.currentUser?.displayName.toString()
         email.text = auth.currentUser?.email.toString()
+
+        if (auth.currentUser!!.photoUrl != null) {
+            headerImage.clear()
+            headerImage.load(auth.currentUser!!.photoUrl)
+        } else {
+            //TODO -> LOAD PROFILE IMAGE FOR NO-GOOGLE ACCOUNTS!
+            headerImage.clear()
+            headerImage.load(R.drawable.ic_reading_big)
+        }
+
     }
 
     /**
@@ -133,7 +139,6 @@ class MainActivity : PreconfiguredActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
-        finish()
     }
 
     /**
@@ -169,79 +174,49 @@ class MainActivity : PreconfiguredActivity() {
     /**
      * Creates a new dialog for choose the profile image.
      *
+     * @see ProfileImageDialog
+     *
      * @author Victor Gonzalez
      */
-    @SuppressLint("InflateParams")
     fun setProfileImage(view: View) {
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_set_profile_img, null)
-        //AlertDialogBuilder
-        val mBuilder = AlertDialog.Builder(this)
-            .setView(mDialogView)
+        mainActivityProfileImgFragment.visibility = View.VISIBLE
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
+            .replace(R.id.mainActivityProfileImgFragment, ProfileImageDialog())
+            .commit()
+    }
 
-        //show dialog
-        val mAlertDialog = mBuilder.show()
-
-        mDialogView.apply {
-            dialogImg01.apply {
-                load(owlImg)
-                setOnClickListener {
-                    //TODO -> save it!
-                    nav_view.imageView.clear()
-                    nav_view.imageView.load(owlImg)
-                    mAlertDialog.dismiss()
-                }
-            }
-
-            dialogImg02.apply {
-                load(goatImg)
-                setOnClickListener {
-                    //TODO -> save it!
-                    nav_view.imageView.clear()
-                    nav_view.imageView.load(goatImg)
-                    mAlertDialog.dismiss()
-                }
-            }
-
-            dialogImg03.apply {
-                load(monkeyImg)
-                setOnClickListener {
-                    //TODO -> save it!
-                    nav_view.imageView.clear()
-                    nav_view.imageView.load(monkeyImg)
-                    mAlertDialog.dismiss()
-                }
-            }
-
-            dialogImg11.apply {
-                load(catImg)
-                setOnClickListener {
-                    //TODO -> save it!
-                    nav_view.imageView.clear()
-                    nav_view.imageView.load(catImg)
-                    mAlertDialog.dismiss()
-                }
-            }
-
-            dialogImg12.apply {
-                load(tuxImg)
-                setOnClickListener {
-                    //TODO -> save it!
-                    nav_view.imageView.clear()
-                    nav_view.imageView.load(tuxImg)
-                    mAlertDialog.dismiss()
-                }
-            }
-
-            dialogImg13.apply {
-                load(foxImg)
-                setOnClickListener {
-                    //TODO -> save it!
-                    nav_view.imageView.clear()
-                    nav_view.imageView.load(foxImg)
-                    mAlertDialog.dismiss()
-                }
-            }
+    /**
+     * Receives the ProfileImageDialog results and updates this
+     * activity view. Calls other method, closing the dialog.
+     *
+     * @see ProfileImageDialog
+     * @see setProfileImage
+     * @see ProfileImageDialog.ProfileImageDialogListener
+     * @see onExitProfileImageDialog
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onReturnImageSelected(dialog: ProfileImageDialog) {
+        if (dialog.selectedImage != null) {
+            navView.nav_header_imageView.clear()
+            navView.nav_header_imageView.load(dialog.selectedImage!!.drawable)
         }
+        onExitProfileImageDialog(dialog)
+    }
+
+    /**
+     * Closes the dialog.
+     *
+     * @see setProfileImage
+     * @see ProfileImageDialog
+     * @see ProfileImageDialog.ProfileImageDialogListener
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onExitProfileImageDialog(dialog: ProfileImageDialog) {
+        mainActivityProfileImgFragment.visibility = View.GONE
+        dialog.dismiss()
     }
 
     /**

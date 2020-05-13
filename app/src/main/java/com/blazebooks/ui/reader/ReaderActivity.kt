@@ -87,13 +87,16 @@ class ReaderActivity : PreconfiguredActivity() {
     }
 
     /**
-     * Método que aporta al botón buttonNext la función de avanzar a la página siguiente.
+     * Método que aporta al botón buttonNext la función de avanzar a la página siguiente y
+     * coloca el scroll en la posición inicial.
      *
      * @author Mounir
+     * @author Victor Gonzalez
      */
     private fun next(pages: ArrayList<String>) {
         num++
         numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
+        textReader.scrollTo(0,0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
         }
@@ -109,6 +112,7 @@ class ReaderActivity : PreconfiguredActivity() {
         if (num != 0) {
             num--
             numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
+            textReader.scrollTo(0,0)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
             }

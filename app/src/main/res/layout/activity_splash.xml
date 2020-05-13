@@ -18,19 +18,6 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loading" />
 
-    <!--
-    <com.github.ybq.android.spinkit.SpinKitView
-        android:id="@+id/splashSpinKitView"
-        style="@style/SpinKitView.WanderingCubes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="30sp"
-        app:SpinKit_Color="@color/colorAccent"
-        app:layout_constraintLeft_toLeftOf="@id/iv_splash"
-        app:layout_constraintRight_toRightOf="@id/iv_splash"
-        app:layout_constraintTop_toBottomOf="@id/iv_splash" />
-        -->
-
     <TextView
         android:id="@+id/splashVersionTV"
         android:layout_width="wrap_content"

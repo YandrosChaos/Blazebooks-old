@@ -69,6 +69,7 @@
                     android:contentDescription="@string/search_button" />
 
                 <ImageButton
+                    android:onClick="createFilterDialog"
                     android:id="@+id/activitySearchToolBarBtnFilter"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"

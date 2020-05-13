@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:orderInCategory="1"
+        android:title="Genres"
+        app:showAsAction="never">
+        <menu android:id="@+id/search_filter_header_genres">
+            <group android:checkableBehavior="all">
+                <item
+                    android:id="@+id/search_filter_header_genres_terror"
+                    android:orderInCategory="100"
+                    android:title="Terror"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_filter_header_genres_adventure"
+                    android:orderInCategory="100"
+                    android:title="Adventure"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_filter_header_genres_scify"
+                    android:orderInCategory="100"
+                    android:title="Sci-Fy"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_filter_header_genres_novel"
+                    android:orderInCategory="100"
+                    android:title="Novel"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_filter_header_genres_graphic"
+                    android:orderInCategory="100"
+                    android:title="Graphic"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_filter_header_genres_interactive"
+                    android:orderInCategory="100"
+                    android:title="Interactive"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/search_filter_header_genres_western"
+                    android:orderInCategory="100"
+                    android:title="Western"
+                    app:showAsAction="never" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/search_filter_header_authors"
+        android:orderInCategory="2"
+        android:title="Authors"
+        app:showAsAction="never">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/search_filter_header_genres_anon"
+                    android:orderInCategory="100"
+                    android:title="Anon"
+                    app:showAsAction="never" />
+            </group>
+        </menu>
+    </item>
+</menu>

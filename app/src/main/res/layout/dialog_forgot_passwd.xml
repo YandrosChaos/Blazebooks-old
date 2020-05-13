@@ -1,51 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="300sp"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:background="@color/grayTransparent">
 
-        <ImageView
-            android:layout_marginTop="10sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_passwd" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300sp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:textSize="30sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/forgot_passwd" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/reset_passwd" />
-
-        <EditText
-            android:id="@+id/forgotpwdDialogUserName"
+        <LinearLayout
+            android:gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:background="@drawable/edit_text_background"
-            android:drawableStart="@drawable/ic_email"
-            android:drawablePadding="10dp"
-            android:hint="@string/prompt_email"
-            android:inputType="textEmailAddress"
-            android:padding="10dp"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/white"
-            android:autofillHints="email" />
+            android:layout_height="300sp"
+            android:background="@drawable/ic_passwd"
+            android:backgroundTint="@color/grayTransparent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/forgotPasswdBtn"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="30dp"
-            android:onClick="loginClicked"
-            android:text="@string/send_passwd"
-            android:textAllCaps="false"
-            android:textSize="21sp" />
+            <ImageButton
+                android:layout_margin="5sp"
+                android:id="@+id/forgotPasswdBtnExit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/ic_cross"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/forgot_passwd"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reset_passwd"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/forgotpwdDialogUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:autofillHints="email"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="10dp"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:textColor="@color/colorAccent"
+                android:textColorHint="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/forgotPasswdBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/send_passwd"
+                android:textAllCaps="false"
+                android:textSize="21sp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

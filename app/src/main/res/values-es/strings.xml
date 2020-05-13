@@ -58,7 +58,8 @@
         Viewpager2\n
         Material\n
         Coil\n
-        Epublib\n\n
+        Epublib\n
+        Airbnb Lottie Android\n\n
     </string>
 
     <!-- Type of Accounts-->
@@ -131,6 +132,12 @@
     <string name="search_button">Botón de búsqueda</string>
     <string name="filter_button">Botón de filtrado</string>
 
+    <!-- Search Activity - Filter Dialog -->
+    <string name="close_filter_dialog">Cerrar filtros</string>
+    <string name="clear_button">Limpiar</string>
+    <string name="apply_button">Aplicar</string>
+
+
     <!-- Settings Activity -->
     <string name="language">Idioma</string>
     <string name="language_summary">Escoge tu idioma preferido. No todos los libros tienen versiones para todos los idiomas.</string>
@@ -149,5 +156,4 @@
     <string name="button_Next_Page_Description">Página siguiente </string>
     <string name="button_Previous_Page_Description">Página anterior</string>
     <string name="pageNumber">%1$d/%2$d</string>
-
 </resources>

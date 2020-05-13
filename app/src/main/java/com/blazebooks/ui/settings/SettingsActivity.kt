@@ -1,4 +1,4 @@
-package com.blazebooks.ui.preferences
+package com.blazebooks.ui.settings
 
 import android.os.Bundle
 import android.widget.Toast
@@ -27,38 +27,6 @@ class SettingsActivity : PreconfiguredActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    class SettingsFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        finish()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        finish()
-    }
-
-    /**
-     * Destroys this activity. Also loads the selected language.
-     *
-     * @see PreconfiguredActivity
-     * @author Victor Gonzalez
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        loadNewConfig()
-        Toast.makeText(
-            this,
-            getString(R.string.should_restart),
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
     /**
      * Preload the app language selected by the user. If none selected, then uses the phone
      * language.
@@ -79,11 +47,18 @@ class SettingsActivity : PreconfiguredActivity() {
 
     /**
      * Returns to previous activity and sets custom animation transition.
+     * Also loads the new config
      *
      * @author Victor Gonzalez
      */
     override fun onBackPressed() {
         super.onBackPressed()
+        loadNewConfig()
+        Toast.makeText(
+            this,
+            getString(R.string.should_restart),
+            Toast.LENGTH_LONG
+        ).show()
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
     }
 }

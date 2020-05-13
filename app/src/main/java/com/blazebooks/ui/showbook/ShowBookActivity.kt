@@ -11,6 +11,7 @@ import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
 import com.blazebooks.ui.reader.ReaderActivity
+import com.blazebooks.ui.showbook.control.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*

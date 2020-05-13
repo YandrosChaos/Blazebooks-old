@@ -17,7 +17,7 @@
 
         <activity android:name=".ui.reader.ReaderActivity" />
         <activity android:name=".ui.PreconfiguredActivity" />
-        <activity android:name=".ui.preferences.SettingsActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.showbook.ShowBookActivity" />
         <activity
             android:name=".ui.login.SignInActivity"

@@ -1,4 +1,4 @@
-package com.blazebooks.ui.showbook
+package com.blazebooks.ui.showbook.control
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -7,6 +7,8 @@ import com.blazebooks.ui.showbook.ChapterFragment
 import com.blazebooks.ui.showbook.SynopsisFragment
 
 /**
+ * Inflates the tabs in the host view
+ *
  * @author Victor González
  */
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) :

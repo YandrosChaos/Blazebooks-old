@@ -1,13 +1,10 @@
-package com.blazebooks.ui.search
+package com.blazebooks.ui.search.control
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.blazebooks.Constants
@@ -20,26 +17,12 @@ import com.blazebooks.ui.showbook.ShowBookActivity
  * @author Victor Gonzalez
  */
 class SearchAdapter(private var itemList: List<Book>, private val activity: Context) :
-    RecyclerView.Adapter<SearchAdapter.CustomViewHolder>() {
-
-    /**
-     * Contains the book view data. Implements RecyclerView.ViewHolder.
-     *
-     * @param view
-     * @author Victor Gonzalez
-     */
-    inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var titleText: TextView = view.findViewById(R.id.searchBookItemText)
-        var bookImage: ImageView = view.findViewById(R.id.searchBookItemImg)
-        var bookPremiumImg: ImageView = view.findViewById(R.id.searchBookItemImgPremium)
-        var itemLayout: CardView = view.findViewById(R.id.bookSearchItemCv)
-
-    }
+    RecyclerView.Adapter<SearchViewHolder>() {
 
     /**
      * Inflates the layout.
      *
-     * @see CustomViewHolder
+     * @see SearchViewHolder
      *
      * @param parent
      * @param viewType
@@ -48,10 +31,10 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      *
      * @author Victor Gonzalez
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.activity_search_book_item, parent, false)
-        return CustomViewHolder(view)
+        return SearchViewHolder(view)
     }
 
     /**
@@ -73,12 +56,12 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      * @param holder
      * @param position
      *
-     * @see CustomViewHolder
+     * @see SearchViewHolder
      * @see Book
      * @see ShowBookActivity
      * @author Victor Gonzalez
      */
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val item = itemList[position]
         holder.titleText.text = item.title
 

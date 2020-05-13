@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.ui.showbook.control.ShowBookAdapter
 
 class ChapterFragment : Fragment() {
     override fun onCreateView(

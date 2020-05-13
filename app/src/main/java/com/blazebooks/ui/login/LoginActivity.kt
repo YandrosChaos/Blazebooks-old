@@ -1,18 +1,14 @@
 package com.blazebooks.ui.login
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.blazebooks.R
-import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
 import com.blazebooks.ui.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
+import com.blazebooks.ui.customdialogs.ForgotPasswdDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -21,23 +17,17 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.dialog_forgot_passwd.view.*
+import kotlinx.android.synthetic.main.dialog_forgot_passwd.*
 
-enum class ProviderType {
-    BASIC,
-    GOOGLE
-}
+const val GOOGLE_SIGN_IN = 1984
 
-class LoginActivity : PreconfiguredActivity() {
+class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDialogListener {
 
     private lateinit var auth: FirebaseAuth //Necesario para la autenticación
-    private val GOOGLE_SIGN_IN = 1984
 
     /**
      * @param savedInstanceState
      * @author Mounir Zbayr
-     * @author Victor Gonzalez
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,12 +83,13 @@ class LoginActivity : PreconfiguredActivity() {
         if (currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+            lottie_loading_animation.visibility = View.GONE
             finish()
         }
     }
 
     /**
-     * Login with Google account
+     * Login with a Google account
      *
      * @author Victor Gonzalez
      */
@@ -114,6 +105,7 @@ class LoginActivity : PreconfiguredActivity() {
         googleClient.signOut()
 
         //activity para loguearse con google
+        lottie_loading_animation.visibility = View.VISIBLE
         startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
     }
 
@@ -154,6 +146,7 @@ class LoginActivity : PreconfiguredActivity() {
 
                             updateUI(auth.currentUser)
                         } else {
+                            lottie_loading_animation.visibility = View.GONE
                             Toast.makeText(
                                 baseContext,
                                 getString(R.string.log_general_error),
@@ -161,8 +154,11 @@ class LoginActivity : PreconfiguredActivity() {
                             ).show()
                         }
                     }
+                } else {
+                    lottie_loading_animation.visibility = View.GONE
                 }
             } catch (e: ApiException) {
+                lottie_loading_animation.visibility = View.GONE
                 Toast.makeText(
                     baseContext,
                     getString(R.string.google_auth_err),
@@ -178,48 +174,57 @@ class LoginActivity : PreconfiguredActivity() {
      *
      * @author Mounir Zbayr
      */
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
         updateUI(auth.currentUser)
     }//onStart
 
     /**
-     * Sends an email for reset the password.
+     * Creates a new instance of ForgotPasswdDialog.
      *
+     * @see ForgotPasswdDialog
      * @param view
-     * @author Mounir Zbayr
+     *
      * @author Victor Gonzalez
      */
-    @SuppressLint("InflateParams")
     fun sendPasswordResetEmail(view: View) {
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_forgot_passwd, null)
-        //show dialog
-        val mAlertDialog = AlertDialog
-            .Builder(this)
-            .setView(mDialogView)
-            .show()
+        loginActivityForgotPasswdFL.visibility = View.VISIBLE
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_from_bottom, R.anim.slide_to_top)
+            .replace(R.id.loginActivityForgotPasswdFL, ForgotPasswdDialog(auth))
+            .commit()
+    }
 
-        //set button onClickListener
-        mDialogView.forgotPasswdBtn.setOnClickListener {
-            if (mDialogView.forgotpwdDialogUserName.text.isNotEmpty()) {
-                auth.sendPasswordResetEmail(mDialogView.forgotpwdDialogUserName.text.toString())
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            mAlertDialog.dismiss()
-                            Toast.makeText(
-                                this,
-                                getString(R.string.log_dialog_email_sent),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                        }
-                    }
-            } else {
-                Toast.makeText(this, getString(R.string.log_dialog_email_error), Toast.LENGTH_LONG)
-                    .show()
-            }
-        }
+    /**
+     * Receives the answer from the dialog and closes it.
+     *
+     * @see ForgotPasswdDialog
+     * @see ForgotPasswdDialog.ForgotPasswdDialogListener
+     * @see onCloseForgotPasswdDialog
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onForgotPasswdSent(dialog: ForgotPasswdDialog) {
+            Toast.makeText(
+                this,
+                getString(R.string.log_dialog_email_sent),
+                Toast.LENGTH_LONG
+            ).show()
+            onCloseForgotPasswdDialog(dialog)
+    }
+
+    /**
+     * Closes the dialog.
+     *
+     * @see ForgotPasswdDialog
+     * @see ForgotPasswdDialog.ForgotPasswdDialogListener
+     * @see onForgotPasswdSent
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onCloseForgotPasswdDialog(dialog: ForgotPasswdDialog) {
+        dialog.dismiss()
+        loginActivityForgotPasswdFL.visibility = View.GONE
     }
 
     /**

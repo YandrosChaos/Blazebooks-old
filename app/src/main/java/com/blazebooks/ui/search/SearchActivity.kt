@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.ProgressBar
+import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
@@ -17,10 +18,13 @@ import com.blazebooks.Utils.Companion.hideKeyboard
 import com.blazebooks.model.Book
 import com.blazebooks.model.Chapter
 import com.blazebooks.ui.PreconfiguredActivity
+import com.blazebooks.ui.customdialogs.FilterDialog
+import com.blazebooks.ui.search.control.SearchAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.app_bar_search.*
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  * Search book view.
@@ -28,12 +32,13 @@ import kotlin.collections.ArrayList
  * @see PreconfiguredActivity
  * @author  Victor Gonzalez
  */
-class SearchActivity : PreconfiguredActivity() {
+class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListener {
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mProgressBar: ProgressBar
     private lateinit var bookList: MutableList<Book>
     private lateinit var mAdapter: SearchAdapter
     private lateinit var mSearchView: EditText
+    private lateinit var mFilterDialogFrameLayout: FrameLayout
+    private var checkboxFilterList: MutableList<CheckBox> = mutableListOf()
 
     /**
      * Sets toolbar title. Gets a list of items and add the Text Change Listener, filter the list and
@@ -48,19 +53,19 @@ class SearchActivity : PreconfiguredActivity() {
         setContentView(R.layout.activity_search)
 
         mRecyclerView = findViewById(R.id.recyclerView_search)
-        mProgressBar = findViewById(R.id.progress_circular)
         mSearchView = findViewById(R.id.searchViewEditText)
+        mFilterDialogFrameLayout = findViewById(R.id.searchActivityFilterFragment)
 
         //set the title in the toolbar and show the progress bar
         activitySearchToolbarTv.text = intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE)
-        mProgressBar.visibility = View.VISIBLE
+
         //load the data
         getItemList()
 
         //Search Event. After text change, filter the list and updates the adapter
         mSearchView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                filterList(p0.toString())
+                filterList(p0.toString(), checkboxFilterList)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -69,31 +74,75 @@ class SearchActivity : PreconfiguredActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
-
-        //occult progress bar
-        mProgressBar.visibility = View.GONE
-
     }
 
     /**
-     * Filters the list by book's title and updates it in the adapter.
+     * <p>Filters the list by book's title and updates it in the adapter.
      * If the book's title contains the character, adds the book to a
-     * temp list and passes the list to the adapter.
+     * temp list and passes the list to the adapter.</p>
      *
-     * @param filterItem
+     * <p>Uses the filterList to filtering the list. Each checkbox clicked is one
+     * layer added to the filter.</p>
+     *
+     * @param filterItem Strings which the filter searches in book's titles.
+     * @param filterList Checkbox which used for filter books by language, author, genre...
+     *
      * @see SearchAdapter.updateList
+     *
      * @author Victor Gonzalez
      */
-    private fun filterList(filterItem: String) {
-        val tempList: MutableList<Book> = ArrayList()
-        bookList.forEach {
-            if (it.title?.toLowerCase(Locale.getDefault())
-                    ?.contains(filterItem.toLowerCase(Locale.getDefault()))!!
-            ) {
-                tempList.add(it)
+    private fun filterList(filterItem: String, filterList: MutableList<CheckBox>) {
+
+        //filter by title
+        var tempListWithFilters: MutableList<Book> = bookList.filter { book ->
+            book.title!!.toLowerCase(Locale.ROOT)
+                .contains(filterItem.toLowerCase(Locale.ROOT))
+        } as MutableList<Book>
+
+        if (filterList.isNotEmpty()) {
+            filterList.forEach { checkbox ->
+                when (checkbox.tag.toString()) {
+
+                    getString(R.string.genres) -> {
+                        //filter by genre and title
+                        tempListWithFilters = tempListWithFilters.filter { book ->
+                            book.genre!!.contains(checkbox.text.toString())
+                        } as MutableList<Book>
+                    }
+
+                    getString(R.string.premium) -> {
+                        tempListWithFilters =
+                            if (checkbox.text.toString()
+                                    .toLowerCase(Locale.ROOT) == "premium"
+                            ) {
+                                //filter premium
+                                tempListWithFilters.filter { book ->
+                                    book.premium
+                                } as MutableList<Book>
+                            } else {
+                                //filter not premium
+                                tempListWithFilters.filterNot { book ->
+                                    book.premium
+                                } as MutableList<Book>
+                            }
+                    }
+
+                    getString(R.string.authors) -> {
+                        //filter by author
+                        tempListWithFilters = tempListWithFilters.filter { book ->
+                            book.author!!.contains(checkbox.text.toString())
+                        } as MutableList<Book>
+                    }
+
+                    getString(R.string.language) -> {
+                        //filter by language
+                        //TODO -> FILTER BY LANGUAGE
+                    }
+
+                }
             }
         }
-        mAdapter.updateList(tempList)
+        mAdapter.updateList(tempListWithFilters)
     }
 
     /**
@@ -130,7 +179,56 @@ class SearchActivity : PreconfiguredActivity() {
     }
 
     /**
-     * Loads data, layout manager and adapter. While is loading, shows a progress bar.
+     * Shows the filter menu.
+     *
+     * @author Victor Gonzalez
+     */
+    fun createFilterDialog(view: View) {
+        mFilterDialogFrameLayout.visibility = View.VISIBLE
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
+            .replace(R.id.searchActivityFilterFragment, FilterDialog(checkboxFilterList))
+            .commit()
+    }
+
+    /**
+     * Returns the filters from the FilterDialog.
+     *
+     * @see FilterDialog
+     * @see FilterDialog.FilterDialogListener
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onReturnFilters(dialog: FilterDialog) {
+        checkboxFilterList.clear()
+        checkboxFilterList = dialog.filterReturnList
+        onCloseDialog(dialog)
+    }
+
+    /**
+     * Clean the list of filters.
+     *
+     * @see FilterDialog
+     * @see FilterDialog.FilterDialogListener
+     * @author Victor Gonzalez
+     */
+    override fun onClearFilters(dialog: FilterDialog) {
+        checkboxFilterList.clear()
+    }
+
+    /**
+     * @see FilterDialog.FilterDialogListener
+     * @author Victor Gonzalez
+     */
+    override fun onCloseDialog(dialog: FilterDialog) {
+        filterList("", checkboxFilterList)
+        dialog.dismiss()
+        mFilterDialogFrameLayout.visibility = View.GONE
+    }
+
+
+    /**
+     * Loads data, layout manager and adapter.
      *
      * @see data
      * @author Victor Gonzalez
@@ -160,7 +258,8 @@ class SearchActivity : PreconfiguredActivity() {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    val book = document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
+                    val book =
+                        document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
                     val chapterList = ArrayList<Chapter>()
                     db.collection("Books").document(document.id).collection("Chapters").get()
                         .addOnSuccessListener { chapters ->

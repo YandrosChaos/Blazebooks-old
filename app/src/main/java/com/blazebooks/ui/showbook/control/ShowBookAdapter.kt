@@ -1,19 +1,18 @@
-package com.blazebooks.ui.showbook
+package com.blazebooks.ui.showbook.control
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
 import com.blazebooks.model.Chapter
-import kotlinx.android.synthetic.main.activity_show_book_item_chapter.view.*
+import com.blazebooks.ui.showbook.control.BookViewHolder
 
 /**
  * @see com.blazebooks.ui.showbook.ShowBookActivity
  * @author Victor González
  */
 class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
-    RecyclerView.Adapter<ShowBookAdapter.BookViewHolder>() {
+    RecyclerView.Adapter<BookViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val layoutInflate = LayoutInflater.from(parent.context)
@@ -40,27 +39,4 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
         return position
     }
 
-    inner class BookViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        /**
-         * Setup item view and onClickListener
-         *
-         * @param chapter
-         */
-        fun bindChapter(chapter: Chapter) {
-
-            itemView.setOnClickListener {
-            }
-            //cargar los datos del libro para mostrarlos
-            //if (chapter.image != null)
-            //itemView.showChapterImageView.setImageDrawable(chapter.image)
-            itemView.showChapterTvNumberAux.text = chapter.number.toString()
-            itemView.showChapterTvTitleAux.text = chapter.title
-
-            if (chapter.readed)
-                itemView.showChapterIvReaded.setBackgroundResource(R.drawable.ic_check)
-
-        }
-    }
 }

@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Author: Victor Gonzalez -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/side_nav_bar"
     android:fitsSystemWindows="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:gravity="center">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_loading_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
 
     <LinearLayout
+        android:id="@+id/loginActivityMainLL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical">
@@ -57,14 +69,14 @@
             android:padding="10dp">
 
             <ImageView
-                android:scaleType="fitStart"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_gravity="start"
                 android:layout_weight="1"
-                android:src="@drawable/ic_gmail"
+                android:gravity="start"
                 android:onClick="loginByGoogle"
-                android:gravity="start" />
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_gmail" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -96,4 +108,13 @@
 
     </LinearLayout>
 
-</ScrollView>
+    <!-- this frame will be added dynamically.-->
+    <FrameLayout
+        android:id="@+id/loginActivityForgotPasswdFL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

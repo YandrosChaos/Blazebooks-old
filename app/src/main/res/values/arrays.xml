@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--
-        Contains the preference options
         author: Victor Gonzalez
     -->
-    <array name="genres">
+    <string-array name="genres">
         <item>Adventure</item>
         <item>Terror</item>
         <item>Sci-Fy</item>
@@ -12,11 +11,31 @@
         <item>Graphic</item>
         <item>Interactive</item>
         <item>Western</item>
-    </array>
+        <item>Fantasy</item>
+        <item>Dark</item>
+    </string-array>
 
-    <array name="languages">
+    <string-array name="languages">
         <item>Spanish</item>
         <item>English</item>
-    </array>
+    </string-array>
+
+    <string-array name="premium">
+        <item>Premium</item>
+        <item>Free</item>
+    </string-array>
+
+    <string-array name="authors">
+        <item>Unknown</item>
+    </string-array>
+
+    <string-array name="profile_img_url">
+        <item>https://cdn.pixabay.com/photo/2013/07/13/11/34/owl-158411_960_720.png</item>
+        <item>https://cdn.pixabay.com/photo/2014/04/03/00/35/goat-308775_960_720.png</item>
+        <item>https://cdn.pixabay.com/photo/2015/01/22/12/58/monkey-607708_960_720.png</item>
+        <item>https://cdn.pixabay.com/photo/2013/07/12/14/32/cat-148436_960_720.png</item>
+        <item>https://cdn.pixabay.com/photo/2013/07/13/13/42/tux-161406_960_720.png</item>
+        <item>https://cdn.pixabay.com/photo/2016/07/15/08/02/fox-1518438_960_720.png</item>
+    </string-array>
 
 </resources>
