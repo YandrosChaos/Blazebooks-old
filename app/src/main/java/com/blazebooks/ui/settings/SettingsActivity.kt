@@ -2,14 +2,12 @@ package com.blazebooks.ui.settings
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
 import com.blazebooks.ui.PreconfiguredActivity
-import com.blazebooks.ui.preferences.SettingsActivity.SettingsFragment
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -55,7 +53,7 @@ class SettingsActivity : PreconfiguredActivity() {
         val newEmail = sharedPreferences.getString(Constants.NEW_EMAIL_KEY, "")
         val newPassword = sharedPreferences.getString(Constants.NEW_PASSWD_KEY, "")
         if (!newUsername.equals("") || !newEmail.equals("") || !newPassword.equals(""))
-                updateUserData(newUsername, newEmail, newPassword)
+            updateUserData(newUsername, newEmail, newPassword)
 
 
         sharedPreferences.edit().putString(Constants.NEW_EMAIL_KEY, "").apply()

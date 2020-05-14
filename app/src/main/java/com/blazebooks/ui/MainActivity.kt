@@ -2,6 +2,7 @@ package com.blazebooks.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,6 +21,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
 import coil.api.clear
 import coil.api.load
 import com.blazebooks.Constants
@@ -37,11 +39,18 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDialogListener {
 
     private lateinit var navView: NavigationView
+    private lateinit var headerImage: ImageView
+    private lateinit var name: TextView
+    private lateinit var email: TextView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var auth: FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
 
     /**
+     * @see setUpProfileDataView
+     *
      * @param savedInstanceState
+     *
      * @author Victor Gonzalez
      * @author Mounir Zbayr
      */
@@ -56,9 +65,12 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
 
         navView = findViewById(R.id.nav_view)
         val header = navView.getHeaderView(0)
-        val name = header.findViewById<TextView>(R.id.nav_header_tv_userName)
-        val email = header.findViewById<TextView>(R.id.nav_header_tv_userEmail)
-        val headerImage = header.findViewById<ImageView>(R.id.nav_header_imageView)
+        name = header.findViewById(R.id.nav_header_tv_userName)
+        email = header.findViewById(R.id.nav_header_tv_userEmail)
+        headerImage = header.findViewById(R.id.nav_header_imageView)
+
+        sharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(this)
 
         setSupportActionBar(toolbar)
         auth = FirebaseAuth.getInstance()
@@ -83,19 +95,8 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        //set username and email view
-        name.text = auth.currentUser?.displayName.toString()
-        email.text = auth.currentUser?.email.toString()
-
-        if (auth.currentUser!!.photoUrl != null) {
-            headerImage.clear()
-            headerImage.load(auth.currentUser!!.photoUrl)
-        } else {
-            //TODO -> LOAD PROFILE IMAGE FOR NO-GOOGLE ACCOUNTS!
-            headerImage.clear()
-            headerImage.load(R.drawable.ic_reading_big)
-        }
-
+        //set username, email and profile image
+        setUpProfileDataView()
     }
 
     /**
@@ -139,6 +140,53 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
+    }
+
+    /**
+     * Receives the ProfileImageDialog results and updates this
+     * activity view. Calls other method, closing the dialog.
+     *
+     * @see ProfileImageDialog
+     * @see setProfileImage
+     * @see ProfileImageDialog.ProfileImageDialogListener
+     * @see onExitProfileImageDialog
+     * @see setUpProfileDataView
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onReturnImageSelected(dialog: ProfileImageDialog) {
+        setUpProfileDataView()
+        onExitProfileImageDialog(dialog)
+    }
+
+    /**
+     * Restores the default profile image.
+     *
+     * @see setUpProfileDataView
+     * @see onExitProfileImageDialog
+     * @see ProfileImageDialog
+     * @see ProfileImageDialog.ProfileImageDialogListener
+     * @see setProfileImage
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onCleanProfileImage(dialog: ProfileImageDialog) {
+        setUpProfileDataView()
+        onExitProfileImageDialog(dialog)
+    }
+
+    /**
+     * Closes the dialog.
+     *
+     * @see setProfileImage
+     * @see ProfileImageDialog
+     * @see ProfileImageDialog.ProfileImageDialogListener
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onExitProfileImageDialog(dialog: ProfileImageDialog) {
+        mainActivityProfileImgFragment.visibility = View.GONE
+        dialog.dismiss()
     }
 
     /**
@@ -187,39 +235,6 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
     }
 
     /**
-     * Receives the ProfileImageDialog results and updates this
-     * activity view. Calls other method, closing the dialog.
-     *
-     * @see ProfileImageDialog
-     * @see setProfileImage
-     * @see ProfileImageDialog.ProfileImageDialogListener
-     * @see onExitProfileImageDialog
-     *
-     * @author Victor Gonzalez
-     */
-    override fun onReturnImageSelected(dialog: ProfileImageDialog) {
-        if (dialog.selectedImage != null) {
-            navView.nav_header_imageView.clear()
-            navView.nav_header_imageView.load(dialog.selectedImage!!.drawable)
-        }
-        onExitProfileImageDialog(dialog)
-    }
-
-    /**
-     * Closes the dialog.
-     *
-     * @see setProfileImage
-     * @see ProfileImageDialog
-     * @see ProfileImageDialog.ProfileImageDialogListener
-     *
-     * @author Victor Gonzalez
-     */
-    override fun onExitProfileImageDialog(dialog: ProfileImageDialog) {
-        mainActivityProfileImgFragment.visibility = View.GONE
-        dialog.dismiss()
-    }
-
-    /**
      *  Signs out from the current session.
      *
      * @see LoginActivity
@@ -241,6 +256,31 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
     private fun goToPreferenceActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
+    }
+
+    /**
+     * Sets email, username and profile image.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun setUpProfileDataView() {
+        //set username and email view
+        name.text = auth.currentUser?.displayName.toString()
+        email.text = auth.currentUser?.email.toString()
+
+        if (!sharedPreferences.getString("selectedProfileImg", null).isNullOrBlank()) {
+            //local image
+            headerImage.clear()
+            headerImage.load(sharedPreferences.getString("selectedProfileImg", null))
+        } else if (auth.currentUser!!.photoUrl != null) {
+            //google account image
+            headerImage.clear()
+            headerImage.load(auth.currentUser!!.photoUrl)
+        } else {
+            //default image
+            headerImage.clear()
+            headerImage.load(R.drawable.ic_reading_big)
+        }
     }
 
 }

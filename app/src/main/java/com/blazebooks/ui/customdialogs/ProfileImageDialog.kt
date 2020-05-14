@@ -1,6 +1,7 @@
 package com.blazebooks.ui.customdialogs
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import coil.api.load
 import com.blazebooks.R
 import java.lang.ClassCastException
@@ -25,6 +27,7 @@ class ProfileImageDialog : DialogFragment() {
     interface ProfileImageDialogListener {
         fun onReturnImageSelected(dialog: ProfileImageDialog)
         fun onExitProfileImageDialog(dialog: ProfileImageDialog)
+        fun onCleanProfileImage(dialog: ProfileImageDialog)
     }
 
     var selectedImage: ImageView? = null
@@ -49,6 +52,7 @@ class ProfileImageDialog : DialogFragment() {
 
         val dialogSetImgMainLl = view.findViewById<LinearLayout>(R.id.dialogSetImgMainLl)
         val dialogSetImgCloseBtn = view.findViewById<ImageButton>(R.id.dialogSetImgCloseBtn)
+        val dialogSetImgCleanBtn = view.findViewById<ImageButton>(R.id.dialogSetImgCleanBtn)
 
         //set images
         resources.getStringArray(R.array.profile_img_url).forEach {
@@ -58,6 +62,11 @@ class ProfileImageDialog : DialogFragment() {
         //exit click listener
         dialogSetImgCloseBtn.setOnClickListener {
             listener.onExitProfileImageDialog(this)
+        }
+
+        dialogSetImgCleanBtn.setOnClickListener {
+            storeSelectedImg(null)
+            listener.onCleanProfileImage(this)
         }
     }
 
@@ -71,7 +80,9 @@ class ProfileImageDialog : DialogFragment() {
     }
 
     /**
-     * Receives an url and return an ImageView configured.
+     * Receives an url and return an configured ImageView.
+     *
+     * @see storeSelectedImg
      *
      * @param url String that must contain the URL
      * @return ImageView
@@ -84,8 +95,22 @@ class ProfileImageDialog : DialogFragment() {
             imageView.load(url)
             imageView.setOnClickListener {
                 selectedImage = imageView
+                storeSelectedImg(url)
                 listener.onReturnImageSelected(this)
             }
         }
+    }
+
+    /**
+     * Stores the imageURL selected into sharedPreferences file.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun storeSelectedImg(url: String?) {
+        val sharedPreferences: SharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(context)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("selectedProfileImg", url)
+        editor.apply()
     }
 }
