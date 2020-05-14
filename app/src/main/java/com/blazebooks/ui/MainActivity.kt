@@ -1,16 +1,13 @@
 package com.blazebooks.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -26,15 +23,12 @@ import coil.api.clear
 import coil.api.load
 import com.blazebooks.Constants
 import com.blazebooks.R
-import com.blazebooks.ui.customdialogs.ProfileImageDialog
+import com.blazebooks.ui.dialogs.ProfileImageDialog
 import com.blazebooks.ui.login.LoginActivity
 import com.blazebooks.ui.settings.SettingsActivity
 import com.blazebooks.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_complete.*
-import kotlinx.android.synthetic.main.dialog_set_profile_img.view.*
-import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDialogListener {
 
@@ -268,10 +262,10 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
         name.text = auth.currentUser?.displayName.toString()
         email.text = auth.currentUser?.email.toString()
 
-        if (!sharedPreferences.getString("selectedProfileImg", null).isNullOrBlank()) {
-            //local image
+        if (!sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE, null).isNullOrBlank()) {
+            //local image stored
             headerImage.clear()
-            headerImage.load(sharedPreferences.getString("selectedProfileImg", null))
+            headerImage.load(sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE, null))
         } else if (auth.currentUser!!.photoUrl != null) {
             //google account image
             headerImage.clear()

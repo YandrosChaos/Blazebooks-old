@@ -11,6 +11,7 @@ import com.blazebooks.R
  * Contains the book view data. Implements RecyclerView.ViewHolder.
  *
  * @param view
+ * @see SearchAdapter
  * @author Victor Gonzalez
  */
 class SearchViewHolder(view: View) : RecyclerView.ViewHolder(view) {

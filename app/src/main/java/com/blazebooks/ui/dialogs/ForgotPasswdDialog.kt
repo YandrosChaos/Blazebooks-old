@@ -1,4 +1,4 @@
-package com.blazebooks.ui.customdialogs
+package com.blazebooks.ui.dialogs
 
 import android.content.Context
 import android.os.Bundle

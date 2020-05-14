@@ -1,4 +1,4 @@
-package com.blazebooks.ui.customdialogs
+package com.blazebooks.ui.dialogs
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import androidx.preference.PreferenceManager
 import coil.api.load
+import com.blazebooks.Constants
 import com.blazebooks.R
 import java.lang.ClassCastException
 
@@ -110,7 +111,7 @@ class ProfileImageDialog : DialogFragment() {
         val sharedPreferences: SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString("selectedProfileImg", url)
+        editor.putString(Constants.SELECTED_PROFILE_IMAGE, url)
         editor.apply()
     }
 }

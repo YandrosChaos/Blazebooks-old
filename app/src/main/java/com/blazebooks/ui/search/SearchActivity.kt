@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -17,8 +18,9 @@ import com.blazebooks.R
 import com.blazebooks.Utils.Companion.hideKeyboard
 import com.blazebooks.model.Book
 import com.blazebooks.model.Chapter
+import com.blazebooks.model.SearchGridRecyclerView
 import com.blazebooks.ui.PreconfiguredActivity
-import com.blazebooks.ui.customdialogs.FilterDialog
+import com.blazebooks.ui.dialogs.FilterDialog
 import com.blazebooks.ui.search.control.SearchAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.app_bar_search.*
@@ -33,7 +35,7 @@ import kotlin.collections.ArrayList
  * @author  Victor Gonzalez
  */
 class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListener {
-    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mRecyclerView: SearchGridRecyclerView
     private lateinit var bookList: MutableList<Book>
     private lateinit var mAdapter: SearchAdapter
     private lateinit var mSearchView: EditText
@@ -42,10 +44,12 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
 
     /**
      * Sets toolbar title. Gets a list of items and add the Text Change Listener, filter the list and
-     * updates the adapter.
+     * updates the adapter. Also runs the custom recycler view animation by first time.
      *
      * @see getItemList
      * @see filterList
+     * @see SearchGridRecyclerView
+     *
      * @author Victor Gonzalez
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +65,9 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
 
         //load the data
         getItemList()
+
+        //run the custom recyclerView animation.
+        runRecyclerViewAnimation()
 
         //Search Event. After text change, filter the list and updates the adapter
         mSearchView.addTextChangedListener(object : TextWatcher {
@@ -84,10 +91,15 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * <p>Uses the filterList to filtering the list. Each checkbox clicked is one
      * layer added to the filter.</p>
      *
+     * <p> When list is filtered, calls to the adapter, updates the list and run the
+     * animation.</p>
+     *
      * @param filterItem Strings which the filter searches in book's titles.
      * @param filterList Checkbox which used for filter books by language, author, genre...
      *
-     * @see SearchAdapter.updateList
+     * @see SearchAdapter
+     * @see runRecyclerViewAnimation
+     * @see SearchGridRecyclerView
      *
      * @author Victor Gonzalez
      */
@@ -143,6 +155,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
             }
         }
         mAdapter.updateList(tempListWithFilters)
+        runRecyclerViewAnimation()
     }
 
     /**
@@ -241,6 +254,21 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         mAdapter = SearchAdapter(bookList, this)
         mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
+    }
+
+    /**
+     * Runs the custom recyclerView animation.
+     *
+     * @see SearchGridRecyclerView
+     * @see SearchAdapter
+     *
+     * @author Victor Gonzalez
+     */
+    private fun runRecyclerViewAnimation() {
+        mRecyclerView.layoutAnimation =
+            AnimationUtils.loadLayoutAnimation(this, R.anim.gridlayout_animation_from_bottom)
+        mAdapter.notifyDataSetChanged()
+        mRecyclerView.scheduleLayoutAnimation()
     }
 
     /**

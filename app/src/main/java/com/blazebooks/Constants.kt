@@ -14,7 +14,7 @@ class Constants {
         lateinit var CURRENT_BOOK: Book
         lateinit var CURRENT_USER : User
 
-        //SETTINGS ACTIVITY KEYS
+        //SHARED PREFERENCES KEYS
         const val LANGUAGE_SETTING_KEY = "language"
         const val DEFAULT_LANGUAGE = "English"
         const val GENRES_SETTING_KEY="preferredGenres"
@@ -23,6 +23,7 @@ class Constants {
         const val NEW_USERNAME_KEY = "usernamePref"
         const val NEW_PASSWD_KEY = "passwdPref"
         const val NEW_EMAIL_KEY = "emailPref"
+        const val SELECTED_PROFILE_IMAGE = "selectedProfileImg"
 
     }
 }

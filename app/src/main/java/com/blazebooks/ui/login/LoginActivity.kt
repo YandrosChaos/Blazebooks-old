@@ -8,7 +8,7 @@ import com.blazebooks.R
 import com.blazebooks.model.User
 import com.blazebooks.ui.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
-import com.blazebooks.ui.customdialogs.ForgotPasswdDialog
+import com.blazebooks.ui.dialogs.ForgotPasswdDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.dialog_forgot_passwd.*
 
 const val GOOGLE_SIGN_IN = 1984
 
