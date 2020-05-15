@@ -270,7 +270,7 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
             //local image stored
             headerImage.clear()
             headerImage.load(sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE_KEY, null))
-        } else if (auth.currentUser!!.photoUrl != null) {
+        } else if (auth.currentUser?.photoUrl != null) {
             //google account image
             headerImage.clear()
             headerImage.load(auth.currentUser!!.photoUrl)
