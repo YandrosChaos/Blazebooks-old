@@ -11,7 +11,7 @@ import com.blazebooks.ui.showbook.SynopsisFragment
  *
  * @author Victor González
  */
-class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
+class ShowBookViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
     /**

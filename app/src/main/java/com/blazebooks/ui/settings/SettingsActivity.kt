@@ -1,5 +1,6 @@
 package com.blazebooks.ui.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.preference.PreferenceManager
@@ -16,19 +17,34 @@ import java.util.*
 /**
  * Shows the preferences that user can change into the app.
  *
- * @see SettingsFragment
+ * @see SharedPreferencesFragment
  * @author Victor Gonzalez
  */
 class SettingsActivity : PreconfiguredActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings, SettingsFragment())
-            .commit()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setContentView(R.layout.activity_settings)
+        loadSettingsMainView()
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    }
+
+    /**
+     * Returns to previous activity and sets custom animation transition.
+     * Also loads the new config
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        loadNewConfig()
+        Toast.makeText(
+            this,
+            getString(R.string.should_restart),
+            Toast.LENGTH_LONG
+        ).show()
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
     }
 
     /**
@@ -40,7 +56,6 @@ class SettingsActivity : PreconfiguredActivity() {
      * @author  Mounir Zbayr
      */
     private fun loadNewConfig() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         when (sharedPreferences.getString(
             Constants.LANGUAGE_SETTING_KEY,
             Constants.DEFAULT_LANGUAGE
@@ -101,20 +116,10 @@ class SettingsActivity : PreconfiguredActivity() {
 
     }
 
-    /**
-     * Returns to previous activity and sets custom animation transition.
-     * Also loads the new config
-     *
-     * @author Victor Gonzalez
-     */
-    override fun onBackPressed() {
-        super.onBackPressed()
-        loadNewConfig()
-        Toast.makeText(
-            this,
-            getString(R.string.should_restart),
-            Toast.LENGTH_LONG
-        ).show()
-        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
+    private fun loadSettingsMainView() {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right)
+            .replace(R.id.settingsFrameLayout, SharedPreferencesFragment())
+            .commit()
     }
 }

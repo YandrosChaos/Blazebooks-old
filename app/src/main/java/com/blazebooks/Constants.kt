@@ -23,7 +23,8 @@ class Constants {
         const val NEW_USERNAME_KEY = "usernamePref"
         const val NEW_PASSWD_KEY = "passwdPref"
         const val NEW_EMAIL_KEY = "emailPref"
-        const val SELECTED_PROFILE_IMAGE = "selectedProfileImg"
+        const val SELECTED_PROFILE_IMAGE_KEY = "selectedProfileImg"
+        const val DELETE_ACCOUNT_KEY = "deleteAccount"
 
     }
 }

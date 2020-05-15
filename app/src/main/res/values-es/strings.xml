@@ -151,6 +151,23 @@
     <string name="sound">Sound</string>
     <string name="sound_summary">On/Off los sonidos y la música.</string>
     <string name="should_restart">Deberías reiniciar Blazebooks =)</string>
+    <string name="delete_account_dialog">¿Borrar cuenta?</string>
+    <string name="delete_account_dialog_desc">¿Quieres borrar tu cuenta? Te echaremos de menos :c</string>
+    <string name="delete_account_dialog_confirm">Borrar</string>
+    <string name="delete_account_dialog_cancel">Cancelar</string>
+    <string name="delete_account_desc">Borra tu cuenta de Blazebooks actual y todas tus suscripciones. Te echaremos de menos Y_Y</string>
+    <string name="delete_account_tittle">Borrar Cuenta</string>
+    <string name="profile_img_desc">¡Escoge Una!</string>
+    <string name="profile_img_title">Imagen de Perfil</string>
+    <string name="email_account_desc">Escoge un nuevo email para tu cuenta. Este email se usará para acceder a la aplicación.</string>
+    <string name="email_account_title">Email</string>
+    <string name="email_acount_dialog_title">Nuevo email</string>
+    <string name="passwd_account_title">Contraseña</string>
+    <string name="paswd_account_text">Cambia tu contraseña. ¡Asegurate de escribirla bien!</string>
+    <string name="passwd_account_dialog_title">Nueva Contraseña</string>
+    <string name="username_account_title">Nombre de Usuario</string>
+    <string name="username_account_desc">Escoge un nuevo nombre de usuario.</string>
+    <string name="username_account_dialog_title">Nuevo nombre de usuario</string>
 
     <!-- Reader -->
     <string name="button_Next_Page_Description">Página siguiente </string>
@@ -181,4 +198,5 @@
     <string name="become_premium_promotional_one">¿Estás listo para empezar a leer de verdad?</string>
     <string name="become_premium_promotional_two">¡Únete a los que ya lo han hecho!</string>
     <string name="wanna_be_premium">¡Quiero ser Premium! :D</string>
+
 </resources>

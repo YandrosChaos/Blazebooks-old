@@ -24,7 +24,6 @@ import coil.api.load
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
-import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.dialogs.ProfileImageDialog
 import com.blazebooks.ui.login.LoginActivity
 import com.blazebooks.ui.settings.SettingsActivity
@@ -231,15 +230,18 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
     }
 
     /**
-     *  Signs out from the current session.
+     *  Signs out from the current session and clean the SharedPreferences.
      *
      * @see LoginActivity
+     *
      * @author Mounir
+     * @author Victor Gonzalez
      */
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginActivity::class.java))
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
+        sharedPreferences.edit().clear().apply()
         finish()
     }
 
@@ -264,10 +266,10 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
         name.text = auth.currentUser?.displayName.toString()
         email.text = auth.currentUser?.email.toString()
 
-        if (!sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE, null).isNullOrBlank()) {
+        if (!sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE_KEY, null).isNullOrEmpty()) {
             //local image stored
             headerImage.clear()
-            headerImage.load(sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE, null))
+            headerImage.load(sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE_KEY, null))
         } else if (auth.currentUser!!.photoUrl != null) {
             //google account image
             headerImage.clear()

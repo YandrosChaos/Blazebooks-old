@@ -33,26 +33,39 @@
 
     <PreferenceCategory android:title="ACCOUNT">
         <EditTextPreference
+            android:dialogTitle="@string/username_account_dialog_title"
             android:icon="@drawable/ic_reading_big"
-            android:dialogTitle="New username"
+            android:inputType="textPersonName"
             android:key="usernamePref"
-            android:summary="Choose new username."
-            android:title="Username"
-            android:inputType="textPersonName"/>
+            android:summary="@string/username_account_desc"
+            android:title="@string/username_account_title" />
         <EditTextPreference
+            android:dialogTitle="@string/passwd_account_dialog_title"
             android:icon="@drawable/ic_passwd"
-            android:dialogTitle="New password"
+            android:inputType="textPassword"
             android:key="passwdPref"
-            android:summary="Change your password. Make sure you write it well."
-            android:title="Password"
-            android:inputType="textPassword"/>
+            android:summary="@string/paswd_account_text"
+            android:title="@string/passwd_account_title" />
+
         <EditTextPreference
+            android:dialogTitle="@string/email_acount_dialog_title"
             android:icon="@drawable/ic_email"
-            android:dialogTitle="New email"
+            android:inputType="textEmailAddress"
             android:key="emailPref"
-            android:summary="Choose a new email for your account. This email is used to login."
-            android:title="Email"
-            android:inputType="textEmailAddress"/>
+            android:summary="@string/email_account_desc"
+            android:title="@string/email_account_title" />
+
+        <Preference
+            android:icon="@drawable/ic_check"
+            android:key="selectedProfileImg"
+            android:summary="@string/profile_img_desc"
+            android:title="@string/profile_img_title" />
+
+        <Preference
+            android:icon="@drawable/ic_cross"
+            android:key="deleteAccount"
+            android:summary="@string/delete_account_desc"
+            android:title="@string/delete_account_tittle" />
 
     </PreferenceCategory>
 
