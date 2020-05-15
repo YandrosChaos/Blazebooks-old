@@ -7,6 +7,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.dataAccessObjects.UserDao
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * @author Victor Gonzalez
@@ -46,7 +48,7 @@ class SharedPreferencesFragment() : PreferenceFragmentCompat() {
             .setCancelable(false)
             // positive button text and action
             .setPositiveButton(getString(R.string.delete_account_dialog_confirm)) { dialog, id ->
-                //TODO -> DELETE ACCOUNT?
+               UserDao().delete("id")
             }
             // negative button text and action
             .setNegativeButton(getString(R.string.delete_account_dialog_cancel)) { dialog, id ->

@@ -8,7 +8,7 @@ interface DAO<T> {
 
     fun insert(todo: T)
 
-    fun delete(todo: T)
+    fun delete(id: String)
 
     fun update(todo: T)
 

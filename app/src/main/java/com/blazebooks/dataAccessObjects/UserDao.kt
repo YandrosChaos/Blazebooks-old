@@ -83,7 +83,7 @@ class UserDao() : DAO<User> {
             }
     }//insert
 
-    override fun delete(user: User) {
+    override fun delete(id: String) {
 
         val firebaseUser = auth.currentUser
         firebaseUser?.delete()
@@ -93,7 +93,7 @@ class UserDao() : DAO<User> {
                 } else throw  DaoException("Error", task.exception)
             }
 
-        db.collection("Users").document(firebaseUser?.uid.toString()).delete()
+        db.collection("Users").document(id).delete()
 
     }//delete
 
