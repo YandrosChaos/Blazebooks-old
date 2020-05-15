@@ -5,16 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.Toast
-import com.airbnb.lottie.LottieAnimationView
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
 import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.reader.ReaderActivity
-import com.blazebooks.ui.showbook.control.ViewPagerAdapter
+import com.blazebooks.ui.showbook.control.ShowBookViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
@@ -30,7 +28,7 @@ import java.io.File
  */
 class ShowBookActivity : PreconfiguredActivity() {
     private val adapter by lazy {
-        ViewPagerAdapter(
+        ShowBookViewPagerAdapter(
             this
         )
     }

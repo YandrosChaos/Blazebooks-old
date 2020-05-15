@@ -111,7 +111,7 @@ class ProfileImageDialog : DialogFragment() {
         val sharedPreferences: SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString(Constants.SELECTED_PROFILE_IMAGE, url)
+        editor.putString(Constants.SELECTED_PROFILE_IMAGE_KEY, url)
         editor.apply()
     }
 }

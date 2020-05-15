@@ -148,6 +148,23 @@
     <string name="sound">Sound</string>
     <string name="sound_summary">On/Off the sound and music.</string>
     <string name="should_restart">You should reload Blazebooks  =)</string>
+    <string name="delete_account_dialog">Delete Account?</string>
+    <string name="delete_account_dialog_desc">Do you want to delete your Blazebooks account? We will miss you :c</string>
+    <string name="delete_account_dialog_confirm">Delete</string>
+    <string name="delete_account_dialog_cancel">Cancel</string>
+    <string name="delete_account_desc">Removes your BlazeBooks account and all your current subscriptions will be cancelled. We will miss you Y_Y</string>
+    <string name="delete_account_tittle">Delete Account</string>
+    <string name="profile_img_desc">Choose one!</string>
+    <string name="profile_img_title">Profile Image</string>
+    <string name="email_account_desc">Choose a new email for your account. This email is used to login.</string>
+    <string name="email_account_title">Email</string>
+    <string name="email_acount_dialog_title">New email</string>
+    <string name="passwd_account_title">Password</string>
+    <string name="paswd_account_text">Change your password. Make sure you write it well.</string>
+    <string name="passwd_account_dialog_title">New password</string>
+    <string name="username_account_title">Username</string>
+    <string name="username_account_desc">Choose new username.</string>
+    <string name="username_account_dialog_title">New username</string>
 
     <!-- Reader -->
     <string name="button_Next_Page_Description">Next page</string>
