@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.text.Html
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
@@ -27,17 +29,13 @@ import java.time.format.DateTimeFormatter
  */
 class ReaderActivity : PreconfiguredActivity() {
 
-
+    private lateinit var layoutFilter: ImageView
     private var num = 0 //representa el número de página actual
-
-    //colores RGB del filtro de pantalla -> modo lectura
-    private val redColor: Int = 112
-    private val greenColor: Int = 66
-    private val blueColor: Int = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reader)
+        layoutFilter = findViewById(R.id.readerFilterImageView)
 
         loadLightMode()
         clock()
@@ -96,7 +94,7 @@ class ReaderActivity : PreconfiguredActivity() {
     private fun next(pages: ArrayList<String>) {
         num++
         numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
-        textReader.scrollTo(0,0)
+        textReader.scrollTo(0, 0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
         }
@@ -112,7 +110,7 @@ class ReaderActivity : PreconfiguredActivity() {
         if (num != 0) {
             num--
             numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
-            textReader.scrollTo(0,0)
+            textReader.scrollTo(0, 0)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
             }
@@ -152,13 +150,7 @@ class ReaderActivity : PreconfiguredActivity() {
     private fun loadLightMode() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         if (sharedPreferences.getBoolean(Constants.READ_MODE_KEY, false)) {
-            readerActivityCL.setBackgroundColor(
-                Color.rgb(
-                    redColor,
-                    greenColor,
-                    blueColor
-                )
-            )
+            layoutFilter.visibility = View.VISIBLE
         }
     }
 
@@ -172,7 +164,6 @@ class ReaderActivity : PreconfiguredActivity() {
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
         finish()
     }
-
 
 
 }//class
