@@ -1,23 +1,15 @@
 package com.blazebooks.dataAccessObjects
 
-import android.app.Activity
 import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import com.blazebooks.model.User
-import com.blazebooks.ui.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest.Builder
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-class UserDao(
-    //val view: View,
-    private val context: Context
-) : DAO<User> {
+class UserDao() : DAO<User> {
 
     //Necesario para la autenticación
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -84,17 +76,9 @@ class UserDao(
 
                     db.collection("Users").document(firebaseUser?.uid.toString()).set(user.toMap())
 
-                    context.startActivity(Intent(context, MainActivity::class.java))
-                    if (context is Activity) {
-                        context.finish()
-                    }
+
                 } else {
-                    /*Snackbar.make(
-                        view, task.exception?.message.toString()
-                        ,
-                        Snackbar.LENGTH_LONG
-                    ).show()*/
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                    throw  DaoException("Error", task.exception)
                 }//if
             }
     }//insert
@@ -105,13 +89,16 @@ class UserDao(
         firebaseUser?.delete()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(context, "User account deleted", Toast.LENGTH_SHORT).show()
-                } else Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "User account deleted.")
+                } else throw  DaoException("Error", task.exception)
             }
+
+        db.collection("Users").document(firebaseUser?.uid.toString()).delete()
 
     }//delete
 
     override fun update(user: User) {
+
         val profileUpdates = Builder()
             .setDisplayName(user.userName)
             .setPhotoUri(Uri.parse(user.URLprofile))
@@ -124,13 +111,18 @@ class UserDao(
                     Log.d(TAG, "User profile updated.")
                 }
             }
-        firebaseUser?.updateEmail(user.email)
 
-        firebaseUser?.updatePassword(user.password)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) Log.d(TAG, "Password updated.")
-                else Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+        firebaseUser?.updateEmail(user.email)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "User email updated.")
             }
+        }
+
+        firebaseUser?.updatePassword(user.password)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "User password updated.")
+            }
+        }
 
         db.collection("Users").document(firebaseUser?.uid.toString()).set(user.toMap())
     }//update

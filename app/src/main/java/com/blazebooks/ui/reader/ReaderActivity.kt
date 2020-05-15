@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.text.Html
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
@@ -48,14 +50,24 @@ class ReaderActivity : PreconfiguredActivity() {
 
         numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
 
-        //Convierte el html sacado del epub al texto visible en el lector
+        /*//Convierte el html sacado del epub al texto visible en el lector
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
         }
         textReader.movementMethod = ScrollingMovementMethod()//Añade el scroll de las páginas
 
         buttonNext.setOnClickListener { next(pages) } //Botón para ir a la página siguiente
-        buttonPrevious.setOnClickListener { previous(pages) } //Botón para ir a la página anterior
+        buttonPrevious.setOnClickListener { previous(pages) } //Botón para ir a la página anterior*/
+
+
+        webViewReader.webChromeClient = object : WebChromeClient(){
+
+        }
+
+        val settings = webViewReader.settings
+        settings.javaScriptEnabled = true
+
+        webViewReader.loadUrl("https://www.google.es")
 
 
     }
@@ -93,7 +105,7 @@ class ReaderActivity : PreconfiguredActivity() {
      * @author Mounir
      * @author Victor Gonzalez
      */
-    private fun next(pages: ArrayList<String>) {
+    /*private fun next(pages: ArrayList<String>) {
         num++
         numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
         textReader.scrollTo(0,0)
@@ -117,7 +129,7 @@ class ReaderActivity : PreconfiguredActivity() {
                 textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
             }
         }
-    }
+    }*/
 
     /**
      * Método que añade al textview tTime la hora en tiempo real
@@ -171,6 +183,10 @@ class ReaderActivity : PreconfiguredActivity() {
         super.onBackPressed()
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
         finish()
+    }
+
+    fun webview(){
+
     }
 
 

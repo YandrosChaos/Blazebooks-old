@@ -36,7 +36,8 @@ class SettingsActivity : PreconfiguredActivity() {
      * language.
      *
      * @see PreconfiguredActivity
-     * @author  Victor Gonzalez & Mounir Zbayr
+     * @author  Victor Gonzalez
+     * @author  Mounir Zbayr
      */
     private fun loadNewConfig() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -56,7 +57,7 @@ class SettingsActivity : PreconfiguredActivity() {
             updateUserData(newUsername, newEmail, newPassword)
 
 
-        sharedPreferences.edit().putString(Constants.NEW_EMAIL_KEY, "").apply()
+        sharedPreferences.edit().remove(Constants.NEW_USERNAME_KEY).apply()
         sharedPreferences.edit().putString(Constants.NEW_USERNAME_KEY, "").apply()
         sharedPreferences.edit().putString(Constants.NEW_PASSWD_KEY, "").apply()
     }//loadNewConfig
@@ -74,22 +75,30 @@ class SettingsActivity : PreconfiguredActivity() {
             .addOnSuccessListener { documentSnapshot ->
                 val oldUser = documentSnapshot.toObject(User::class.java)
 
-                Toast.makeText(this, oldUser?.toString(), Toast.LENGTH_LONG).show()
-
                 val credential = EmailAuthProvider
                     .getCredential(oldUser?.email.toString(), oldUser?.password.toString())
                 firebaseUser?.reauthenticate(credential)
 
-                if (!newUsername.equals("")) oldUser?.userName = newUsername.toString()
+                if (!newUsername.equals("")) {
+                    oldUser?.userName = newUsername.toString()
+                    Toast.makeText(this, "Username updated", Toast.LENGTH_SHORT).show()
+                }
 
-                if (!newEmail.equals("")) oldUser?.email = newEmail.toString()
+                if (!newEmail.equals("")) {
+                    oldUser?.email = newEmail.toString()
+                    Toast.makeText(this, "Email updated", Toast.LENGTH_SHORT).show()
+                }
 
-                if (!newPassword.equals("")) oldUser?.password = newPassword.toString()
+                if (!newPassword.equals("")){
+                    oldUser?.password = newPassword.toString()
+                    Toast.makeText(this, "Password updated", Toast.LENGTH_SHORT).show()
+                }
 
                 if (oldUser != null) {
-                    UserDao(this).update(oldUser)
+                    UserDao().update(oldUser)
                 }
             }
+
     }
 
     /**
