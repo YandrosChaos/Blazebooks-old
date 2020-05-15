@@ -8,6 +8,7 @@ import com.blazebooks.R
 import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
 import com.blazebooks.ui.PreconfiguredActivity
+import com.blazebooks.ui.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
@@ -75,7 +76,7 @@ class SignInActivity : PreconfiguredActivity() {
 
 
         //Creacion e insercion del usuario en la base de datos
-        val pruebaDao = UserDao(this)
+
         val user = User(
             signInActivityUserName.text.toString(),
             singInActivityUserPasswd.text.toString(),
@@ -84,7 +85,10 @@ class SignInActivity : PreconfiguredActivity() {
             false
         )
 
-        pruebaDao.insert(user)
+        UserDao().insert(user)
+        startActivity(Intent(this, MainActivity::class.java))
+
+        finish()
 
     }//singInClicked
 
