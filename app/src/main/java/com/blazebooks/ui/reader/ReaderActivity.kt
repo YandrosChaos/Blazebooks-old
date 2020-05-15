@@ -1,18 +1,11 @@
 package com.blazebooks.ui.reader
 
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
-<<<<<<< HEAD
 import android.view.View
-import android.widget.ImageView
-=======
 import android.webkit.WebChromeClient
-import android.webkit.WebView
->>>>>>> a5e631d68a54a3145395b41f188892c3a84e59ab
+import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
