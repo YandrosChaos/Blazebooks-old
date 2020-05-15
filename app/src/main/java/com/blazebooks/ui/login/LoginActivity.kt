@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
-import com.blazebooks.ui.MainActivity
+import com.blazebooks.ui.home.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
 import com.blazebooks.ui.dialogs.ForgotPasswdDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -80,6 +82,9 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
      */
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
+
+            Constants.CURRENT_USER = UserDao(this).get(currentUser.uid)
+
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
             lottie_loading_animation.visibility = View.GONE
@@ -204,12 +209,12 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
      * @author Victor Gonzalez
      */
     override fun onForgotPasswdSent(dialog: ForgotPasswdDialog) {
-            Toast.makeText(
-                this,
-                getString(R.string.log_dialog_email_sent),
-                Toast.LENGTH_LONG
-            ).show()
-            onCloseForgotPasswdDialog(dialog)
+        Toast.makeText(
+            this,
+            getString(R.string.log_dialog_email_sent),
+            Toast.LENGTH_LONG
+        ).show()
+        onCloseForgotPasswdDialog(dialog)
     }
 
     /**

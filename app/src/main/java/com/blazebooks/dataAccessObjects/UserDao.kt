@@ -8,8 +8,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.blazebooks.model.User
-import com.blazebooks.ui.MainActivity
-import com.google.firebase.auth.EmailAuthProvider
+import com.blazebooks.ui.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest.Builder
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,13 +24,45 @@ class UserDao(
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
 
-
     override fun getAll(): List<User> {
-        TODO("Not yet implemented")
+        val listOfUsers = arrayListOf<User>()
+
+        db.collection("Users")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        //TODO -> transformar el documento a user
+                        listOfUsers.add(document.toObject(User::class.java))
+                    }
+                } else {
+                    throw  DaoException("Error getting docs!", task.exception)
+                }
+            }
+
+        return listOfUsers
     }
 
-    override fun get(title: String): User {
-        TODO("Not yet implemented")
+    override fun get(id: String): User {
+        var user: User = User()
+
+        db.collection("Users")
+            .document(id)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    if (document != null) {
+                        user = document.toObject(User::class.java)!!
+                    } else {
+                        throw DaoException("The document is null!")
+                    }
+                } else {
+                    throw  DaoException("Error getting the doc!", task.exception)
+                }
+            }
+
+        return user
     }
 
     override fun insert(user: User) {
@@ -51,7 +82,7 @@ class UserDao(
 
                     firebaseUser?.updateProfile(profileUpdates)
 
-                    db.collection("Users").document(firebaseUser?.uid.toString()).set(user)
+                    db.collection("Users").document(firebaseUser?.uid.toString()).set(user.toMap())
 
                     context.startActivity(Intent(context, MainActivity::class.java))
                     if (context is Activity) {
@@ -75,7 +106,7 @@ class UserDao(
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(context, "User account deleted", Toast.LENGTH_SHORT).show()
-                }else Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                } else Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
             }
 
     }//delete
@@ -101,7 +132,7 @@ class UserDao(
                 else Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
             }
 
-        db.collection("Users").document(firebaseUser?.uid.toString()).set(user)
+        db.collection("Users").document(firebaseUser?.uid.toString()).set(user.toMap())
     }//update
 
 }//class

@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.blazebooks.ui.catalog.CatalogFragment"
+        android:name="com.blazebooks.ui.home.CatalogFragment"
         android:label="@string/menu_books"
         tools:layout="@layout/fragment_books" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.blazebooks.ui.about.AboutFragment"
+        android:name="com.blazebooks.ui.home.AboutFragment"
         android:label="@string/menu_about"
         tools:layout="@layout/fragment_about"
         />

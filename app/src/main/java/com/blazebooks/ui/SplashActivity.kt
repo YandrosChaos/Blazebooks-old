@@ -9,7 +9,6 @@ import androidx.preference.PreferenceManager
 import com.blazebooks.BuildConfig
 import com.blazebooks.Constants
 import com.blazebooks.R
-import com.blazebooks.model.User
 import com.blazebooks.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*

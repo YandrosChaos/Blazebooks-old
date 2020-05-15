@@ -1,4 +1,4 @@
-package com.blazebooks.ui
+package com.blazebooks.ui.home
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -23,6 +23,8 @@ import coil.api.clear
 import coil.api.load
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.ui.PreconfiguredActivity
+import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.dialogs.ProfileImageDialog
 import com.blazebooks.ui.login.LoginActivity
 import com.blazebooks.ui.settings.SettingsActivity
@@ -276,5 +278,4 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
             headerImage.load(R.drawable.ic_reading_big)
         }
     }
-
 }

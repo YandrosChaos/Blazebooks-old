@@ -9,7 +9,7 @@ import coil.api.load
 import coil.transform.BlurTransformation
 import com.blazebooks.Constants
 import com.blazebooks.R
-import kotlinx.android.synthetic.main.activity_show_book_item.*
+import kotlinx.android.synthetic.main.item_show_book.*
 import kotlinx.android.synthetic.main.fragment_show_book_synopsis.*
 
 class SynopsisFragment : Fragment() {

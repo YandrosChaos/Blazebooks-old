@@ -33,7 +33,7 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_search_book_item, parent, false)
+            .inflate(R.layout.item_search_book, parent, false)
         return SearchViewHolder(view)
     }
 

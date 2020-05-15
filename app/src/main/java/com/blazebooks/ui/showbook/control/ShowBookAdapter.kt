@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
 import com.blazebooks.model.Chapter
-import com.blazebooks.ui.showbook.control.BookViewHolder
 
 /**
  * @see com.blazebooks.ui.showbook.ShowBookActivity
@@ -16,7 +15,7 @@ class ShowBookAdapter(private val chapterList: ArrayList<Chapter>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val layoutInflate = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_show_book_item_chapter, parent, false)
+            .inflate(R.layout.item_show_book_chapter, parent, false)
 
         return BookViewHolder(layoutInflate)
 

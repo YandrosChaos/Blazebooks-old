@@ -5,17 +5,20 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
+import com.airbnb.lottie.LottieAnimationView
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
+import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.ui.showbook.control.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
-import kotlinx.android.synthetic.main.activity_show_book_item.*
+import kotlinx.android.synthetic.main.item_show_book.*
 import java.io.File
 
 
@@ -84,37 +87,49 @@ class ShowBookActivity : PreconfiguredActivity() {
 
     /**
      * Método que al pulsar el botón de descarga obtiene el archivo del firebase storage y lo guarda
-     * en una carpeta con el nombre del libro, creando ésta en la carpeta del proyecto
+     * en una carpeta con el nombre del libro, creando ésta en la carpeta del proyecto.
+     *
+     * Si el usuario no es premium, mostrará BecomePremiumActivity.
+     *
+     * @see BecomePremiumActivity
+     * @see downloadFile
      *
      * @author MounirZbayr
+     * @author Victor Gonzalez
      */
     fun download(view: View) {
-        val titleBook = showBookTvTitle.text.toString() //nombre del libro
-        val documents = "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
-        val documentsFolder = File(this.filesDir, documents)
+        if (Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium) {
+            startActivity(Intent(this, BecomePremiumActivity::class.java))
+            overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
+        } else {
+            val titleBook = showBookTvTitle.text.toString() //nombre del libro
+            val documents = "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
+            val documentsFolder = File(this.filesDir, documents)
 
-        //si la carpeta existe solo mostrará el mensaje, si no la creará y descargará el libro
-        if (documentsFolder.exists()) Toast.makeText(
-            this,
-            getString(R.string.already_dwnload),
-            Toast.LENGTH_SHORT
-        ).show()
-        else {
-            Toast.makeText(this, getString(R.string.dwnloading), Toast.LENGTH_SHORT).show()
+            //si la carpeta existe solo mostrará el mensaje, si no la creará y descargará el libro
+            if (documentsFolder.exists()) Toast.makeText(
+                this,
+                getString(R.string.already_dwnload),
+                Toast.LENGTH_SHORT
+            ).show()
+            else {
+                Toast.makeText(this, getString(R.string.dwnloading), Toast.LENGTH_SHORT).show()
 
-            documentsFolder.mkdirs() // Crea la carpeta en la direccion dada
+                documentsFolder.mkdirs() // Crea la carpeta en la direccion dada
 
-            val mStorageRef =
-                FirebaseStorage.getInstance().reference //Referencia al storage de Firebase
-            //Con esto se obtiene la url del libro dependiendo de su nombre
-            mStorageRef.child("Epub/$titleBook.epub").downloadUrl.addOnSuccessListener {
-                downloadFile(this, titleBook, documents, it.toString())
-                Toast.makeText(this, getString(R.string.dwnload_cmplete), Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
-                Toast.makeText(this, getString(R.string.dwnload_error), Toast.LENGTH_SHORT).show()
+                val mStorageRef =
+                    FirebaseStorage.getInstance().reference //Referencia al storage de Firebase
+                //Con esto se obtiene la url del libro dependiendo de su nombre
+                mStorageRef.child("Epub/$titleBook.epub").downloadUrl.addOnSuccessListener {
+                    downloadFile(this, titleBook, documents, it.toString())
+                    Toast.makeText(this, getString(R.string.dwnload_cmplete), Toast.LENGTH_SHORT)
+                        .show()
+                }.addOnFailureListener {
+                    Toast.makeText(this, getString(R.string.dwnload_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
-
     }
 
     /**
@@ -123,7 +138,6 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author Mounir Zbayr
      */
     private fun downloadFile(
-
         context: Context,
         fileName: String,
         destinationDirectory: String?,
@@ -144,25 +158,34 @@ class ShowBookActivity : PreconfiguredActivity() {
     }
 
     /**
-     * Método de pulsado del boton Read, el cual lleva al libro elegido
+     * Método de pulsado del boton Read, el cual lleva al libro elegido.
+     * Si el usuario no es premium mostrará BecomePremiumActivity.
+     *
+     * @see BecomePremiumActivity
      *
      * @author Mounir Zbayr
      * @author Victor Gonzalez
      */
     fun read(view: View) {
-
-        val titleBook = showBookTvTitle.text.toString()
-        val documents = "books/$titleBook"
-        val documentsFolder = File(this.filesDir, documents)
-
-        if (documentsFolder.exists()) {
-            val i = Intent(this, ReaderActivity::class.java)
-            i.putExtra(Constants.PATH_CODE, "$documents/$titleBook.epub")
-            startActivity(i)
-            overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-            finish()
+        if (Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium) {
+            startActivity(Intent(this, BecomePremiumActivity::class.java))
+            overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
         } else {
-            Toast.makeText(this, getString(R.string.not_dwnload_yet), Toast.LENGTH_SHORT).show()
+
+            val titleBook = showBookTvTitle.text.toString()
+            val documents = "books/$titleBook"
+            val documentsFolder = File(this.filesDir, documents)
+
+            if (documentsFolder.exists()) {
+                val i = Intent(this, ReaderActivity::class.java)
+                i.putExtra(Constants.PATH_CODE, "$documents/$titleBook.epub")
+                startActivity(i)
+                overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+                finish()
+            } else {
+                Toast.makeText(this, getString(R.string.not_dwnload_yet), Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 

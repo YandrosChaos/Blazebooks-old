@@ -154,4 +154,29 @@
     <string name="button_Previous_Page_Description">Previous page</string>
     <string name="pageNumber">%1$d/%2$d</string>
 
+    <!-- Become Premium Activity -->
+    <string name="yearly_plan_title">Yearly Plan</string>
+    <string name="yearly_plan_desc">Enjoy Blazebooks for a year for less than what a book costs.</string>
+    <string name="yearly_plan_price">9,99€</string>
+    <string name="monthly_plan_title">Monthly Plan</string>
+    <string name="monthly_plan_desc">Enjoy Blazebooks for a month for less than the price of a snack.</string>
+    <string name="monthly_plan_price">0,99€</string>
+    <string name="become_premium_benefits">Benefits</string>
+    <string name="become_premium_benefits_one">Remove the limit of books you can store.</string>
+    <string name="become_premium_benefits_two">Unlock all premium content!</string>
+    <string name="become_premium_benefits_three">Special and personalized recommendations.</string>
+    <string name="become_premium_benefits_four">Early Access.</string>
+    <string name="free_plan_title">Free Plan</string>
+    <string name="free_plan_desc_one">Limit the books you can store.</string>
+    <string name="free_plan_desc_two">Premium content locked.</string>
+    <string name="free_plan_desc_three">Special and personalized recommendations locked.</string>
+    <string name="free_plan_desc_four">Early Access Locked.</string>
+    <string name="free_plan_price">I prefer the free version :\'c</string>
+    <string name="i_want_you">I want you</string>
+    <string name="to_become_premium">To Become Premium</string>
+    <string name="close_button">Close button</string>
+    <string name="become_premium_promotional_one">Are you ready to start reading?</string>
+    <string name="become_premium_promotional_two">Join those who already have!</string>
+    <string name="wanna_be_premium">I want to be premium! :D</string>
+
 </resources>

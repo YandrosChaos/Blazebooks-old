@@ -156,4 +156,29 @@
     <string name="button_Next_Page_Description">Página siguiente </string>
     <string name="button_Previous_Page_Description">Página anterior</string>
     <string name="pageNumber">%1$d/%2$d</string>
+
+    <!-- Become Premium Activity -->
+    <string name="yearly_plan_title">Plan Anual</string>
+    <string name="yearly_plan_desc">Disfruta de Blazebooks durante un año por menos de lo que cuesta un libro.</string>
+    <string name="yearly_plan_price">9,99€</string>
+    <string name="monthly_plan_title">Plan Mensual</string>
+    <string name="monthly_plan_desc">Disfruta de Blazebooks durante un mes por el precio de una merienda.</string>
+    <string name="monthly_plan_price">0,99€</string>
+    <string name="become_premium_benefits">Beneficios</string>
+    <string name="become_premium_benefits_one">Elimina el límite de libros que puedes almacenar.</string>
+    <string name="become_premium_benefits_two">¡Desbloquea todo el contenido premium!</string>
+    <string name="become_premium_benefits_three">Recomendaciones especiales y personalizadas.</string>
+    <string name="become_premium_benefits_four">Early Access.</string>
+    <string name="free_plan_title">Plan Gratuito</string>
+    <string name="free_plan_desc_one">Limita de libros que puedes almacenar.</string>
+    <string name="free_plan_desc_two">Contenido premium bloqueado.</string>
+    <string name="free_plan_desc_three">Recomendaciones especiales y personalizadas bloqueadas.</string>
+    <string name="free_plan_desc_four">Early Access bloqueado.</string>
+    <string name="free_plan_price">Prefiero la versión gratuita :\'c</string>
+    <string name="i_want_you">I want you</string>
+    <string name="to_become_premium">To Become Premium</string>
+    <string name="close_button">Close button</string>
+    <string name="become_premium_promotional_one">¿Estás listo para empezar a leer de verdad?</string>
+    <string name="become_premium_promotional_two">¡Únete a los que ya lo han hecho!</string>
+    <string name="wanna_be_premium">¡Quiero ser Premium! :D</string>
 </resources>

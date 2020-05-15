@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
 import com.blazebooks.model.Chapter
-import kotlinx.android.synthetic.main.activity_show_book_item_chapter.view.*
+import kotlinx.android.synthetic.main.item_show_book_chapter.view.*
 
 class BookViewHolder(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
