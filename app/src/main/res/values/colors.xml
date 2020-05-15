@@ -8,6 +8,14 @@
     <color name="blueDark">#0000CD</color>
     <color name="blueAccent">#48D1CC</color>
 
+    <!-- Login activity colors-->
+    <color name="secondary">#2d2d2d</color>
+    <color name="secondaryDark">#1F1C26</color>
+    <color name="secondaryAccent">#CE2A5E</color>
+    <color name="grayTransparent">#4f0e0d0e</color>
+    <color name="sepiaTransparent">#99704214</color>
+
+    <!-- Other -->
     <color name="black">#000000</color>
     <color name="purple">#8A2BE2</color>
     <color name="darkPurple">#4B0082</color>
@@ -15,11 +23,5 @@
     <color name="gold">#B8860B</color>
     <color name="yellow">#FFD700</color>
     <color name="white">#F8F8FF</color>
-
-    <!-- Login activity colors-->
-    <color name="secondary">#2d2d2d</color>
-    <color name="secondaryDark">#1F1C26</color>
-    <color name="secondaryAccent">#CE2A5E</color>
-    <color name="grayTransparent">#4f0e0d0e</color>
 
 </resources>
