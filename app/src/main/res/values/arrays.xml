@@ -29,6 +29,7 @@
 
     <string-array name="authors">
         <item>Unknown</item>
+        <item>David González</item>
     </string-array>
 
     <string-array name="profile_img_url">

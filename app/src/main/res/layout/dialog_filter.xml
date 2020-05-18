@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Author: Victor González
-    Some checkboxes will added dynamically during the execution.
+    Some checkboxes and radiobutton will be added dynamically during the execution.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +11,7 @@
     android:background="@color/grayTransparent"
     android:clickable="true"
     android:focusable="true"
-    android:padding="10sp">
+    android:padding="5sp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                     <RadioGroup
                         android:id="@+id/dialogFilterAuthorsRG"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                     </RadioGroup>
 

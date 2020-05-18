@@ -1,12 +1,14 @@
 package com.blazebooks.ui.dialogs
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.blazebooks.R
 import com.google.android.material.checkbox.MaterialCheckBox
@@ -150,7 +152,7 @@ class FilterDialog(private val storedFilterList: MutableList<Pair<String, String
         val dialogFilterLanguageLl = view.findViewById<RadioGroup>(R.id.dialogFilterLanguageRG)
 
         //add genres
-        resources.getStringArray(R.array.genres)
+        resources.getStringArray(R.array.genres).sortedArray()
             .forEach {
                 createCheckBox(it, resources.getString(R.string.genres))
                     .apply {
@@ -160,7 +162,7 @@ class FilterDialog(private val storedFilterList: MutableList<Pair<String, String
             }
 
         //add languages
-        resources.getStringArray(R.array.languages)
+        resources.getStringArray(R.array.languages).sortedArray()
             .forEach {
                 createRadioButton(it, resources.getString(R.string.language))
                     .apply {
@@ -170,7 +172,7 @@ class FilterDialog(private val storedFilterList: MutableList<Pair<String, String
             }
 
         //add premium
-        resources.getStringArray(R.array.premium)
+        resources.getStringArray(R.array.premium).sortedArray()
             .forEach {
                 createRadioButton(it, resources.getString(R.string.premium))
                     .apply {
@@ -180,13 +182,14 @@ class FilterDialog(private val storedFilterList: MutableList<Pair<String, String
             }
 
         //add authors
-        resources.getStringArray(R.array.authors).forEach {
-            createRadioButton(it, resources.getString(R.string.authors))
-                .apply {
-                    dialogFilterAuthorsLl.addView(this)
-                    radioButtonList.add(this)
-                }
-        }
+        resources.getStringArray(R.array.authors).sortedArray()
+            .forEach {
+                createRadioButton(it, resources.getString(R.string.authors))
+                    .apply {
+                        dialogFilterAuthorsLl.addView(this)
+                        radioButtonList.add(this)
+                    }
+            }
     }
 
     /**
@@ -238,7 +241,7 @@ class FilterDialog(private val storedFilterList: MutableList<Pair<String, String
             this.text = text
             this.tag = tag
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT
             )
             setTextColor(resources.getColor(R.color.white))
@@ -258,7 +261,7 @@ class FilterDialog(private val storedFilterList: MutableList<Pair<String, String
             this.text = text
             this.tag = tag
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT
             )
             setTextColor(resources.getColor(R.color.white))
