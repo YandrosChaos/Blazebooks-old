@@ -9,7 +9,7 @@
         android:id="@+id/vewPagerContainerLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
@@ -20,13 +20,14 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/activityShowBookViewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_weight="1"
         android:id="@+id/menuContainerLL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0sp"
         android:layout_marginStart="10sp"
         android:layout_marginTop="5sp"
         android:layout_marginEnd="10sp"
@@ -37,8 +38,8 @@
 
         <ImageButton
             android:id="@+id/showBookBtnRead"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
             android:layout_marginTop="5sp"
             android:layout_marginEnd="20sp"
             android:layout_marginBottom="5sp"
@@ -48,8 +49,8 @@
 
         <ImageButton
             android:id="@+id/showBookBtnDownload"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
             android:layout_marginStart="20sp"
             android:layout_marginTop="5sp"
             android:layout_marginEnd="20sp"

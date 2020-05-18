@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layoutAnimation="@anim/layout_animation_left_to_right"
+    android:layoutAnimation="@anim/layout_animation_right_to_left"
     android:layout_height="match_parent"
     android:background="@drawable/dark_background">
 
