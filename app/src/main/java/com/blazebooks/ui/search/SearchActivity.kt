@@ -40,7 +40,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
     private lateinit var mAdapter: SearchAdapter
     private lateinit var mSearchView: EditText
     private lateinit var mFilterDialogFrameLayout: FrameLayout
-    private var checkboxFilterList: MutableList<CheckBox> = mutableListOf()
+    private var filterList: MutableList<Pair<String, String>> = mutableListOf()
 
     /**
      * Sets toolbar title. Gets a list of items and add the Text Change Listener, filter the list and
@@ -72,7 +72,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         //Search Event. After text change, filter the list and updates the adapter
         mSearchView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                filterList(p0.toString(), checkboxFilterList)
+                filterList(p0.toString(), filterList)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -103,7 +103,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      *
      * @author Victor Gonzalez
      */
-    private fun filterList(filterItem: String, filterList: MutableList<CheckBox>) {
+    private fun filterList(filterItem: String, filterList: MutableList<Pair<String, String>>) {
 
         //filter by title
         var tempListWithFilters: MutableList<Book> = bookList.filter { book ->
@@ -112,19 +112,19 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         } as MutableList<Book>
 
         if (filterList.isNotEmpty()) {
-            filterList.forEach { checkbox ->
-                when (checkbox.tag.toString()) {
+            filterList.forEach { filterItem ->
+                when (filterItem.first) {
 
                     getString(R.string.genres) -> {
                         //filter by genre and title
                         tempListWithFilters = tempListWithFilters.filter { book ->
-                            book.genre!!.contains(checkbox.text.toString())
+                            book.genre!!.contains(filterItem.second)
                         } as MutableList<Book>
                     }
 
                     getString(R.string.premium) -> {
                         tempListWithFilters =
-                            if (checkbox.text.toString()
+                            if (filterItem.second
                                     .toLowerCase(Locale.ROOT) == "premium"
                             ) {
                                 //filter premium
@@ -142,7 +142,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
                     getString(R.string.authors) -> {
                         //filter by author
                         tempListWithFilters = tempListWithFilters.filter { book ->
-                            book.author!!.contains(checkbox.text.toString())
+                            book.author!!.contains(filterItem.second)
                         } as MutableList<Book>
                     }
 
@@ -200,7 +200,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         mFilterDialogFrameLayout.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
-            .replace(R.id.searchActivityFilterFragment, FilterDialog(checkboxFilterList))
+            .replace(R.id.searchActivityFilterFragment, FilterDialog(filterList))
             .commit()
     }
 
@@ -213,8 +213,8 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     override fun onReturnFilters(dialog: FilterDialog) {
-        checkboxFilterList.clear()
-        checkboxFilterList = dialog.filterReturnList
+        filterList.clear()
+        filterList = dialog.filterReturnList
         onCloseDialog(dialog)
     }
 
@@ -226,7 +226,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     override fun onClearFilters(dialog: FilterDialog) {
-        checkboxFilterList.clear()
+        filterList.clear()
     }
 
     /**
@@ -234,7 +234,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     override fun onCloseDialog(dialog: FilterDialog) {
-        filterList("", checkboxFilterList)
+        filterList("", filterList)
         dialog.dismiss()
         mFilterDialogFrameLayout.visibility = View.GONE
     }
@@ -373,28 +373,6 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
                 chaptersList,
                 false,
                 "Terror",
-                false,
-                "unknown"
-            ),
-            Book(
-                "Libro Septimo",
-                null,
-                "Bob",
-                getString(R.string.synopsis_example),
-                chaptersList,
-                false,
-                "Verse",
-                true,
-                "unknown"
-            ),
-            Book(
-                "Libro Octavo",
-                null,
-                "Anonimo",
-                getString(R.string.synopsis_example),
-                chaptersList,
-                true,
-                "Interactive",
                 false,
                 "unknown"
             )

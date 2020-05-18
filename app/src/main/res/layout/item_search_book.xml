@@ -38,6 +38,7 @@
 
             <!-- Title -->
             <TextView
+                app:autoSizeTextType="uniform"
                 android:padding="2dp"
                 android:id="@+id/searchBookItemText"
                 android:layout_width="match_parent"

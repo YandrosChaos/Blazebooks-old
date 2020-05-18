@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layoutAnimation="@anim/layout_animation_right_to_left"
     android:background="@drawable/dark_background">
 
@@ -28,6 +29,7 @@
                 android:src="@drawable/ic_reading"/>
 
             <TextView
+                app:autoSizeTextType="uniform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -54,6 +56,7 @@
                 android:src="@drawable/ic_theater_masks"/>
 
             <TextView
+                app:autoSizeTextType="uniform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -80,6 +83,7 @@
                 android:src="@drawable/ic_books_stack"/>
 
             <TextView
+                app:autoSizeTextType="uniform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -105,6 +109,7 @@
                 android:src="@drawable/ic_about"/>
 
             <TextView
+                app:autoSizeTextType="uniform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

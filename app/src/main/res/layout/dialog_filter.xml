@@ -93,12 +93,13 @@
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:id="@+id/dialogFilterAuthorsLl"
+                    <RadioGroup
+                        android:id="@+id/dialogFilterAuthorsRG"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
+                        android:layout_height="match_parent">
+
+                    </RadioGroup>
+
                 </ScrollView>
 
             </LinearLayout>
@@ -126,7 +127,14 @@
                         android:id="@+id/dialogFilterPremiumLl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical">
+                        <RadioGroup
+                            android:id="@+id/dialogFilterPremiumRG"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </RadioGroup>
+                    </LinearLayout>
                 </ScrollView>
 
                 <TextView
@@ -146,7 +154,12 @@
                         android:id="@+id/dialogFilterLanguageLl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical">
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/dialogFilterLanguageRG"/>
+                    </LinearLayout>
                 </ScrollView>
 
             </LinearLayout>

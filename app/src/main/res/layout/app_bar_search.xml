@@ -35,6 +35,7 @@
                     android:contentDescription="@string/return_button" />
 
                 <TextView
+                    app:autoSizeTextType="uniform"
                     android:id="@+id/activitySearchToolbarTv"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"

@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.*
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import com.blazebooks.R
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.android.synthetic.main.dialog_filter.view.*
 import java.lang.ClassCastException
 
@@ -17,10 +20,12 @@ import java.lang.ClassCastException
  * @see com.blazebooks.ui.search.SearchActivity
  * @author Victor Gonzalez
  */
-class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : DialogFragment() {
+class FilterDialog(private val storedFilterList: MutableList<Pair<String, String>>) :
+    DialogFragment() {
     private lateinit var listener: FilterDialogListener
-    private val filterList: ArrayList<CheckBox> = arrayListOf()
-    var filterReturnList: MutableList<CheckBox> = mutableListOf()
+    private val checkBoxList: ArrayList<CheckBox> = arrayListOf()
+    private val radioButtonList: ArrayList<RadioButton> = arrayListOf()
+    var filterReturnList: MutableList<Pair<String, String>> = mutableListOf()
 
     interface FilterDialogListener {
         fun onReturnFilters(dialog: FilterDialog)
@@ -60,7 +65,10 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
 
         //clear button -> clear list and view + actions in host
         view.dialogFilterClearButton.setOnClickListener {
-            filterList.forEach {
+            checkBoxList.filter { checkBox -> checkBox.isChecked }.forEach {
+                it.isChecked = false
+            }
+            radioButtonList.filter { radButton -> radButton.isChecked }.forEach {
                 it.isChecked = false
             }
             if (filterReturnList.isNotEmpty()) {
@@ -71,10 +79,39 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
 
         //apply button -> adds checked items to filterReturnList + actions in host
         view.dialogFilterApplyButton.setOnClickListener {
-            //add checked items to list
-            filterList.forEach {
-                if (it.isChecked && !filterReturnList.contains(it)) {
-                    filterReturnList.add(it)
+            //add checkBox items to list
+            checkBoxList.filter { checkBox -> checkBox.isChecked }.forEach {
+                if (!filterReturnList.contains(
+                        Pair(
+                            it.tag.toString(),
+                            it.text.toString()
+                        )
+                    )
+                ) {
+                    filterReturnList.add(
+                        Pair(
+                            it.tag.toString(),
+                            it.text.toString()
+                        )
+                    )
+                }
+            }
+
+            //add radiobuttons to list
+            radioButtonList.filter { radioButton -> radioButton.isChecked }.forEach {
+                if (!filterReturnList.contains(
+                        Pair(
+                            it.tag.toString(),
+                            it.text.toString()
+                        )
+                    )
+                ) {
+                    filterReturnList.add(
+                        Pair(
+                            it.tag.toString(),
+                            it.text.toString()
+                        )
+                    )
                 }
             }
             listener.onReturnFilters(this)
@@ -100,7 +137,7 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
      * Creates one checkbox per each item into arrays.xml and adds it
      * to UI. Also adds checkbox to filterList.
      *
-     * @see filterList
+     * @see checkBoxList
      *
      * @param view The view inflated in onCreateView
      *
@@ -108,9 +145,9 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
      */
     private fun createUI(view: View) {
         val dialogFilterGenresLl = view.findViewById<LinearLayout>(R.id.dialogFilterGenresLL)
-        val dialogFilterAuthorsLl = view.findViewById<LinearLayout>(R.id.dialogFilterAuthorsLl)
-        val dialogFilterPremiumLl = view.findViewById<LinearLayout>(R.id.dialogFilterPremiumLl)
-        val dialogFilterLanguageLl = view.findViewById<LinearLayout>(R.id.dialogFilterLanguageLl)
+        val dialogFilterAuthorsLl = view.findViewById<RadioGroup>(R.id.dialogFilterAuthorsRG)
+        val dialogFilterPremiumLl = view.findViewById<RadioGroup>(R.id.dialogFilterPremiumRG)
+        val dialogFilterLanguageLl = view.findViewById<RadioGroup>(R.id.dialogFilterLanguageRG)
 
         //add genres
         resources.getStringArray(R.array.genres)
@@ -118,36 +155,36 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
                 createCheckBox(it, resources.getString(R.string.genres))
                     .apply {
                         dialogFilterGenresLl.addView(this)
-                        filterList.add(this)
+                        checkBoxList.add(this)
                     }
             }
 
         //add languages
         resources.getStringArray(R.array.languages)
             .forEach {
-                createCheckBox(it, resources.getString(R.string.language))
+                createRadioButton(it, resources.getString(R.string.language))
                     .apply {
                         dialogFilterLanguageLl.addView(this)
-                        filterList.add(this)
+                        radioButtonList.add(this)
                     }
             }
 
         //add premium
         resources.getStringArray(R.array.premium)
             .forEach {
-                createCheckBox(it, resources.getString(R.string.premium))
+                createRadioButton(it, resources.getString(R.string.premium))
                     .apply {
                         dialogFilterPremiumLl.addView(this)
-                        filterList.add(this)
+                        radioButtonList.add(this)
                     }
             }
 
         //add authors
         resources.getStringArray(R.array.authors).forEach {
-            createCheckBox(it, resources.getString(R.string.authors))
+            createRadioButton(it, resources.getString(R.string.authors))
                 .apply {
                     dialogFilterAuthorsLl.addView(this)
-                    filterList.add(this)
+                    radioButtonList.add(this)
                 }
         }
     }
@@ -156,21 +193,34 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
      * Sets the checkbox stored into filterList to checked if checkboxStoredList
      * received contains it.
      *
-     * @see filterList
-     * @see checkboxStoredList
+     * @see checkBoxList
+     * @see storedFilterList
      *
      * @author Victor Gonzalez
      */
     private fun setUI() {
-        if (checkboxStoredList.isNotEmpty()) {
-            filterList.forEach { dialogFilterItem ->
-                checkboxStoredList.forEach {
-                    if (dialogFilterItem.tag == it.tag
-                        && dialogFilterItem.text == it.text
-                    ) {
-                        dialogFilterItem.isChecked = true
+        if (storedFilterList.isNotEmpty()) {
+
+            //checkBoxList
+            checkBoxList.forEach { dialogFilterItem ->
+                storedFilterList.filter { pair -> pair.first == resources.getString(R.string.genres) }
+                    .forEach {
+                        if (dialogFilterItem.tag == it.first
+                            && dialogFilterItem.text.toString() == it.second
+                        ) {
+                            dialogFilterItem.isChecked = true
+                        }
                     }
-                }
+            }
+
+            //radioButtons
+            radioButtonList.forEach { radioButton ->
+                storedFilterList.filter { pair -> pair.first != resources.getString(R.string.genres) }
+                    .forEach {
+                        if (radioButton.tag == it.first && radioButton.text.toString() == it.second) {
+                            radioButton.isChecked = true
+                        }
+                    }
             }
         }
     }
@@ -184,7 +234,7 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
      * @author Victor Gonzalez
      */
     private fun createCheckBox(text: String, tag: String): MaterialCheckBox {
-        return MaterialCheckBox(context).apply {
+        return MaterialCheckBox(requireContext()).apply {
             this.text = text
             this.tag = tag
             layoutParams = ViewGroup.LayoutParams(
@@ -193,8 +243,26 @@ class FilterDialog(private val checkboxStoredList: MutableList<CheckBox>) : Dial
             )
             setTextColor(resources.getColor(R.color.white))
         }
+    }
 
-
+    /**
+     * Creates and sets a MaterialRadioButton view.
+     *
+     * @param text Text into checkBox
+     * @param tag Tag into checkBox. It is important for the filtering.
+     * @return MaterialCheckBox
+     * @author Victor Gonzalez
+     */
+    private fun createRadioButton(text: String, tag: String): MaterialRadioButton {
+        return MaterialRadioButton(requireContext()).apply {
+            this.text = text
+            this.tag = tag
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.FILL_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT
+            )
+            setTextColor(resources.getColor(R.color.white))
+        }
     }
 
 }

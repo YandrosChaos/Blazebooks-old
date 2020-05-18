@@ -1,5 +1,6 @@
 package com.blazebooks.ui.search.control
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -61,9 +62,12 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
      * @see ShowBookActivity
      * @author Victor Gonzalez
      */
+    @SuppressLint("DefaultLocale")
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val item = itemList[position]
-        holder.titleText.text = item.title
+        
+        //set title with first letter in UpperCase
+        holder.titleText.text = item.title!!.capitalize()
 
         //set image
         if (item.image != null) {

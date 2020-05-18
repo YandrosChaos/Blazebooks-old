@@ -106,6 +106,7 @@
         </ScrollView>
 
         <com.google.android.material.button.MaterialButton
+            app:autoSizeTextType="uniform"
             android:id="@+id/wannaBePremiumBtn"
             android:layout_width="match_parent"
             android:layout_height="0sp"
@@ -116,7 +117,7 @@
             android:layout_weight="2"
             android:onClick="scrollToPlans"
             android:text="@string/wanna_be_premium"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
 
     </LinearLayout>

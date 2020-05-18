@@ -13,6 +13,8 @@
         <item>Western</item>
         <item>Fantasy</item>
         <item>Dark</item>
+        <item>Assay</item>
+        <item>Technical</item>
     </string-array>
 
     <string-array name="languages">
@@ -41,6 +43,7 @@
         <item>https://cdn.pixabay.com/photo/2015/07/21/15/32/drawing-854034_960_720.png</item>
         <item>https://cdn.pixabay.com/photo/2012/04/12/21/58/cat-30815_960_720.png</item>
         <item>https://cdn.pixabay.com/photo/2014/12/22/00/03/raven-576679_960_720.png</item>
+        <item>https://cdn.pixabay.com/photo/2019/02/03/02/24/bird-3971751_960_720.png</item>
     </string-array>
 
 </resources>

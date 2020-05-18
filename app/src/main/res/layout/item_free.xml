@@ -65,6 +65,7 @@
                 android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
+                app:autoSizeTextType="uniform"
                 android:onClick="onFreeVersionClicked"
                 android:id="@+id/becomePremiumFreeBtn"
                 android:layout_width="match_parent"
