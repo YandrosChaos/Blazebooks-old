@@ -65,9 +65,10 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
     @SuppressLint("DefaultLocale")
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val item = itemList[position]
-        
+
         //set title with first letter in UpperCase
-        holder.titleText.text = item.title!!.capitalize()
+        item.title = item.title!!.capitalize()
+        holder.titleText.text = item.title
 
         //set image
         if (item.image != null) {
