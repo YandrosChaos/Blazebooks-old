@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * @author Victor Gonzalez
  */
-class SearchGridRecyclerView : RecyclerView {
+class CustomGridRecyclerView : RecyclerView {
 
     //constructors
     constructor(context: Context) : super(context)

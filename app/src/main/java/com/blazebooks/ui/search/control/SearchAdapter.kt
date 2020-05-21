@@ -93,6 +93,9 @@ class SearchAdapter(private var itemList: List<Book>, private val activity: Cont
             }
         }
 
+        //sort by chapter number
+        item.chapters.sortBy { chapter -> chapter.number }
+
         //set click listener
         holder.itemLayout.setOnClickListener {
             Constants.CURRENT_BOOK = item

@@ -2,6 +2,7 @@ package com.blazebooks.ui.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
@@ -9,9 +10,11 @@ import com.blazebooks.R
 import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
 import com.blazebooks.ui.PreconfiguredActivity
+import com.blazebooks.ui.dialogs.ProfileImageDialog
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_settings.*
 import java.util.*
 
 /**
@@ -27,6 +30,7 @@ class SettingsActivity : PreconfiguredActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         loadSettingsMainView()
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
     }
 
