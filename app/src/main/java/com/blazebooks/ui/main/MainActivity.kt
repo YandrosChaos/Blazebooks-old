@@ -26,10 +26,14 @@ import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
 import com.blazebooks.ui.dialogs.ProfileImageDialog
 import com.blazebooks.ui.login.LoginActivity
+import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.ui.settings.SettingsActivity
 import com.blazebooks.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main_complete.*
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 
 class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDialogListener {
 
@@ -69,13 +73,29 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
 
         setSupportActionBar(toolbar)
         auth = FirebaseAuth.getInstance()
+
+        /**
+         * If exist a last book stored into shared preferences, then shows it. Else,
+         * shows a snackbar.
+         *
+         * @author Victor Gonzalez
+         */
         fab.setOnClickListener { view ->
-            Snackbar.make(
-                view,
-                "Continue Reading Button. Not Implemented yet =(",
-                Snackbar.LENGTH_LONG
-            )
-                .setAction("Action", null).show()
+            val lastBookUrl = sharedPreferences.getString(Constants.LAST_BOOK_SELECTED_KEY, null)
+
+            if (!lastBookUrl.isNullOrEmpty()) {
+                startActivity(
+                    Intent(this, ReaderActivity::class.java).apply
+                    { putExtra(Constants.PATH_CODE, lastBookUrl) }
+                )
+                overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+            } else {
+                Snackbar.make(
+                    view,
+                    "Last book cannot be found.",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+            }
         }
 
         // Passing each menu ID as a set of Ids because each
@@ -265,10 +285,17 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
         name.text = auth.currentUser?.displayName.toString()
         email.text = auth.currentUser?.email.toString()
 
-        if (!sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE_KEY, null).isNullOrEmpty()) {
+        if (!sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE_KEY, null)
+                .isNullOrEmpty()
+        ) {
             //local image stored
             headerImage.clear()
-            headerImage.load(sharedPreferences.getString(Constants.SELECTED_PROFILE_IMAGE_KEY, null))
+            headerImage.load(
+                sharedPreferences.getString(
+                    Constants.SELECTED_PROFILE_IMAGE_KEY,
+                    null
+                )
+            )
         } else if (auth.currentUser?.photoUrl != null) {
             //google account image
             headerImage.clear()
