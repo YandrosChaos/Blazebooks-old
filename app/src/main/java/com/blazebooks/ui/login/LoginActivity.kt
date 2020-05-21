@@ -8,7 +8,7 @@ import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
-import com.blazebooks.ui.home.MainActivity
+import com.blazebooks.ui.main.MainActivity
 import com.blazebooks.ui.PreconfiguredActivity
 import com.blazebooks.ui.dialogs.ForgotPasswdDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -87,7 +87,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
 
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-            lottie_loading_animation.visibility = View.GONE
+            //lottie_loading_animation.loop(false)
             finish()
         }
     }
@@ -98,6 +98,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
      * @author Victor Gonzalez
      */
     fun loginByGoogle(view: View) {
+        loginActivityLoadingSKV.visibility = View.VISIBLE
         val googleClient = GoogleSignIn.getClient(
             this,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -109,7 +110,6 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
         googleClient.signOut()
 
         //activity para loguearse con google
-        lottie_loading_animation.visibility = View.VISIBLE
         startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
     }
 
@@ -150,7 +150,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
 
                             updateUI(auth.currentUser)
                         } else {
-                            lottie_loading_animation.visibility = View.GONE
+                            loginActivityLoadingSKV.visibility = View.GONE
                             Toast.makeText(
                                 baseContext,
                                 getString(R.string.log_general_error),
@@ -159,10 +159,10 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
                         }
                     }
                 } else {
-                    lottie_loading_animation.visibility = View.GONE
+                    loginActivityLoadingSKV.visibility = View.GONE
                 }
             } catch (e: ApiException) {
-                lottie_loading_animation.visibility = View.GONE
+                loginActivityLoadingSKV.visibility = View.GONE
                 Toast.makeText(
                     baseContext,
                     getString(R.string.google_auth_err),

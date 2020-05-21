@@ -90,6 +90,7 @@
     <string name="login_login_button">Login</string>
     <string name="login_sign_in_button">Registrarse</string>
     <string name="google_auth_err">Error de autenticación con Google</string>
+    <string name="google_access_button">Botón de Acceso con Google</string>
 
     <!-- SignIn Activity -->
     <string name="signin_username_error">El usuario no puede estar vacío.</string>

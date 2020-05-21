@@ -1,4 +1,4 @@
-package com.blazebooks.ui.home
+package com.blazebooks.ui.main
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -240,7 +240,6 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginActivity::class.java))
-        overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
         sharedPreferences.edit().clear().apply()
         finish()
     }

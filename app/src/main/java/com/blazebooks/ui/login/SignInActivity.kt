@@ -8,7 +8,7 @@ import com.blazebooks.R
 import com.blazebooks.dataAccessObjects.UserDao
 import com.blazebooks.model.User
 import com.blazebooks.ui.PreconfiguredActivity
-import com.blazebooks.ui.home.MainActivity
+import com.blazebooks.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 

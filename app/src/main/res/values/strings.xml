@@ -89,6 +89,7 @@
     <string name="login_login_button">Login</string>
     <string name="login_sign_in_button">Sign In</string>
     <string name="google_auth_err">Google authentication error</string>
+    <string name="google_access_button">Google Access Button</string>
 
     <!-- SignIn Activity -->
     <string name="signin_username_error">Username cannot be empty</string>

@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
@@ -29,9 +28,12 @@ import kotlin.collections.ArrayList
 
 
 /**
- * Search book view.
+ * Search book activity.
  *
  * @see PreconfiguredActivity
+ * @see FilterDialog.FilterDialogListener
+ * @see FilterDialog
+ *
  * @author  Victor Gonzalez
  */
 class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListener {
