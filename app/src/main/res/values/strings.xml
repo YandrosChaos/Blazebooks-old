@@ -34,6 +34,10 @@
     <string name="facebook_button">Go to Facebook</string>
     <string name="instagram_button">Go to Instagram</string>
     <string name="twiter_button">Go to Twitter</string>
+    <string name="credits_title">Credits</string>
+    <string name="become_author">Become Author</string>
+    <string name="social_networks">Social Networks</string>
+    <string name="about">About Blazebooks</string>
     <string name="credits">CREDITS  \n\n
         Developer I - Victor Develops  \n
         Developer II - Mounir Zbayr Samadi \n\n

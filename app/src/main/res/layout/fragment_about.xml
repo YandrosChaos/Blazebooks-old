@@ -1,94 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/dark_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutAnimation="@anim/layout_animation_right_to_left"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:paddingTop="200sp"
+    <!-- Custom RecyclerView ... Animated -->
+    <com.blazebooks.model.CustomGridRecyclerView
+        android:id="@+id/recyclerView_aboutFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent" />
 
-        <ImageView
-            android:layout_width="200sp"
-            android:layout_height="200sp"
-            android:src="@drawable/blazebooks_logo" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:textColor="@android:color/black"
-            android:text="BLAZEBOOKS is a start-up about promoting reading in this new age. Our books are... blah blah blah ... "/>
-
-        <LinearLayout
-            android:layout_margin="15sp"
-            android:padding="1sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"/>
-
-        <LinearLayout
-            android:paddingStart="5sp"
-            android:paddingEnd="5sp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:layout_margin="5sp"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_facebook"
-                android:contentDescription="@string/facebook_button" />
-
-            <ImageButton
-                android:layout_margin="5sp"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_instagram"
-                android:contentDescription="@string/instagram_button" />
-
-            <ImageButton
-                android:layout_margin="5sp"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_twitter"
-                android:contentDescription="@string/twiter_button" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_margin="15sp"
-            android:padding="1sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"/>
-
-        <TextView
-            android:id="@+id/fragmentTvAbout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:text="@string/credits"
-            android:textColor="@android:color/black" />
-
-        <LinearLayout
-            android:layout_margin="15sp"
-            android:padding="1sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"/>
-
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

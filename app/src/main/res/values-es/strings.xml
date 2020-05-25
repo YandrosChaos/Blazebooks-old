@@ -32,6 +32,10 @@
     <string name="my_books">Mis Libros</string>
 
     <!-- ABOUT FRAGMENT Strings-->
+    <string name="credits_title">Creditos</string>
+    <string name="become_author">Conviertete en Autor</string>
+    <string name="social_networks">Redes Sociales</string>
+    <string name="about">Sobre Blazebooks</string>
     <string name="facebook_button">Ir a Facebook</string>
     <string name="instagram_button">Ir a Instagram</string>
     <string name="twiter_button">Ir a Twitter</string>
