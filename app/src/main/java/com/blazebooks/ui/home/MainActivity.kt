@@ -30,6 +30,7 @@ import com.blazebooks.ui.settings.SettingsActivity
 import com.blazebooks.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main_complete.*
+import kotlinx.android.synthetic.main.app_bar_search.*
 
 class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDialogListener {
 

@@ -9,7 +9,7 @@
     tools:context=".ui.search.SearchActivity">
 
     <include
-        android:id="@+id/search_toolbar"
+        android:id="@+id/search_Toolbar"
         layout="@layout/app_bar_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -19,7 +19,7 @@
         android:id="@+id/recyclerView_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_toolbar" />
+        android:layout_below="@+id/search_Toolbar" />
 
     <FrameLayout
         android:id="@+id/searchActivityFilterFragment"

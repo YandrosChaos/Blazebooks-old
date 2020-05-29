@@ -1,10 +1,9 @@
 package com.blazebooks.ui.reader
 
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.webkit.WebChromeClient
 import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
@@ -12,7 +11,10 @@ import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
 import kotlinx.android.synthetic.main.activity_reader.*
 import nl.siegmann.epublib.domain.Book
+import nl.siegmann.epublib.domain.MediaType
+import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.epub.EpubReader
+import nl.siegmann.epublib.service.MediatypeService
 import java.io.File
 import java.io.InputStream
 import java.time.LocalDateTime
@@ -28,7 +30,7 @@ import java.time.format.DateTimeFormatter
 class ReaderActivity : PreconfiguredActivity() {
 
     private lateinit var layoutFilter: ImageView
-    private var num = 0 //representa el número de página actual
+    private var num = 1 //representa el número de página actual
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,42 +42,41 @@ class ReaderActivity : PreconfiguredActivity() {
 
         val path = intent.getStringExtra(Constants.PATH_CODE)
 
-        val pages = getText(path)
+        //Lee el epub y lo guarda en un objeto book
+        val epubInputStream: InputStream =
+            File("/storage/emulated/0/Android/data/com.blazebooks/files/$path").inputStream()
+        val book: Book = EpubReader().readEpub(epubInputStream)
 
-        numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
+        //obtiene informacion del epub
+        val spine = book.spine
+        val spineList = spine.spineReferences
+        val count = spineList.size
 
-        /*//Convierte el html sacado del epub al texto visible en el lector
+        page(book, num)
+
+        numPages.text = String.format(resources.getString(R.string.pageNumber), num, count)
+
+
+        buttonNext.setOnClickListener { next(book, count) } //Botón para ir a la página siguiente
+        buttonPrevious.setOnClickListener { previous(book, count) } //Botón para ir a la página anterior
+
+        /*textReader.movementMethod = ScrollingMovementMethod()//Añade el scroll de las páginas
+
+        //Convierte el html sacado del epub al texto visible en el lector
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
-        }
-        textReader.movementMethod = ScrollingMovementMethod()//Añade el scroll de las páginas
-
-        buttonNext.setOnClickListener { next(pages) } //Botón para ir a la página siguiente
-        buttonPrevious.setOnClickListener { previous(pages) } //Botón para ir a la página anterior*/
-
-
-        webViewReader.webChromeClient = object : WebChromeClient(){
-
-        }
-
-        val settings = webViewReader.settings
-        settings.javaScriptEnabled = true
-
-        webViewReader.loadUrl("https://www.google.es")
-
+        }*/
 
     }
 
-    /**
+    /*/**
      * Método que obtiene el texto del epub correspondiente al libro seleccionado
      *
      * @author Mounir Zbayr
      */
-    private fun getText(filepath: String?): ArrayList<String> {
+    private fun getText(filepath: String?, book: Book): ArrayList<String> {
 
-        val epubInputStream: InputStream =
-            File("/storage/emulated/0/Android/data/com.blazebooks/files/$filepath").inputStream()
-        val book: Book = EpubReader().readEpub(epubInputStream)
+
         val spine = book.spine
         val spineList = spine.spineReferences
         val count = spineList.size
@@ -88,24 +89,58 @@ class ReaderActivity : PreconfiguredActivity() {
             i++
         }
 
+
         return arrayList
 
+    }*/
+
+    /**
+     * Este método coge el contenido del libro y lo lee por capitulos dependiendo del numero que reciba. Despues lo muestra en el WebView
+     *
+     * @author Mounir Zbayr
+     */
+    private fun page(book: Book, numPage : Int){
+
+        //Para mostrar las imagenes, aun no implementado
+        /*
+        val bitmapTypes: Array<MediaType> =
+            arrayOf(MediatypeService.PNG, MediatypeService.GIF, MediatypeService.JPG)
+        val bitmapResources: List<Resource> =
+            book.resources.getResourcesByMediaTypes(bitmapTypes)
+
+        for (r in bitmapResources) {
+            val bm = BitmapFactory.decodeByteArray(r.getData(), 0, r.getData().size)
+            // store in a public folder on android
+        }
+
+         */
+        val baseUrl="file://storage/emulated/0/Android/data/com.blazebooks/files/"
+        var data = String(book.contents[numPage-1].data)
+
+        //data= data.replace("images/", "file://storage/emulated/0/Android/data/com.blazebooks/files/")
+
+        val settings = webViewReader.settings
+        settings.javaScriptEnabled = true
+        webViewReader.loadDataWithBaseURL(baseUrl, data, "text/html", "UTF-8", null)
     }
 
     /**
      * Método que aporta al botón buttonNext la función de avanzar a la página siguiente y
      * coloca el scroll en la posición inicial.
      *
-     * @author Mounir
+     * @author Mounir Zbayr
      * @author Victor Gonzalez
      */
-    /*private fun next(pages: ArrayList<String>) {
-        num++
-        numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
-        textReader.scrollTo(0, 0)
+    private fun next(book: Book, pages : Int) {
+        if (num != pages) {
+            num++
+            page(book, num)
+            numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
+        }
+        /*textReader.scrollTo(0, 0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
-        }
+        }*/
     }
 
     /**
@@ -114,16 +149,17 @@ class ReaderActivity : PreconfiguredActivity() {
      * @author Mounir
      * @author Víctor González
      */
-    private fun previous(pages: ArrayList<String>) {
-        if (num != 0) {
+    private fun previous(book: Book, pages : Int) {
+        if (num != 1) {
             num--
-            numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages.size)
-            textReader.scrollTo(0, 0)
+            page(book, num)
+            numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
+            /*textReader.scrollTo(0, 0)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 textReader.text = Html.fromHtml(pages[num], Html.FROM_HTML_MODE_COMPACT)
-            }
+            }*/
         }
-    }*/
+    }
 
     /**
      * Método que añade al textview tTime la hora en tiempo real
@@ -150,6 +186,7 @@ class ReaderActivity : PreconfiguredActivity() {
     }
 
 
+
     /**
      * If ReadMode preference is switch on, then sets a dark background for the view.
      *
@@ -172,10 +209,5 @@ class ReaderActivity : PreconfiguredActivity() {
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
         finish()
     }
-
-    fun webview(){
-
-    }
-
 
 }//class

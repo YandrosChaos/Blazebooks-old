@@ -21,13 +21,13 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'  
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -85,5 +85,15 @@ dependencies {
 
     //Airbnb Lottie
     implementation 'com.airbnb.android:lottie:3.4.0'
+
+    //folioreader
+    /*
+    implementation "com.folioreader:folioreader:0.5.4"
+    implementation 'com.android.support:multidex:1.0.3' // ( for androidx)
+    configurations.matching { it.name == '_internal_aapt2_binary' }.all {
+        config -> config.resolutionStrategy.eachDependency {
+            details -> details.useVersion("3.3.2-5309881")
+        }
+    }*/
 
 }

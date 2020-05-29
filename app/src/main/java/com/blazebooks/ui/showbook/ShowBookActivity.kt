@@ -125,6 +125,7 @@ class ShowBookActivity : PreconfiguredActivity() {
                 }.addOnFailureListener {
                     Toast.makeText(this, getString(R.string.dwnload_error), Toast.LENGTH_SHORT)
                         .show()
+                    documentsFolder.delete() //Borra la carpeta creada al dar error
                 }
             }
         }
@@ -174,7 +175,22 @@ class ShowBookActivity : PreconfiguredActivity() {
             val documents = "books/$titleBook"
             val documentsFolder = File(this.filesDir, documents)
 
+
+
             if (documentsFolder.exists()) {
+
+                //Configuracion para añadir el lector de FolioReader(Por si acaso)
+                /*val config: Config = Config()
+                    .setAllowedDirection(Config.AllowedDirection.ONLY_HORIZONTAL)
+                    .setDirection(Config.Direction.HORIZONTAL)
+                    .setFontSize(2)
+                    .setNightMode(false)
+                    .setShowTts(true)
+
+                FolioReader.get()
+                    .setConfig(config, true)
+                    .openBook("/storage/emulated/0/Android/data/com.blazebooks/files/$documents/$titleBook.epub"*/
+
                 val i = Intent(this, ReaderActivity::class.java)
                 i.putExtra(Constants.PATH_CODE, "$documents/$titleBook.epub")
                 startActivity(i)
@@ -185,6 +201,7 @@ class ShowBookActivity : PreconfiguredActivity() {
                     .show()
             }
         }
+
     }
 
     /**
