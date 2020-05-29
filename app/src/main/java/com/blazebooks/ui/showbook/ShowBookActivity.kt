@@ -3,10 +3,12 @@ package com.blazebooks.ui.showbook
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.ui.PreconfiguredActivity
@@ -158,9 +160,11 @@ class ShowBookActivity : PreconfiguredActivity() {
 
     /**
      * Método de pulsado del boton Read, el cual lleva al libro elegido.
-     * Si el usuario no es premium mostrará BecomePremiumActivity.
+     * Si el usuario no es premium mostrará BecomePremiumActivity. Guarda el
+     * libro en sharedPreferences para poder abrirlo directamente desde el main.
      *
      * @see BecomePremiumActivity
+     * @see saveIntoSharedPreferences
      *
      * @author Mounir Zbayr
      * @author Victor Gonzalez
@@ -170,7 +174,6 @@ class ShowBookActivity : PreconfiguredActivity() {
             startActivity(Intent(this, BecomePremiumActivity::class.java))
             overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
         } else {
-
             val titleBook = showBookTvTitle.text.toString()
             val documents = "books/$titleBook"
             val documentsFolder = File(this.filesDir, documents)
@@ -192,7 +195,11 @@ class ShowBookActivity : PreconfiguredActivity() {
                     .openBook("/storage/emulated/0/Android/data/com.blazebooks/files/$documents/$titleBook.epub"*/
 
                 val i = Intent(this, ReaderActivity::class.java)
-                i.putExtra(Constants.PATH_CODE, "$documents/$titleBook.epub")
+                val bookUrl = "$documents/$titleBook.epub"
+
+                saveIntoSharedPreferences(bookUrl)
+                i.putExtra(Constants.PATH_CODE, bookUrl)
+
                 startActivity(i)
                 overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
                 finish()
@@ -213,6 +220,18 @@ class ShowBookActivity : PreconfiguredActivity() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
         finish()
+    }
+
+    /**
+     * Saves the last readed book into sharedPreferences.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun saveIntoSharedPreferences(url: String) {
+        val editor: SharedPreferences.Editor =
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+        editor.putString(Constants.LAST_BOOK_SELECTED_KEY, url)
+        editor.apply()
     }
 
 }//class

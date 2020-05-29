@@ -26,6 +26,15 @@ class ForgotPasswdDialog(private val auth: FirebaseAuth) : DialogFragment() {
 
     private lateinit var listener: ForgotPasswdDialogListener
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as ForgotPasswdDialogListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$context must implement ForgotPasswdDialogListener")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,12 +78,5 @@ class ForgotPasswdDialog(private val auth: FirebaseAuth) : DialogFragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            listener = context as ForgotPasswdDialogListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement ForgotPasswdDialogListener")
-        }
-    }
+
 }

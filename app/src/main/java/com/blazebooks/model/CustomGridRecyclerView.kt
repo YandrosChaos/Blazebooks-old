@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * @author Victor Gonzalez
  */
-class SearchGridRecyclerView : RecyclerView {
+class CustomGridRecyclerView : RecyclerView {
 
     //constructors
     constructor(context: Context) : super(context)
@@ -25,7 +25,7 @@ class SearchGridRecyclerView : RecyclerView {
         if (layout is GridLayoutManager) {
             super.setLayoutManager(layout)
         } else {
-            throw ClassCastException("This recyclerview should use grid layout manager as the layout manager")
+            throw ClassCastException("This recyclerview should use GridLayoutManager as layout manager")
         }
     }
 

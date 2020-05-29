@@ -1,6 +1,7 @@
 package com.blazebooks.ui.settings
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
@@ -9,11 +10,12 @@ import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.dataAccessObjects.UserDao
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_settings.*
 
 /**
  * @author Victor Gonzalez
  */
-class SharedPreferencesFragment() : PreferenceFragmentCompat() {
+class SharedPreferencesFragment : PreferenceFragmentCompat() {
     private lateinit var deleteAccountButton: Preference
     private lateinit var setProfileImageButton: Preference
 
@@ -24,12 +26,6 @@ class SharedPreferencesFragment() : PreferenceFragmentCompat() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         deleteAccountButton = findPreference(Constants.DELETE_ACCOUNT_KEY)!!
-        setProfileImageButton = findPreference(Constants.SELECTED_PROFILE_IMAGE_KEY)!!
-
-        setProfileImageButton.setOnPreferenceClickListener {
-            Toast.makeText(requireContext(), "Not implemented yet.",Toast.LENGTH_SHORT).show()
-            true
-        }
 
         deleteAccountButton.setOnPreferenceClickListener {
             val alert = createDeleteDialog()
@@ -48,7 +44,7 @@ class SharedPreferencesFragment() : PreferenceFragmentCompat() {
             .setCancelable(false)
             // positive button text and action
             .setPositiveButton(getString(R.string.delete_account_dialog_confirm)) { dialog, id ->
-               UserDao().delete("id")
+                UserDao().delete("id")
             }
             // negative button text and action
             .setNegativeButton(getString(R.string.delete_account_dialog_cancel)) { dialog, id ->

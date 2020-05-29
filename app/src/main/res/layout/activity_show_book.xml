@@ -69,6 +69,7 @@
             android:onClick="addFav"
             android:scaleType="center"
             app:lottie_rawRes="@raw/like" />
+
     </LinearLayout>
 
 </LinearLayout>

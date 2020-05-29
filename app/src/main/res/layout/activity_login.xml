@@ -8,16 +8,6 @@
     android:focusableInTouchMode="true"
     android:gravity="center">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_loading_animation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10sp"
-        android:visibility="gone"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
-
     <LinearLayout
         android:id="@+id/loginActivityMainLL"
         android:layout_width="match_parent"
@@ -27,8 +17,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="200sp"
+            android:layout_height="200sp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="20dp"
             android:src="@drawable/blazebooks_logo" />
@@ -73,6 +63,7 @@
                 android:layout_height="30sp"
                 android:layout_gravity="start"
                 android:layout_weight="1"
+                android:contentDescription="@string/google_access_button"
                 android:gravity="start"
                 android:onClick="loginByGoogle"
                 android:scaleType="fitStart"
@@ -108,7 +99,7 @@
 
     </LinearLayout>
 
-    <!-- this frame will be added dynamically.-->
+    <!-- this views will be added dynamically.-->
     <FrameLayout
         android:id="@+id/loginActivityForgotPasswdFL"
         android:layout_width="match_parent"
@@ -116,5 +107,23 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/loginActivityLoadingSKV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/grayTransparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            style="@style/SpinKitView.WanderingCubes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

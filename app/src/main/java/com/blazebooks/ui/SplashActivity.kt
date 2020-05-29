@@ -17,12 +17,12 @@ import java.util.*
  * First activity. Preload data before the app start.
  *
  * @see PreconfiguredActivity
- * @see MainActivity
+ * @see LoginActivity
  * @author Victor
  */
 class SplashActivity : PreconfiguredActivity() {
 
-    private val timeOut = 6000
+    private val timeOut = 4000
     private val spanishLanguage = "es"
     private val englishLanguage = "en"
 
@@ -31,7 +31,7 @@ class SplashActivity : PreconfiguredActivity() {
      * into Handler and the next activity will get started.
      *
      * @param savedInstanceState
-     * @see MainActivity
+     * @see LoginActivity
      * @see loadLanguageConfig
      * @author Victor Gonzalez
      */
@@ -44,7 +44,6 @@ class SplashActivity : PreconfiguredActivity() {
 
         Handler().postDelayed({
             //execute this code after the time indicated
-            iv_splash.visibility = View.GONE
             startActivity(
                 Intent(
                     this@SplashActivity,
@@ -52,6 +51,10 @@ class SplashActivity : PreconfiguredActivity() {
                 )
             )
             overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+
+            //stop the loop of the animation
+            iv_splash.progress = 1f
+            iv_splash.loop(false)
             finish()
         }, timeOut.toLong())
     }

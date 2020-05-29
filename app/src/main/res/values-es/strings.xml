@@ -32,10 +32,14 @@
     <string name="my_books">Mis Libros</string>
 
     <!-- ABOUT FRAGMENT Strings-->
+    <string name="credits_title">Creditos</string>
+    <string name="become_author">Conviertete en Autor</string>
+    <string name="social_networks">Redes Sociales</string>
+    <string name="about">Sobre Blazebooks</string>
     <string name="facebook_button">Ir a Facebook</string>
     <string name="instagram_button">Ir a Instagram</string>
     <string name="twiter_button">Ir a Twitter</string>
-    <string name="credits">CRÉDITOS  \n\n
+    <string name="credits">
         Desarrollador I - Victor Develops  \n
         Desarrollador II - Mounir Zbayr Samadi \n\n
 
@@ -90,6 +94,7 @@
     <string name="login_login_button">Login</string>
     <string name="login_sign_in_button">Registrarse</string>
     <string name="google_auth_err">Error de autenticación con Google</string>
+    <string name="google_access_button">Botón de Acceso con Google</string>
 
     <!-- SignIn Activity -->
     <string name="signin_username_error">El usuario no puede estar vacío.</string>

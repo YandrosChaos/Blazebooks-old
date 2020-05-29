@@ -56,12 +56,6 @@
             android:title="@string/email_account_title" />
 
         <Preference
-            android:icon="@drawable/ic_check"
-            android:key="selectedProfileImg"
-            android:summary="@string/profile_img_desc"
-            android:title="@string/profile_img_title" />
-
-        <Preference
             android:icon="@drawable/ic_cross"
             android:key="deleteAccount"
             android:summary="@string/delete_account_desc"

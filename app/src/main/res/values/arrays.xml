@@ -47,4 +47,18 @@
         <item>https://cdn.pixabay.com/photo/2019/02/03/02/24/bird-3971751_960_720.png</item>
     </string-array>
 
+    <string-array name="about_us_titles">
+        <item>@string/about</item>
+        <item>@string/social_networks</item>
+        <item>@string/become_author</item>
+        <item>@string/credits_title</item>
+    </string-array>
+
+    <integer-array name="about_us_drawables">
+        <item>@drawable/ic_reading</item>
+        <item>@drawable/ic_facebook</item>
+        <item>@drawable/ic_theater_masks</item>
+        <item>@drawable/ic_about</item>
+    </integer-array>
+
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Author : Victor González. Dynamically generated-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/aboutFragmentItemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="200sp"
+    android:layout_margin="5dp"
+    android:background="@drawable/container_round_purple"
+    android:orientation="vertical"
+    android:padding="5sp">
+
+    <ImageView
+        android:id="@+id/aboutFragmentItemIv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="9"
+        android:scaleType="fitCenter"
+        android:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/aboutFragmentItemTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        app:autoSizeTextType="uniform" />
+
+</LinearLayout>

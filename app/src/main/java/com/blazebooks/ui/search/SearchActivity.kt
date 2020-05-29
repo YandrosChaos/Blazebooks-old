@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
@@ -18,7 +17,7 @@ import com.blazebooks.R
 import com.blazebooks.Utils.Companion.hideKeyboard
 import com.blazebooks.model.Book
 import com.blazebooks.model.Chapter
-import com.blazebooks.model.SearchGridRecyclerView
+import com.blazebooks.model.CustomGridRecyclerView
 import com.blazebooks.ui.PreconfiguredActivity
 import com.blazebooks.ui.dialogs.FilterDialog
 import com.blazebooks.ui.search.control.SearchAdapter
@@ -29,13 +28,16 @@ import kotlin.collections.ArrayList
 
 
 /**
- * Search book view.
+ * Search book activity.
  *
  * @see PreconfiguredActivity
+ * @see FilterDialog.FilterDialogListener
+ * @see FilterDialog
+ *
  * @author  Victor Gonzalez
  */
 class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListener {
-    private lateinit var mRecyclerView: SearchGridRecyclerView
+    private lateinit var mRecyclerView: CustomGridRecyclerView
     private lateinit var bookList: MutableList<Book>
     private lateinit var mAdapter: SearchAdapter
     private lateinit var mSearchView: EditText
@@ -48,7 +50,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      *
      * @see getItemList
      * @see filterList
-     * @see SearchGridRecyclerView
+     * @see CustomGridRecyclerView
      *
      * @author Victor Gonzalez
      */
@@ -99,7 +101,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      *
      * @see SearchAdapter
      * @see runRecyclerViewAnimation
-     * @see SearchGridRecyclerView
+     * @see CustomGridRecyclerView
      *
      * @author Victor Gonzalez
      */
@@ -253,20 +255,20 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         //configure and load adapter and manager
         mAdapter = SearchAdapter(bookList, this)
         mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
+        mRecyclerView.layoutAnimation =
+            AnimationUtils.loadLayoutAnimation(this, R.anim.gridlayout_animation_from_bottom)
         mRecyclerView.adapter = mAdapter
     }
 
     /**
      * Runs the custom recyclerView animation.
      *
-     * @see SearchGridRecyclerView
+     * @see CustomGridRecyclerView
      * @see SearchAdapter
      *
      * @author Victor Gonzalez
      */
     private fun runRecyclerViewAnimation() {
-        mRecyclerView.layoutAnimation =
-            AnimationUtils.loadLayoutAnimation(this, R.anim.gridlayout_animation_from_bottom)
         mAdapter.notifyDataSetChanged()
         mRecyclerView.scheduleLayoutAnimation()
     }
