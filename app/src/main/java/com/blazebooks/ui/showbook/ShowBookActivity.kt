@@ -4,8 +4,11 @@ import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.preference.PreferenceManager
@@ -19,7 +22,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.item_show_book.*
+import nl.siegmann.epublib.domain.Book
+import nl.siegmann.epublib.domain.MediaType
+import nl.siegmann.epublib.domain.Resource
+import nl.siegmann.epublib.epub.EpubReader
+import nl.siegmann.epublib.service.MediatypeService
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 
 /**
@@ -98,6 +108,8 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author Victor Gonzalez
      */
     fun download(view: View) {
+
+
         if (Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium) {
             startActivity(Intent(this, BecomePremiumActivity::class.java))
             overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
@@ -122,15 +134,83 @@ class ShowBookActivity : PreconfiguredActivity() {
                 //Con esto se obtiene la url del libro dependiendo de su nombre
                 mStorageRef.child("Epub/$titleBook.epub").downloadUrl.addOnSuccessListener {
                     downloadFile(this, titleBook, documents, it.toString())
-                    Toast.makeText(this, getString(R.string.dwnload_cmplete), Toast.LENGTH_SHORT)
-                        .show()
+
+                    val handler = Handler()
+                    handler.postDelayed(Runnable {
+                        //Lee el epub y lo guarda en un objeto book
+                        val epubInputStream: InputStream =
+                            File("/storage/emulated/0/Android/data/com.blazebooks/files/$documents/$titleBook.epub").inputStream()
+                        val book: Book = EpubReader().readEpub(epubInputStream)
+                        saveBookResources(book, documents)
+                        Toast.makeText(
+                            this,
+                            getString(R.string.dwnload_cmplete),
+                            Toast.LENGTH_SHORT
+                        ).show()}, 3000)
+
                 }.addOnFailureListener {
                     Toast.makeText(this, getString(R.string.dwnload_error), Toast.LENGTH_SHORT)
                         .show()
                     documentsFolder.delete() //Borra la carpeta creada al dar error
                 }
-            }
+            }//if
+
+        }//if
+
+    }//download
+
+    /**
+     * Método que transforma los datos obtenidos en imagenes y los almacena en una carpeta creada en el directorio del libro actual
+     *
+     * @author Mounir Zbayr
+     */
+    private fun createDirectoryAndSaveFile(
+        imageToSave: Bitmap,
+        fileName: String,
+        path: String
+    ) {
+        val direct =
+            File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/ImagesBZB/")
+        if (!direct.exists()) {
+            val wallpaperDirectory =
+                File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/ImagesBZB/")
+            wallpaperDirectory.mkdirs()
         }
+        val file =
+            File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/ImagesBZB/$fileName")
+        if (file.exists()) {
+            file.delete()
+        }
+        try {
+            val out = FileOutputStream(file)
+            imageToSave.compress(Bitmap.CompressFormat.JPEG, 20, out)
+            out.flush()
+            out.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Método que obtiene las imagenes y el style.css del archivo epub y los almacena en la memoria interna para acceder a ellos al leer
+     *
+     * @author Mounir Zbayr
+     */
+    private fun saveBookResources(book: Book, path: String) {
+        val bitmapTypes: Array<MediaType> =
+            arrayOf(MediatypeService.PNG, MediatypeService.GIF, MediatypeService.JPG)
+        val bitmapResources: List<Resource> =
+            book.resources.getResourcesByMediaTypes(bitmapTypes)
+
+
+        for (r in bitmapResources) {
+            val bm = BitmapFactory.decodeByteArray(r.data, 0, r.data.size)
+            createDirectoryAndSaveFile(bm, r.id.toString(), path)
+        }
+
+        val file = File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/", "style.css")
+
+        book.resources.getById("style.css").inputStream.copyTo(FileOutputStream(file))
     }
 
     /**
@@ -182,23 +262,12 @@ class ShowBookActivity : PreconfiguredActivity() {
 
             if (documentsFolder.exists()) {
 
-                //Configuracion para añadir el lector de FolioReader(Por si acaso)
-                /*val config: Config = Config()
-                    .setAllowedDirection(Config.AllowedDirection.ONLY_HORIZONTAL)
-                    .setDirection(Config.Direction.HORIZONTAL)
-                    .setFontSize(2)
-                    .setNightMode(false)
-                    .setShowTts(true)
-
-                FolioReader.get()
-                    .setConfig(config, true)
-                    .openBook("/storage/emulated/0/Android/data/com.blazebooks/files/$documents/$titleBook.epub"*/
-
                 val i = Intent(this, ReaderActivity::class.java)
                 val bookUrl = "$documents/$titleBook.epub"
 
                 saveIntoSharedPreferences(bookUrl)
                 i.putExtra(Constants.PATH_CODE, bookUrl)
+                i.putExtra("documents", documents)
 
                 startActivity(i)
                 overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
