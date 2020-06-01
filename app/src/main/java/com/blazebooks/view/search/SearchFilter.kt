@@ -3,10 +3,11 @@ package com.blazebooks.view.search
 import android.content.Context
 import com.blazebooks.R
 import com.blazebooks.model.Book
-import com.blazebooks.model.CustomGridRecyclerView
-import com.blazebooks.view.search.control.SearchAdapter
 import java.util.*
 
+/**
+ * @author Victor Gonzalez
+ */
 class SearchFilter(val context: Context) {
 
 
@@ -21,61 +22,38 @@ class SearchFilter(val context: Context) {
      * <p> When list is filtered, calls to the adapter, updates the list and run the
      * animation.</p>
      *
-     * @param filterItem Strings which the filter searches in book's titles.
+     * @param filterCharacter Strings which the filter searches in book's titles.
      * @param filterList Checkbox which used for filter books by language, author, genre...
-     *
-     * @see SearchAdapter
-     * @see runRecyclerViewAnimation
-     * @see CustomGridRecyclerView
      *
      * @author Victor Gonzalez
      */
     fun filterList(
         filterCharacter: String,
         filterList: MutableList<Pair<String, String>>?,
-        BooksToFilter: MutableList<Book>
+        booksToFilter: MutableList<Book>
     ): MutableList<Book> {
 
         //filter by title
         var tempListWithFilters = mutableListOf<Book>()
-        tempListWithFilters = BooksToFilter.filter { book ->
-            book.title!!.toLowerCase(Locale.ROOT)
-                .contains(filterCharacter.toLowerCase(Locale.ROOT))
-        } as MutableList<Book>
+        tempListWithFilters = filterByTitle(booksToFilter, filterCharacter)
 
         if (!filterList.isNullOrEmpty()) {
             filterList.forEach { filterItem ->
                 when (filterItem.first) {
 
                     context.getString(R.string.genres) -> {
-                        //filter by genre and title
-                        tempListWithFilters = tempListWithFilters.filter { book ->
-                            book.genre!!.contains(filterItem.second)
-                        } as MutableList<Book>
+                        //filter by genre
+                        tempListWithFilters = filterByGenre(tempListWithFilters, filterItem.second)
                     }
 
                     context.getString(R.string.premium) -> {
                         tempListWithFilters =
-                            if (filterItem.second
-                                    .toLowerCase(Locale.ROOT) == "premium"
-                            ) {
-                                //filter premium
-                                tempListWithFilters.filter { book ->
-                                    book.premium
-                                } as MutableList<Book>
-                            } else {
-                                //filter not premium
-                                tempListWithFilters.filterNot { book ->
-                                    book.premium
-                                } as MutableList<Book>
-                            }
+                            filterByPremium(tempListWithFilters, filterItem.second)
                     }
 
                     context.getString(R.string.authors) -> {
                         //filter by author
-                        tempListWithFilters = tempListWithFilters.filter { book ->
-                            book.author!!.contains(filterItem.second)
-                        } as MutableList<Book>
+                        tempListWithFilters = filterByAuthor(tempListWithFilters, filterItem.second)
                     }
 
                     context.getString(R.string.language) -> {
@@ -87,5 +65,47 @@ class SearchFilter(val context: Context) {
             }
         }
         return tempListWithFilters
+    }
+
+    private fun filterByTitle(
+        booksToFilter: MutableList<Book>,
+        filterCharacter: String
+    ): MutableList<Book> {
+        return booksToFilter.filter { book ->
+            book.title!!.toLowerCase(Locale.ROOT)
+                .contains(filterCharacter.toLowerCase(Locale.ROOT))
+        } as MutableList<Book>
+    }
+
+    private fun filterByGenre(booksToFilter: MutableList<Book>, genre: String): MutableList<Book> {
+        return booksToFilter.filter { book ->
+            book.genre!!.toLowerCase(Locale.ROOT).contains(genre.toLowerCase(Locale.ROOT))
+        } as MutableList<Book>
+    }
+
+    private fun filterByPremium(
+        booksToFilter: MutableList<Book>,
+        premium: String
+    ): MutableList<Book> {
+        return if (premium.toLowerCase(Locale.ROOT) == "premium") {
+            //filter premium
+            booksToFilter.filter { book ->
+                book.premium
+            } as MutableList<Book>
+        } else {
+            //filter not premium
+            booksToFilter.filterNot { book ->
+                book.premium
+            } as MutableList<Book>
+        }
+    }
+
+    private fun filterByAuthor(
+        booksToFilter: MutableList<Book>,
+        author: String
+    ): MutableList<Book> {
+        return booksToFilter.filter { book ->
+            book.author!!.toLowerCase(Locale.ROOT).contains(author.toLowerCase(Locale.ROOT))
+        } as MutableList<Book>
     }
 }

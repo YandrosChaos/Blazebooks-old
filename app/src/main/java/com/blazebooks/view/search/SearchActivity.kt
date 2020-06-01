@@ -168,7 +168,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     override fun onCloseDialog(dialog: FilterDialog) {
-        mAdapter.updateList(searchFilter.filterList("",filterList,bookList))
+        mAdapter.updateList(searchFilter.filterList("", filterList, bookList))
         dialog.dismiss()
         mFilterDialogFrameLayout.visibility = View.GONE
         runRecyclerViewAnimation()
@@ -250,11 +250,8 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
                             mAdapter.updateList(bookList) //actualiza la lista
                         }
                 }
-
             }
-
             else -> {
-
                 val db =
                     FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
                 db.collection("Books") //Accede a la colección Books y devuelve todos los documentos
@@ -276,86 +273,8 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
                         }//for
                         mAdapter.updateList(bookList) //actualiza la lista
                     }
-                val chaptersList = arrayListOf(
-                    Chapter(1, "Title of the Chapter", null, true, "Unknown"),
-                    Chapter(2, "Funciona?", null, true, "Unknown"),
-                    Chapter(3, "Suck or die", null, false, "Unknown"),
-                    Chapter(4, "Sssssspañah", null, false, "Unknown"),
-                    Chapter(5, "Coronachapter", null, false, "Unknown")
-                )
-
-                bookList = arrayListOf(
-                    Book(
-                        "Libro Primero",
-                        null,
-                        "Anonimo",
-                        getString(R.string.synopsis_example),
-                        chaptersList,
-                        true,
-                        "Terror",
-                        false,
-                        "unknown"
-                    ),
-                    Book(
-                        "Libro Segundo",
-                        null,
-                        "Bob",
-                        getString(R.string.synopsis_example),
-                        chaptersList,
-                        false,
-                        "Adventure",
-                        true,
-                        "unknown"
-                    ),
-                    Book(
-                        "Libro Tercero",
-                        null,
-                        "M. Rajoy",
-                        getString(R.string.synopsis_example),
-                        chaptersList,
-                        true,
-                        "Sci-Fy",
-                        false,
-                        "unknown"
-                    ),
-                    Book(
-                        "Libro Cuarto",
-                        null,
-                        "Juanjo",
-                        getString(R.string.synopsis_example),
-                        chaptersList,
-                        true,
-                        "Terror",
-                        false,
-                        "unknown"
-                    ),
-                    Book(
-                        "Libro Quinto",
-                        null,
-                        "Bob",
-                        getString(R.string.synopsis_example),
-                        chaptersList,
-                        false,
-                        "Fantasy",
-                        false,
-                        "unknown"
-                    ),
-                    Book(
-                        "Libro Sexto",
-                        null,
-                        "Anonimo",
-                        getString(R.string.synopsis_example),
-                        chaptersList,
-                        false,
-                        "Terror",
-                        false,
-                        "unknown"
-                    )
-                )
             }
         }
-
-
     }
 
     /**
