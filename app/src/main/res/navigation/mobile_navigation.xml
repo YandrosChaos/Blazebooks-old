@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.blazebooks.ui.main.HomeFragment"
+        android:name="com.blazebooks.view.main.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.blazebooks.ui.main.CatalogFragment"
+        android:name="com.blazebooks.view.main.CatalogFragment"
         android:label="@string/menu_books"
         tools:layout="@layout/fragment_books" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.blazebooks.ui.main.AboutFragment"
+        android:name="com.blazebooks.view.main.AboutFragment"
         android:label="@string/menu_about"
         tools:layout="@layout/fragment_about"
         />

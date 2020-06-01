@@ -1,8 +1,8 @@
 package com.blazebooks.model
 
+import com.google.gson.Gson
+
 data class Book(
-
-
     var title: String? = " ",
     var image: String? = " ",
     var author: String? = " ",
@@ -12,7 +12,8 @@ data class Book(
         Chapter(2, "Blah blah blah", null, true, "Unknown"),
         Chapter(3, "Suck or die", null, false, "Unknown"),
         Chapter(4, "Sssssspañah", null, false, "Unknown"),
-        Chapter(5, "Coronachapter", null, false, "Unknown")),
+        Chapter(5, "Coronachapter", null, false, "Unknown")
+    ),
     var premium: Boolean = false,
     var genre: String? = " ",
     var readed: Boolean = false,
@@ -30,6 +31,4 @@ data class Book(
     fun getChapter(position: Int): Chapter {
         return chapters[position]
     }
-
-
 }
