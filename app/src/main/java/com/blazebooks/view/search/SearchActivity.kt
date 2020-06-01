@@ -45,6 +45,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
     private lateinit var mSearchView: EditText
     private lateinit var mFilterDialogFrameLayout: FrameLayout
     private var filterList: MutableList<Pair<String, String>> = mutableListOf()
+    private lateinit var searchFilter: SearchFilter
 
     /**
      * Sets toolbar title. Gets a list of items and add the Text Change Listener, filter the list and
@@ -63,6 +64,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         mRecyclerView = findViewById(R.id.recyclerView_search)
         mSearchView = findViewById(R.id.searchViewEditText)
         mFilterDialogFrameLayout = findViewById(R.id.searchActivityFilterFragment)
+        searchFilter = SearchFilter(this)
 
         //set the title in the toolbar and show the progress bar
         activitySearchToolbarTv.text = intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE)
@@ -76,7 +78,8 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         //Search Event. After text change, filter the list and updates the adapter
         mSearchView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                filterList(p0.toString(), filterList)
+                mAdapter.updateList(searchFilter.filterList(p0.toString(), filterList, bookList))
+                runRecyclerViewAnimation()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -85,81 +88,6 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
-    }
-
-    /**
-     * <p>Filters the list by book's title and updates it in the adapter.
-     * If the book's title contains the character, adds the book to a
-     * temp list and passes the list to the adapter.</p>
-     *
-     * <p>Uses the filterList to filtering the list. Each checkbox clicked is one
-     * layer added to the filter.</p>
-     *
-     * <p> When list is filtered, calls to the adapter, updates the list and run the
-     * animation.</p>
-     *
-     * @param filterItem Strings which the filter searches in book's titles.
-     * @param filterList Checkbox which used for filter books by language, author, genre...
-     *
-     * @see SearchAdapter
-     * @see runRecyclerViewAnimation
-     * @see CustomGridRecyclerView
-     *
-     * @author Victor Gonzalez
-     */
-    private fun filterList(filterItem: String, filterList: MutableList<Pair<String, String>>) {
-
-        //filter by title
-        var tempListWithFilters: MutableList<Book> = bookList.filter { book ->
-            book.title!!.toLowerCase(Locale.ROOT)
-                .contains(filterItem.toLowerCase(Locale.ROOT))
-        } as MutableList<Book>
-
-        if (filterList.isNotEmpty()) {
-            filterList.forEach { filterItem ->
-                when (filterItem.first) {
-
-                    getString(R.string.genres) -> {
-                        //filter by genre and title
-                        tempListWithFilters = tempListWithFilters.filter { book ->
-                            book.genre!!.contains(filterItem.second)
-                        } as MutableList<Book>
-                    }
-
-                    getString(R.string.premium) -> {
-                        tempListWithFilters =
-                            if (filterItem.second
-                                    .toLowerCase(Locale.ROOT) == "premium"
-                            ) {
-                                //filter premium
-                                tempListWithFilters.filter { book ->
-                                    book.premium
-                                } as MutableList<Book>
-                            } else {
-                                //filter not premium
-                                tempListWithFilters.filterNot { book ->
-                                    book.premium
-                                } as MutableList<Book>
-                            }
-                    }
-
-                    getString(R.string.authors) -> {
-                        //filter by author
-                        tempListWithFilters = tempListWithFilters.filter { book ->
-                            book.author!!.contains(filterItem.second)
-                        } as MutableList<Book>
-                    }
-
-                    getString(R.string.language) -> {
-                        //filter by language
-                        //TODO -> FILTER BY LANGUAGE
-                    }
-
-                }
-            }
-        }
-        mAdapter.updateList(tempListWithFilters)
-        runRecyclerViewAnimation()
     }
 
     /**
@@ -234,13 +162,16 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
     }
 
     /**
+     * Closes the filter dialog and updates the view.
+     *
      * @see FilterDialog.FilterDialogListener
      * @author Victor Gonzalez
      */
     override fun onCloseDialog(dialog: FilterDialog) {
-        filterList("", filterList)
+        mAdapter.updateList(searchFilter.filterList("",filterList,bookList))
         dialog.dismiss()
         mFilterDialogFrameLayout.visibility = View.GONE
+        runRecyclerViewAnimation()
     }
 
 
