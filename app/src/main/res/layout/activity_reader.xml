@@ -87,7 +87,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/numPages"
+            android:id="@+id/tNumPages"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/pageNumber"

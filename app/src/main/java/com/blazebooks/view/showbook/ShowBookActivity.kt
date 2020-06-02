@@ -4,11 +4,9 @@ import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.preference.PreferenceManager
@@ -25,14 +23,16 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.item_show_book.*
-import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.MediaType
 import nl.siegmann.epublib.domain.Resource
+import nl.siegmann.epublib.domain.Resources
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.service.MediatypeService
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 /**
@@ -139,9 +139,9 @@ class ShowBookActivity : PreconfiguredActivity() {
                 //si no está en la base de datos local
 
                 val titleBook = Constants.CURRENT_BOOK.title.toString() //nombre del libro
-                val documents =
-                    "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
+                val documents ="books/$titleBook" //La carpeta creada irá dentro de la carpeta books
                 val documentsFolder = File(this.filesDir, documents)
+                val filesPath= this.getExternalFilesDir(null)?.absolutePath
 
                 Toast.makeText(this, getString(R.string.dwnloading), Toast.LENGTH_SHORT).show()
 
@@ -152,21 +152,19 @@ class ShowBookActivity : PreconfiguredActivity() {
                 //Con esto se obtiene la url del libro dependiendo de su nombre
                 mStorageRef.child("Epub/$titleBook.epub").downloadUrl.addOnSuccessListener {
                     downloadFile(this, titleBook, documents, it.toString())
+                    Toast.makeText(this, titleBook, Toast.LENGTH_SHORT).show()
 
-                    val handler = Handler()
-                    handler.postDelayed({
-                        //Lee el epub y lo guarda en un objeto book
-                        val epubInputStream: InputStream =
-                            File("/storage/emulated/0/Android/data/com.blazebooks/files/$documents/$titleBook.epub").inputStream()
-                        val book: Book = EpubReader().readEpub(epubInputStream)
-                        saveBookResources(book, documents)
-                        epubInputStream.close()
-                        Toast.makeText(
-                            this,
-                            getString(R.string.dwnload_cmplete),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }, 3000)
+                    //Retrasa la ejecucion del método para dar tiempo a la descarga
+                    Timer("SettingUp", false).schedule(5000) {
+                        saveBookResources(File("$filesPath/$documents/$titleBook.epub"),"$filesPath/$documents")
+                    }
+
+                    Toast.makeText(
+                        this,
+                        getString(R.string.dwnload_cmplete),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
 
                 }.addOnFailureListener {
                     Toast.makeText(this, getString(R.string.dwnload_error), Toast.LENGTH_SHORT)
@@ -206,59 +204,53 @@ class ShowBookActivity : PreconfiguredActivity() {
         LocalStorageSingleton.getDatabase(this).storedBookDAO().insert(storedBook)
     }
 
-    /**
-     * Método que transforma los datos obtenidos en imagenes y los almacena en una carpeta creada en el directorio del libro actual
-     *
-     * @author Mounir Zbayr
-     */
-    private fun createDirectoryAndSaveFile(
-        imageToSave: Bitmap,
-        fileName: String,
-        path: String
-    ) {
-        val direct =
-            File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/ImagesBZB/")
-        if (!direct.exists()) {
-            val wallpaperDirectory =
-                File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/ImagesBZB/")
-            wallpaperDirectory.mkdirs()
-        }
-        val file =
-            File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/ImagesBZB/$fileName")
-        if (file.exists()) {
-            file.delete()
-        }
-        try {
-            val out = FileOutputStream(file)
-            imageToSave.compress(Bitmap.CompressFormat.JPEG, 20, out)
-            out.flush()
-            out.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+
 
     /**
      * Método que obtiene las imagenes y el style.css del archivo epub y los almacena en la memoria interna para acceder a ellos al leer
      *
      * @author Mounir Zbayr
      */
-    private fun saveBookResources(book: Book, path: String) {
-        val bitmapTypes: Array<MediaType> =
-            arrayOf(MediatypeService.PNG, MediatypeService.GIF, MediatypeService.JPG)
-        val bitmapResources: List<Resource> =
-            book.resources.getResourcesByMediaTypes(bitmapTypes)
+    private fun saveBookResources(FileObj: File, directory: String) {
+        try {
+            val epubis: InputStream = FileInputStream(FileObj)
+            val book = EpubReader().readEpub(epubis)
+            val res: Resources = book.resources
+            val col: Collection<Resource> = res.all
+            col.forEach {
+                if (it.mediaType === MediatypeService.JPG
+                    || it.mediaType === MediatypeService.PNG
+                    || it.mediaType === MediatypeService.GIF
+                ) {
+                    val image = File(
+                        directory, "Images/"
+                                + it.href.replace("Images/", "")
+                    )
+                    image.parentFile.mkdirs()
+                    image.createNewFile()
+                    val fos1 = FileOutputStream(image)
+                    fos1.write(it.data)
+                    fos1.close()
+                } else if (it.mediaType === MediatypeService.CSS) {
+                    val style = File(
+                        directory, "Styles/"
+                                + it.href.replace("Styles/", "")
+                    )
+                    style.parentFile.mkdirs()
+                    style.createNewFile()
+                    val fos = FileOutputStream(style)
+                    fos.write(it.data)
+                    fos.close()
+                }
+            }
 
-
-        for (r in bitmapResources) {
-            val bm = BitmapFactory.decodeByteArray(r.data, 0, r.data.size)
-            createDirectoryAndSaveFile(bm, r.id.toString(), path)
+        } catch (e: java.lang.Exception) {
+            Log.v("error", e.message.toString())
         }
-
-        val file = File("/storage/emulated/0/Android/data/com.blazebooks/files/$path/", "style.css")
-
-        book.resources.getById("style.css").inputStream.copyTo(FileOutputStream(file))
     }
+
+
+
 
     /**
      * Recibe la URL y la ruta de destino y descarga el archivo usando DownloadManager
