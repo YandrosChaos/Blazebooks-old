@@ -182,15 +182,15 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     private fun getItemList() {
-        //load data
-        data()
-
         //configure and load adapter and manager
         mAdapter = SearchAdapter(bookList, this)
         mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         mRecyclerView.layoutAnimation =
             AnimationUtils.loadLayoutAnimation(this, R.anim.gridlayout_animation_from_bottom)
         mRecyclerView.adapter = mAdapter
+
+        //load data
+        data()
     }
 
     /**
@@ -217,7 +217,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
     private fun data() {
         when (intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE)) {
             resources.getString(R.string.fav_books) -> {
-
+                //libros favoritos
                 //consulta la base de datos local
                 val favBooksList =
                     LocalStorageSingleton.getDatabase(applicationContext)
@@ -247,11 +247,22 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
                                 book.chapters = chapterList //añade los capitulos al libro
                                 bookList.add(book) //añade el libro a la lista
                             }//for
-                            mAdapter.updateList(bookList) //actualiza la lista
+                            mAdapter.updateList(bookList)
                         }
                 }
             }
+            resources.getString(R.string.my_books) -> {
+                //libros ya descargados
+                val storedBooks = LocalStorageSingleton.getDatabase(this).storedBookDAO().getAll()
+                if (!storedBooks.isNullOrEmpty()) {
+                    storedBooks.forEach {
+                        bookList.add(it.transformFromJsonData())
+                    }
+                    mAdapter.updateList(bookList)
+                }
+            }
             else -> {
+                //todos los libros
                 val db =
                     FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
                 db.collection("Books") //Accede a la colección Books y devuelve todos los documentos
@@ -271,7 +282,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
                             book.chapters = chapterList //añade los capitulos al libro
                             bookList.add(book) //añade el libro a la lista
                         }//for
-                        mAdapter.updateList(bookList) //actualiza la lista
+                        mAdapter.updateList(bookList)
                     }
             }
         }

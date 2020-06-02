@@ -21,6 +21,12 @@ interface StoredBookDAO {
     @Query("SELECT * FROM stored_books WHERE title=:title")
     fun get(title: String): StoredBook
 
-    @Query("SELECT * FROM stored_books WHERE title=:title")
-    fun exist(title: String): Boolean
+    @Query("SELECT lastPage FROM stored_books WHERE title=:title")
+    fun getPage(title: String): Int
+
+    @Query("UPDATE stored_books SET lastPage=:page WHERE title=:title")
+    fun updatePage(title: String, page: Int)
+
+    @Query("SELECT COUNT(*) FROM stored_books WHERE stored_books.title=:title")
+    fun exist(title: String): Int
 }

@@ -16,6 +16,7 @@ import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.control.localStorage.LocalStorageSingleton
 import com.blazebooks.control.localStorage.model.FavBook
+import com.blazebooks.control.localStorage.model.StoredBook
 import com.blazebooks.view.PreconfiguredActivity
 import com.blazebooks.view.becomepremium.BecomePremiumActivity
 import com.blazebooks.view.reader.ReaderActivity
@@ -119,28 +120,29 @@ class ShowBookActivity : PreconfiguredActivity() {
      *
      * @see BecomePremiumActivity
      * @see downloadFile
+     * @see storeBookIntoLocalDatabase
      *
      * @author MounirZbayr
      * @author Victor Gonzalez
      */
     fun download(view: View) {
 
+        when {
+            Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium -> {
+                //si no es premium
+                startActivity(Intent(this, BecomePremiumActivity::class.java))
+                overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
+            }
 
-        if (Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium) {
-            startActivity(Intent(this, BecomePremiumActivity::class.java))
-            overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
-        } else {
-            val titleBook = showBookTvTitle.text.toString() //nombre del libro
-            val documents = "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
-            val documentsFolder = File(this.filesDir, documents)
+            LocalStorageSingleton.getDatabase(this).storedBookDAO()
+                .exist(Constants.CURRENT_BOOK.title.toString()) != 1 -> {
+                //si no está en la base de datos local
 
-            //si la carpeta existe solo mostrará el mensaje, si no la creará y descargará el libro
-            if (documentsFolder.exists()) Toast.makeText(
-                this,
-                getString(R.string.already_dwnload),
-                Toast.LENGTH_SHORT
-            ).show()
-            else {
+                val titleBook = Constants.CURRENT_BOOK.title.toString() //nombre del libro
+                val documents =
+                    "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
+                val documentsFolder = File(this.filesDir, documents)
+
                 Toast.makeText(this, getString(R.string.dwnloading), Toast.LENGTH_SHORT).show()
 
                 documentsFolder.mkdirs() // Crea la carpeta en la direccion dada
@@ -152,12 +154,13 @@ class ShowBookActivity : PreconfiguredActivity() {
                     downloadFile(this, titleBook, documents, it.toString())
 
                     val handler = Handler()
-                    handler.postDelayed(Runnable {
+                    handler.postDelayed({
                         //Lee el epub y lo guarda en un objeto book
                         val epubInputStream: InputStream =
                             File("/storage/emulated/0/Android/data/com.blazebooks/files/$documents/$titleBook.epub").inputStream()
                         val book: Book = EpubReader().readEpub(epubInputStream)
                         saveBookResources(book, documents)
+                        epubInputStream.close()
                         Toast.makeText(
                             this,
                             getString(R.string.dwnload_cmplete),
@@ -170,11 +173,38 @@ class ShowBookActivity : PreconfiguredActivity() {
                         .show()
                     documentsFolder.delete() //Borra la carpeta creada al dar error
                 }
+                storeBookIntoLocalDatabase(
+                    titleBook,
+                    documents
+                )//almacena la info dentro de la base de datos local
             }//if
-
-        }//if
+            else -> {
+                //si no es ninguno de los anteriores casos
+                Toast.makeText(
+                    this,
+                    getString(R.string.already_dwnload),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
     }//download
+
+    /**
+     * Almacena la información del libro dentro de la base de datos local.
+     *
+     * @param titleBook El título del libro.
+     * @param path La ruta en la que se guardó el libro.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun storeBookIntoLocalDatabase(titleBook: String, path: String) {
+        //preparar objeto para almacenar localmente
+        val storedBook = StoredBook(titleBook, path, 0, "")
+        storedBook.storeToJsonData(Constants.CURRENT_BOOK)
+        //guardar en la base de datos
+        LocalStorageSingleton.getDatabase(this).storedBookDAO().insert(storedBook)
+    }
 
     /**
      * Método que transforma los datos obtenidos en imagenes y los almacena en una carpeta creada en el directorio del libro actual
