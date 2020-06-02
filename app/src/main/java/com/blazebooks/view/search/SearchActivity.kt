@@ -1,6 +1,7 @@
 package com.blazebooks.view.search
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,18 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.Constants
 import com.blazebooks.R
 import com.blazebooks.Utils.Companion.hideKeyboard
-import com.blazebooks.control.localStorage.LocalStorageSingleton
-import com.blazebooks.control.localStorage.model.FavBook
 import com.blazebooks.model.Book
-import com.blazebooks.model.Chapter
 import com.blazebooks.model.CustomGridRecyclerView
 import com.blazebooks.view.PreconfiguredActivity
 import com.blazebooks.view.dialogs.FilterDialog
+import com.blazebooks.view.search.control.SearchActivityController
 import com.blazebooks.view.search.control.SearchAdapter
-import com.google.firebase.firestore.FirebaseFirestore
+import com.blazebooks.view.search.control.SearchFilterController
 import kotlinx.android.synthetic.main.app_bar_search.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -39,20 +36,19 @@ import kotlin.collections.ArrayList
  * @author  Victor Gonzalez
  */
 class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListener {
+    private val waitTime: Long = 300L
     private lateinit var mRecyclerView: CustomGridRecyclerView
     private var bookList: MutableList<Book> = mutableListOf()
+    private lateinit var searchActivityController: SearchActivityController
     private lateinit var mAdapter: SearchAdapter
     private lateinit var mSearchView: EditText
     private lateinit var mFilterDialogFrameLayout: FrameLayout
-    private var filterList: MutableList<Pair<String, String>> = mutableListOf()
-    private lateinit var searchFilter: SearchFilter
+    private lateinit var searchFilterController: SearchFilterController
 
     /**
      * Sets toolbar title. Gets a list of items and add the Text Change Listener, filter the list and
      * updates the adapter. Also runs the custom recycler view animation by first time.
      *
-     * @see getItemList
-     * @see filterList
      * @see CustomGridRecyclerView
      *
      * @author Victor Gonzalez
@@ -64,21 +60,38 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         mRecyclerView = findViewById(R.id.recyclerView_search)
         mSearchView = findViewById(R.id.searchViewEditText)
         mFilterDialogFrameLayout = findViewById(R.id.searchActivityFilterFragment)
-        searchFilter = SearchFilter(this)
+
+        //controllers
+        searchFilterController = SearchFilterController(this)
+        searchActivityController =
+            SearchActivityController(this, intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE))
 
         //set the title in the toolbar and show the progress bar
         activitySearchToolbarTv.text = intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE)
 
-        //load the data
-        getItemList()
+        //configure and load adapter and manager
+        mAdapter = SearchAdapter(bookList, this)
+        mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
+        mRecyclerView.layoutAnimation =
+            AnimationUtils.loadLayoutAnimation(this, R.anim.gridlayout_animation_from_bottom)
+        mRecyclerView.adapter = mAdapter
 
-        //run the custom recyclerView animation.
-        runRecyclerViewAnimation()
+        //load data
+        bookList = searchActivityController.data()
+
+        //wait to get data from data base
+        Handler().postDelayed({
+            mAdapter.updateList(bookList)
+            mAdapter.notifyDataSetChanged()
+            //run the custom recyclerView animation.
+            runRecyclerViewAnimation()
+        }, waitTime)
+
 
         //Search Event. After text change, filter the list and updates the adapter
         mSearchView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                mAdapter.updateList(searchFilter.filterList(p0.toString(), filterList, bookList))
+                mAdapter.updateList(searchFilterController.filterList(p0.toString(), bookList))
                 runRecyclerViewAnimation()
             }
 
@@ -132,7 +145,10 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         mFilterDialogFrameLayout.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
-            .replace(R.id.searchActivityFilterFragment, FilterDialog(filterList))
+            .replace(
+                R.id.searchActivityFilterFragment,
+                FilterDialog(searchFilterController.filterList)
+            )
             .commit()
     }
 
@@ -145,8 +161,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     override fun onReturnFilters(dialog: FilterDialog) {
-        filterList.clear()
-        filterList = dialog.filterReturnList
+        searchFilterController.updateFilters(dialog.filterReturnList)
         onCloseDialog(dialog)
     }
 
@@ -158,7 +173,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     override fun onClearFilters(dialog: FilterDialog) {
-        filterList.clear()
+        searchFilterController.clearFilters()
     }
 
     /**
@@ -168,29 +183,10 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
      * @author Victor Gonzalez
      */
     override fun onCloseDialog(dialog: FilterDialog) {
-        mAdapter.updateList(searchFilter.filterList("", filterList, bookList))
+        mAdapter.updateList(searchFilterController.filterList("", bookList))
         dialog.dismiss()
         mFilterDialogFrameLayout.visibility = View.GONE
         runRecyclerViewAnimation()
-    }
-
-
-    /**
-     * Loads data, layout manager and adapter.
-     *
-     * @see data
-     * @author Victor Gonzalez
-     */
-    private fun getItemList() {
-        //configure and load adapter and manager
-        mAdapter = SearchAdapter(bookList, this)
-        mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
-        mRecyclerView.layoutAnimation =
-            AnimationUtils.loadLayoutAnimation(this, R.anim.gridlayout_animation_from_bottom)
-        mRecyclerView.adapter = mAdapter
-
-        //load data
-        data()
     }
 
     /**
@@ -204,88 +200,6 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
     private fun runRecyclerViewAnimation() {
         mAdapter.notifyDataSetChanged()
         mRecyclerView.scheduleLayoutAnimation()
-    }
-
-    /**
-     * Load data from database to adapter.
-     *
-     * @see SearchAdapter.updateList
-     *
-     * @author Victor Gonzalez
-     * @author Mounir Zbayr
-     */
-    private fun data() {
-        when (intent.getStringExtra(Constants.TOOLBAR_TITLE_CODE)) {
-            resources.getString(R.string.fav_books) -> {
-                //libros favoritos
-                //consulta la base de datos local
-                val favBooksList =
-                    LocalStorageSingleton.getDatabase(applicationContext)
-                        .favBookDAO()
-                        .getAllTitles()
-
-                if (favBooksList.isNotEmpty()) {
-                    val db =
-                        FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
-                    db.collection("Books").whereIn(
-                        "title",
-                        favBooksList
-                    )//Accede a la colección Books y devuelve los documentos que están en favoritos
-                        .get()
-                        .addOnSuccessListener { result ->
-                            for (document in result) {
-                                val book =
-                                    document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
-                                val chapterList = ArrayList<Chapter>()
-                                db.collection("Books").document(document.id).collection("Chapters")
-                                    .get()
-                                    .addOnSuccessListener { chapters ->
-                                        for (chapter in chapters) {
-                                            chapterList.add(chapter.toObject(Chapter::class.java)) //se añaden los capitulos de la bbdd a la lista de capitulos
-                                        }
-                                    }
-                                book.chapters = chapterList //añade los capitulos al libro
-                                bookList.add(book) //añade el libro a la lista
-                            }//for
-                            mAdapter.updateList(bookList)
-                        }
-                }
-            }
-            resources.getString(R.string.my_books) -> {
-                //libros ya descargados
-                val storedBooks = LocalStorageSingleton.getDatabase(this).storedBookDAO().getAll()
-                if (!storedBooks.isNullOrEmpty()) {
-                    storedBooks.forEach {
-                        bookList.add(it.transformFromJsonData())
-                    }
-                    mAdapter.updateList(bookList)
-                }
-            }
-            else -> {
-                //todos los libros
-                val db =
-                    FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
-                db.collection("Books") //Accede a la colección Books y devuelve todos los documentos
-                    .get()
-                    .addOnSuccessListener { result ->
-                        for (document in result) {
-                            val book =
-                                document.toObject(Book::class.java) //convierte el documento de firebase a la clase Book
-                            val chapterList = ArrayList<Chapter>()
-                            db.collection("Books").document(document.id).collection("Chapters")
-                                .get()
-                                .addOnSuccessListener { chapters ->
-                                    for (chapter in chapters) {
-                                        chapterList.add(chapter.toObject(Chapter::class.java)) //se añaden los capitulos de la bbdd a la lista de capitulos
-                                    }
-                                }
-                            book.chapters = chapterList //añade los capitulos al libro
-                            bookList.add(book) //añade el libro a la lista
-                        }//for
-                        mAdapter.updateList(bookList)
-                    }
-            }
-        }
     }
 
     /**

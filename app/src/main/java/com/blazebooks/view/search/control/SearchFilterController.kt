@@ -1,4 +1,4 @@
-package com.blazebooks.view.search
+package com.blazebooks.view.search.control
 
 import android.content.Context
 import com.blazebooks.R
@@ -8,8 +8,8 @@ import java.util.*
 /**
  * @author Victor Gonzalez
  */
-class SearchFilter(val context: Context) {
-
+class SearchFilterController(val context: Context) {
+    val filterList: MutableList<Pair<String, String>> = mutableListOf()
 
     /**
      * <p>Filters the list by book's title and updates it in the adapter.
@@ -29,7 +29,6 @@ class SearchFilter(val context: Context) {
      */
     fun filterList(
         filterCharacter: String,
-        filterList: MutableList<Pair<String, String>>?,
         booksToFilter: MutableList<Book>
     ): MutableList<Book> {
 
@@ -65,6 +64,15 @@ class SearchFilter(val context: Context) {
             }
         }
         return tempListWithFilters
+    }
+
+    fun updateFilters(newFilterList: MutableList<Pair<String, String>>){
+        filterList.clear()
+        filterList.addAll(newFilterList)
+    }
+
+    fun clearFilters(){
+        filterList.clear()
     }
 
     private fun filterByTitle(
