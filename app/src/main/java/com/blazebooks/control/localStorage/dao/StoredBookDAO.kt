@@ -3,6 +3,13 @@ package com.blazebooks.control.localStorage.dao
 import androidx.room.*
 import com.blazebooks.control.localStorage.model.StoredBook
 
+/**
+ * CRUD and Query operations about stored_book database.
+ *
+ * @see StoredBook
+ *
+ * @author Victor Gonzalez
+ */
 @Dao
 interface StoredBookDAO {
 
@@ -24,9 +31,15 @@ interface StoredBookDAO {
     @Query("SELECT lastPage FROM stored_books WHERE title=:title")
     fun getPage(title: String): Int
 
+    /**
+     * Updates the last page read.
+     */
     @Query("UPDATE stored_books SET lastPage=:page WHERE title=:title")
     fun updatePage(title: String, page: Int)
 
+    /**
+     * Returns 0 if the row does not exist or 1 if it exists.
+     */
     @Query("SELECT COUNT(*) FROM stored_books WHERE stored_books.title=:title")
     fun exist(title: String): Int
 }

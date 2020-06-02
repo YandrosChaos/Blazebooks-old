@@ -3,6 +3,13 @@ package com.blazebooks.control.localStorage.dao
 import androidx.room.*
 import com.blazebooks.control.localStorage.model.FavBook
 
+/**
+ * CRUD and Query operations about fav_books database.
+ *
+ * @see FavBook
+ *
+ * @author Victor Gonzalez
+ */
 @Dao
 interface FavBookDAO {
     @Insert
@@ -20,6 +27,9 @@ interface FavBookDAO {
     @Query("SELECT * FROM fav_books WHERE title=:title")
     fun get(title: String): FavBook
 
+    /**
+     * If a title exists into database, it returns 1. If not exists, it returns 0.
+     */
     @Query("SELECT COUNT(*) FROM fav_books WHERE fav_books.title=:title")
     fun exist(title: String): Int
 
