@@ -14,14 +14,17 @@ import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
+import com.blazebooks.control.dataAccessObjects.FavBookDao
 import com.blazebooks.control.localStorage.LocalStorageSingleton
-import com.blazebooks.control.localStorage.model.FavBook
-import com.blazebooks.control.localStorage.model.StoredBook
+import com.blazebooks.model.FavBook
+import com.blazebooks.model.StoredBook
 import com.blazebooks.view.PreconfiguredActivity
 import com.blazebooks.view.becomepremium.BecomePremiumActivity
 import com.blazebooks.view.reader.ReaderActivity
 import com.blazebooks.view.showbook.control.ShowBookViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.item_show_book.*
@@ -47,8 +50,10 @@ class ShowBookActivity : PreconfiguredActivity() {
             this
         )
     }
+    private val currentFirebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var liked = false
-    private val favBook = FavBook(Constants.CURRENT_BOOK.title.toString())
+    private val favBook =
+        FavBook(Constants.CURRENT_BOOK.title.toString())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +76,19 @@ class ShowBookActivity : PreconfiguredActivity() {
         tabLayoutMediator.attach()
 
         //if current book is liked, set the drawable and boolean
-        if (LocalStorageSingleton.getDatabase(applicationContext).favBookDAO()
-                .exist(favBook.title) != 0
+
+        if (FavBookDao().exist(
+                FavBook(
+                    Constants.CURRENT_BOOK.title.toString(),
+                    currentFirebaseUser!!.uid
+                )
+            )
         ) {
             showBookBtnFav.progress = 1f
+            showBookBtnFav.refreshDrawableState()
             liked = true
         }
+        Toast.makeText(this, liked.toString(), Toast.LENGTH_LONG).show()
 
 
     }
@@ -98,14 +110,24 @@ class ShowBookActivity : PreconfiguredActivity() {
                 //remove from favs
                 showBookBtnFav.speed = -1f
                 showBookBtnFav.playAnimation()
-                LocalStorageSingleton.getDatabase(applicationContext).favBookDAO().delete(favBook)
+                FavBookDao().delete(
+                    FavBook(
+                        Constants.CURRENT_BOOK.title.toString(),
+                        currentFirebaseUser!!.uid
+                    )
+                )
                 false
             }
             false -> {
                 //add to favs
                 showBookBtnFav.speed = 1f
                 showBookBtnFav.playAnimation()
-                LocalStorageSingleton.getDatabase(applicationContext).favBookDAO().insert(favBook)
+                FavBookDao().insert(
+                    FavBook(
+                        Constants.CURRENT_BOOK.title.toString(),
+                        currentFirebaseUser!!.uid
+                    )
+                )
                 true
             }
         }

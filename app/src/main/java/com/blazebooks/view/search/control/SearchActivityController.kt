@@ -27,7 +27,7 @@ class SearchActivityController(
      */
     fun data(): MutableList<Book> {
         when (downloadType) {
-            context.getString(R.string.fav_books) -> getFavBooks()
+            context.getString(R.string.fav_books) -> {}//getFavBooks()
             context.getString(R.string.my_books) -> getStoredBooks()
             else -> getAllBooks()
         }
@@ -67,7 +67,7 @@ class SearchActivityController(
         }
     }
 
-    private fun getFavBooks() {
+   /* private fun getFavBooks() {
         //consulta la base de datos local
         val favBooksList =
             LocalStorageSingleton.getDatabase(context.applicationContext)
@@ -100,5 +100,7 @@ class SearchActivityController(
                 }
         }
     }
+
+    */
 
 }

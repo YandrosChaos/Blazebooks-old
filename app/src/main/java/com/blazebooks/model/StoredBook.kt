@@ -1,9 +1,8 @@
-package com.blazebooks.control.localStorage.model
+package com.blazebooks.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.blazebooks.model.Book
 import com.google.gson.Gson
 
 @Entity(tableName = "stored_books")

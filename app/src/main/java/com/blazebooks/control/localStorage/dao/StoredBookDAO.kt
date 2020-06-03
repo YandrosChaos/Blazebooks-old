@@ -1,7 +1,7 @@
 package com.blazebooks.control.localStorage.dao
 
 import androidx.room.*
-import com.blazebooks.control.localStorage.model.StoredBook
+import com.blazebooks.model.StoredBook
 
 /**
  * CRUD and Query operations about stored_book database.

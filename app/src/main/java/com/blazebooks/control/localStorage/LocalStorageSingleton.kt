@@ -4,22 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.blazebooks.control.localStorage.dao.FavBookDAO
 import com.blazebooks.control.localStorage.dao.StoredBookDAO
-import com.blazebooks.control.localStorage.model.FavBook
-import com.blazebooks.control.localStorage.model.StoredBook
+import com.blazebooks.model.StoredBook
 
 /**
  * Singleton for LocalStorageDatabase.
  *
- * @see FavBookDAO
  * @see StoredBookDAO
  *
  * @author Victor Gonzalez
  */
-@Database(entities = [FavBook::class, StoredBook::class], version = 1)
+@Database(entities = [StoredBook::class], version = 2)
 abstract class LocalStorageSingleton : RoomDatabase() {
-    abstract fun favBookDAO(): FavBookDAO
     abstract fun storedBookDAO(): StoredBookDAO
 
 
