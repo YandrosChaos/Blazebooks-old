@@ -28,6 +28,7 @@ class ReaderActivity : PreconfiguredActivity() {
 
     private lateinit var layoutFilter: ImageView
     private var num = 1 //representa el número de página actual
+    private var filesPath: String?= ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,26 +38,27 @@ class ReaderActivity : PreconfiguredActivity() {
         loadLightMode()
         clock()
 
-        val path = intent.getStringExtra(Constants.PATH_CODE)
-        val documents = intent.getStringExtra("documents")
+        val bookPath = intent.getStringExtra(Constants.PATH_CODE)
+        val bookFolder = intent.getStringExtra("documents")
+        filesPath= this.getExternalFilesDir(null)?.absolutePath
 
         //Lee el epub y lo guarda en un objeto book
         val epubInputStream: InputStream =
-            File("/storage/emulated/0/Android/data/com.blazebooks/files/$path").inputStream()
+            File(this.getExternalFilesDir(null)?.absolutePath+"/$bookPath").inputStream()
         val book: Book = EpubReader().readEpub(epubInputStream)
 
         //obtiene informacion del epub
         val spine = book.spine
         val spineList = spine.spineReferences
-        val count = spineList.size
+        val numPages = spineList.size
 
-        page(book, num, documents)
+        page(book, num, bookFolder)
 
-        numPages.text = String.format(resources.getString(R.string.pageNumber), num, count)
+        tNumPages.text = String.format(resources.getString(R.string.pageNumber), num, numPages)
 
 
-        buttonNext.setOnClickListener { next(book, count, documents) } //Botón para ir a la página siguiente
-        buttonPrevious.setOnClickListener { previous(book, count, documents) } //Botón para ir a la página anterior
+        buttonNext.setOnClickListener { next(book, numPages, bookFolder) } //Botón para ir a la página siguiente
+        buttonPrevious.setOnClickListener { previous(book, numPages, bookFolder) } //Botón para ir a la página anterior
 
     }
 
@@ -66,14 +68,14 @@ class ReaderActivity : PreconfiguredActivity() {
      *
      * @author Mounir Zbayr
      */
-    private fun page(book: Book, numPage : Int, documents: String){
+    private fun page(book: Book, numPage : Int, documents: String?){
 
 
-        val baseUrl="file://storage/emulated/0/Android/data/com.blazebooks/files/"
+        val baseUrl="file://"+this.getExternalFilesDir(null)?.absolutePath
         var data = "<style>img{display: inline;height: auto;max-width: 100%;}</style>"+String(book.contents[numPage-1].data)
 
-        data= data.replace("../Images/", "/storage/emulated/0/Android/data/com.blazebooks/files/$documents/ImagesBZB/")
-        data= data.replace("../Styles/", "/storage/emulated/0/Android/data/com.blazebooks/files/$documents/")
+        data= data.replace("../Images/", "$filesPath/$documents/Images/")
+        data= data.replace("../Styles/", "$filesPath/$documents/Styles/")
 
         webViewReader.loadDataWithBaseURL(baseUrl,
             data, "text/html", "UTF-8", null)
@@ -88,11 +90,11 @@ class ReaderActivity : PreconfiguredActivity() {
      * @author Mounir Zbayr
      * @author Victor Gonzalez
      */
-    private fun next(book: Book, pages : Int, documents: String) {
+    private fun next(book: Book, pages : Int, bookFolder: String?) {
         if (num != pages) {
             num++
-            page(book, num, documents)
-            numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
+            page(book, num, bookFolder)
+            tNumPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
         }
     }
 
@@ -102,11 +104,11 @@ class ReaderActivity : PreconfiguredActivity() {
      * @author Mounir
      * @author Víctor González
      */
-    private fun previous(book: Book, pages : Int, documents: String) {
+    private fun previous(book: Book, pages : Int, bookFolder: String?) {
         if (num != 1) {
             num--
-            page(book, num, documents)
-            numPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
+            page(book, num, bookFolder)
+            tNumPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
         }
     }
 
