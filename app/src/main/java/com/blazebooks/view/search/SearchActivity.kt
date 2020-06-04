@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.app_bar_search.*
  * @author  Victor Gonzalez
  */
 class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListener {
-    private val waitTime: Long = 300L
+    private val waitTime: Long = 500L
     private lateinit var mRecyclerView: CustomGridRecyclerView
     private var bookList: MutableList<Book> = mutableListOf()
     private lateinit var searchActivityController: SearchActivityController

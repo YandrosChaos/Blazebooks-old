@@ -6,15 +6,15 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.R
-import com.blazebooks.control.dataAccessObjects.FavBookDao
 import com.blazebooks.control.localStorage.LocalStorageSingleton
-import com.blazebooks.model.FavBook
+import com.blazebooks.model.Book
 import com.blazebooks.model.StoredBook
 import com.blazebooks.view.PreconfiguredActivity
 import com.blazebooks.view.becomepremium.BecomePremiumActivity
@@ -22,7 +22,7 @@ import com.blazebooks.view.reader.ReaderActivity
 import com.blazebooks.view.showbook.control.ShowBookViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.item_show_book.*
@@ -42,6 +42,7 @@ import kotlin.concurrent.schedule
  * @see PreconfiguredActivity
  * @see ChapterFragment
  * @see SynopsisFragment
+ *
  * @author Victor Gonzalez
  */
 class ShowBookActivity : PreconfiguredActivity() {
@@ -50,10 +51,9 @@ class ShowBookActivity : PreconfiguredActivity() {
             this
         )
     }
-    private val currentFirebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var liked = false
-    private val favBook =
-        FavBook(Constants.CURRENT_BOOK.title.toString())
+    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,21 +75,13 @@ class ShowBookActivity : PreconfiguredActivity() {
                 })
         tabLayoutMediator.attach()
 
-        //if current book is liked, set the drawable and boolean
+        //comprueba si el libro está en la lista de favs del user o no
+        isFavBook()
 
-        if (FavBookDao().exist(
-                FavBook(
-                    Constants.CURRENT_BOOK.title.toString(),
-                    currentFirebaseUser!!.uid
-                )
-            )
-        ) {
-            showBookBtnFav.progress = 1f
-            showBookBtnFav.refreshDrawableState()
-            liked = true
-        }
-        Toast.makeText(this, liked.toString(), Toast.LENGTH_LONG).show()
-
+        Handler().postDelayed({
+            //if current book is liked, set the drawable and boolean
+            setLikeUI()
+        }, 500)
 
     }
 
@@ -100,7 +92,6 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @see liked
      * @see LocalStorageSingleton
      * @see FavBook
-     * @see com.blazebooks.control.localStorage.dao.FavBookDAO
      *
      * @author Victor Gonzalez
      */
@@ -110,24 +101,14 @@ class ShowBookActivity : PreconfiguredActivity() {
                 //remove from favs
                 showBookBtnFav.speed = -1f
                 showBookBtnFav.playAnimation()
-                FavBookDao().delete(
-                    FavBook(
-                        Constants.CURRENT_BOOK.title.toString(),
-                        currentFirebaseUser!!.uid
-                    )
-                )
+                deleteLikedBook(Constants.CURRENT_BOOK.title.toString())
                 false
             }
             false -> {
                 //add to favs
                 showBookBtnFav.speed = 1f
                 showBookBtnFav.playAnimation()
-                FavBookDao().insert(
-                    FavBook(
-                        Constants.CURRENT_BOOK.title.toString(),
-                        currentFirebaseUser!!.uid
-                    )
-                )
+                insertLikedBook(Constants.CURRENT_BOOK)
                 true
             }
         }
@@ -161,9 +142,10 @@ class ShowBookActivity : PreconfiguredActivity() {
                 //si no está en la base de datos local
 
                 val titleBook = Constants.CURRENT_BOOK.title.toString() //nombre del libro
-                val documents ="books/$titleBook" //La carpeta creada irá dentro de la carpeta books
+                val documents =
+                    "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
                 val documentsFolder = File(this.filesDir, documents)
-                val filesPath= this.getExternalFilesDir(null)?.absolutePath
+                val filesPath = this.getExternalFilesDir(null)?.absolutePath
 
                 Toast.makeText(this, getString(R.string.dwnloading), Toast.LENGTH_SHORT).show()
 
@@ -178,7 +160,10 @@ class ShowBookActivity : PreconfiguredActivity() {
 
                     //Retrasa la ejecucion del método para dar tiempo a la descarga
                     Timer("SettingUp", false).schedule(5000) {
-                        saveBookResources(File("$filesPath/$documents/$titleBook.epub"),"$filesPath/$documents")
+                        saveBookResources(
+                            File("$filesPath/$documents/$titleBook.epub"),
+                            "$filesPath/$documents"
+                        )
                     }
 
                     Toast.makeText(
@@ -227,7 +212,6 @@ class ShowBookActivity : PreconfiguredActivity() {
     }
 
 
-
     /**
      * Método que obtiene las imagenes y el style.css del archivo epub y los almacena en la memoria interna para acceder a ellos al leer
      *
@@ -270,8 +254,6 @@ class ShowBookActivity : PreconfiguredActivity() {
             Log.v("error", e.message.toString())
         }
     }
-
-
 
 
     /**
@@ -362,6 +344,66 @@ class ShowBookActivity : PreconfiguredActivity() {
             PreferenceManager.getDefaultSharedPreferences(this).edit()
         editor.putString(Constants.LAST_BOOK_SELECTED_KEY, url)
         editor.apply()
+    }
+
+    /**
+     * Sets the GUI depending user liked books.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun setLikeUI() {
+        if (liked) {
+            showBookBtnFav.speed = 1f
+            showBookBtnFav.playAnimation()
+            showBookBtnFav.refreshDrawableState()
+        }
+    }
+
+    /**
+     * Queries to DDBB if the book is stored into FavBooks database and set
+     * the Liked default value.
+     *
+     * @see liked
+     *
+     * @author Victor Gonzalez
+     */
+    private fun isFavBook() {
+        db.collection("FavBooks")
+            .document(firebaseUserID)
+            .collection("likedBooks")
+            .document(Constants.CURRENT_BOOK.title.toString().replace(" ", ""))
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc != null) {
+                    liked = doc.exists()
+                }
+            }
+    }
+
+    /**
+     * Saves a book into the user favBooks collection.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun insertLikedBook(likedBook: Book) {
+        db.collection("FavBooks")
+            .document(firebaseUserID)
+            .collection("likedBooks")
+            .document(likedBook.title.toString().replace(" ", ""))
+            .set(likedBook)
+    }
+
+    /**
+     * Deletes a book from user favBook collection.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun deleteLikedBook(title: String) {
+        db.collection("FavBooks")
+            .document(firebaseUserID)
+            .collection("likedBooks")
+            .document(title.replace(" ", ""))
+            .delete()
     }
 
 }//class
