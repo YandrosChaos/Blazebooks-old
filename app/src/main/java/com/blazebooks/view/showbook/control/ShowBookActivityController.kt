@@ -21,6 +21,9 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 
+/**
+ * @author Victor Gonzalez
+ */
 class ShowBookActivityController(val context: Context) {
 
     var liked = false

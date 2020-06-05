@@ -75,9 +75,7 @@ class ShowBookActivity : PreconfiguredActivity() {
      * If the current book is liked, then removes the like. Else, set liked to true the book.
      * Later refresh the drawable state.
      *
-     * @see liked
      * @see LocalStorageSingleton
-     * @see FavBook
      *
      * @author Victor Gonzalez
      */

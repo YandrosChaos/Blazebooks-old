@@ -16,6 +16,7 @@ class SearchActivityController(
     private val downloadType: String
 ) {
 
+    private val db = FirebaseFirestore.getInstance()
     private val dataList = mutableListOf<Book>()
 
     /**
@@ -35,9 +36,13 @@ class SearchActivityController(
         return dataList
     }
 
+    /**
+     * Gets all books from Firebase and stores it into dataList.
+     *
+     * @see dataList
+     * @author Mounir
+     */
     private fun getAllBooks() {
-        val db =
-            FirebaseFirestore.getInstance() //Con esto accedemos a la base de datos de Firebase
         db.collection("Books") //Accede a la colección Books y devuelve todos los documentos
             .get()
             .addOnSuccessListener { result ->
@@ -58,19 +63,31 @@ class SearchActivityController(
             }
     }
 
+    /**
+     * Gets all books stored locally and add it to dataList.
+     *
+     * @see dataList
+     * @author Victor Gonzalez
+     */
     private fun getStoredBooks() {
         val storedBooks =
             LocalStorageSingleton.getDatabase(context).storedBookDAO().getAll()
         if (!storedBooks.isNullOrEmpty()) {
-            storedBooks.forEach {
-                dataList.add(it.transformFromJsonData())
+            storedBooks.forEach { storedBook ->
+                dataList.add(storedBook.transformFromJsonData())
             }
         }
     }
 
+    /**
+     * Gets all fav books from Firebase and stores it into dataList.
+     *
+     * @see dataList
+     *
+     * @author Victor Gonzalez
+     */
     private fun getFavBooks() {
-         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-         val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
+        val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
 
         db.collection("FavBooks")
             .document(firebaseUserID)
