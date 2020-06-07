@@ -13,13 +13,13 @@ import com.blazebooks.view.becomepremium.BecomePremiumActivity
 import com.blazebooks.view.reader.ReaderActivity
 import com.blazebooks.view.showbook.control.ShowBookActivityController
 import com.blazebooks.view.showbook.control.ShowBookViewPagerAdapter
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.item_show_book.*
 import java.io.File
-import java.util.*
-import kotlin.concurrent.schedule
 
 
 /**
@@ -110,6 +110,7 @@ class ShowBookActivity : PreconfiguredActivity() {
      */
     fun download(view: View) {
 
+
         when {
             Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium -> {
                 //si no es premium
@@ -119,6 +120,9 @@ class ShowBookActivity : PreconfiguredActivity() {
 
             !controller.bookExist() -> {
                 //si no está en la base de datos local
+
+                showBookBtnRead.isEnabled = false
+                showBookBtnRead.isClickable = false
 
                 val titleBook = Constants.CURRENT_BOOK.title.toString() //nombre del libro
                 val documents =
@@ -134,27 +138,19 @@ class ShowBookActivity : PreconfiguredActivity() {
                     FirebaseStorage.getInstance().reference //Referencia al storage de Firebase
                 //Con esto se obtiene la url del libro dependiendo de su nombre
                 mStorageRef.child("Epub/$titleBook.epub").downloadUrl.addOnSuccessListener {
-                    controller.downloadFile(this, titleBook, documents, it.toString())
-                    Toast.makeText(this, titleBook, Toast.LENGTH_SHORT).show()
+                    downloadFile(
+                        it.toString(),
+                        "$titleBook.epub",
+                        "$filesPath/$documents"
+                    )
 
-                    //Retrasa la ejecucion del método para dar tiempo a la descarga
-                    Timer("SettingUp", false).schedule(5000) {
-                        controller.saveBookResources(
-                            File("$filesPath/$documents/$titleBook.epub"),
-                            "$filesPath/$documents"
-                        )
-                    }
-                    Toast.makeText(
-                        this,
-                        getString(R.string.dwnload_cmplete),
-                        Toast.LENGTH_SHORT
-                    ).show()
 
                 }.addOnFailureListener {
                     Toast.makeText(this, getString(R.string.dwnload_error), Toast.LENGTH_SHORT)
                         .show()
                     documentsFolder.delete() //Borra la carpeta creada al dar error
                 }
+
                 controller.storeBookIntoLocalDatabase(
                     titleBook,
                     documents
@@ -171,6 +167,37 @@ class ShowBookActivity : PreconfiguredActivity() {
         }
 
     }//download
+
+    /**
+     * Recibe la URL y la ruta de destino y descarga el archivo usando PRDownloader
+     *
+     * @author Mounir Zbayr
+     */
+    private fun downloadFile(url: String, fileName: String, dirPath: String) {
+
+        PRDownloader.download(url, dirPath, fileName)
+            .build()
+            .start(object : OnDownloadListener {
+                override fun onDownloadComplete() {
+                    controller.saveBookResources(
+                        File("$dirPath/$fileName"),
+                        dirPath
+                    )
+
+                    showBookBtnRead.isEnabled = true
+                    showBookBtnRead.isClickable = true
+
+                    Toast.makeText(this@ShowBookActivity, getString(R.string.dwnload_cmplete), Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onError(error: com.downloader.Error?) {
+                    Toast.makeText(this@ShowBookActivity, getString(R.string.dwnload_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+
+    }
 
     /**
      * Método de pulsado del boton Read, el cual lleva al libro elegido.
@@ -207,6 +234,7 @@ class ShowBookActivity : PreconfiguredActivity() {
         }
 
     }
+
 
     /**
      * Returns to previous activity and sets custom animation transition.
