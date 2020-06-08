@@ -1,17 +1,20 @@
 package com.blazebooks.view.showbook.control
 
-import android.app.DownloadManager
+import android.R
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.blazebooks.Constants
 import com.blazebooks.control.localStorage.LocalStorageSingleton
 import com.blazebooks.model.Book
 import com.blazebooks.model.StoredBook
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_show_book.*
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.domain.Resources
 import nl.siegmann.epublib.epub.EpubReader
@@ -20,6 +23,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
+
 
 /**
  * @author Victor Gonzalez
@@ -113,29 +117,8 @@ class ShowBookActivityController(val context: Context) {
         return localDB.storedBookDAO().exist(Constants.CURRENT_BOOK.title.toString()) == 1
     }
 
-    /**
-     * Recibe la URL y la ruta de destino y descarga el archivo usando DownloadManager
-     *
-     * @author Mounir Zbayr
-     */
-    fun downloadFile(
-        context: Context,
-        fileName: String,
-        destinationDirectory: String?,
-        uri: String?
-    ) {
-        val downloadManager =
-            context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val link = Uri.parse(uri)
-        val request = DownloadManager.Request(link)
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        request.setDestinationInExternalFilesDir(
-            context,
-            destinationDirectory,
-            "$fileName.epub"
-        )
-        downloadManager.enqueue(request)
-    }
+
+
 
     /**
      * Método que obtiene las imagenes y el style.css del archivo epub y los almacena en la memoria interna para acceder a ellos al leer

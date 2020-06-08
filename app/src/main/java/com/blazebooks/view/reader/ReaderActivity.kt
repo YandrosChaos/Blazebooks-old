@@ -43,6 +43,7 @@ class ReaderActivity : PreconfiguredActivity() {
         filesPath= this.getExternalFilesDir(null)?.absolutePath
 
         //Lee el epub y lo guarda en un objeto book
+
         val epubInputStream: InputStream =
             File(this.getExternalFilesDir(null)?.absolutePath+"/$bookPath").inputStream()
         val book: Book = EpubReader().readEpub(epubInputStream)
