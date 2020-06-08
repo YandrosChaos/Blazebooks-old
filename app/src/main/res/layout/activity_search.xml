@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/dark_background"
     android:id="@+id/searchActivityMainLayout"
-    tools:context=".view.search.SearchActivity">
+    tools:context=".ui.search.SearchActivity">
 
     <include
         android:id="@+id/search_Toolbar"
