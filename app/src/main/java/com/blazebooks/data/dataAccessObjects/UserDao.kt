@@ -58,8 +58,7 @@ class UserDao() : DAO<User> {
     }
 
     override fun insert(user: User) {
-
-        // Crea el usuario en la base de Firebase y si está bien pasa directo al main
+        // Crea el usuario en la base de Firebase
         auth.createUserWithEmailAndPassword(user.email, user.password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

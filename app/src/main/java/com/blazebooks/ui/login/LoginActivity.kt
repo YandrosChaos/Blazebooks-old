@@ -130,7 +130,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
      */
     override fun onStart() {
         super.onStart()
-        onSuccessAuth(viewModel.auth.currentUser)
+        goToMainActivity(viewModel.auth.currentUser)
     }//onStart
 
     /**
@@ -201,25 +201,34 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
      */
     override fun onSuccessAuth(currentUser: FirebaseUser?) {
         if (currentUser != null) {
-            CURRENT_USER = UserDao().get(currentUser.uid)
-            startActivity(Intent(this, MainActivity::class.java))
-            overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-            finish()
+            goToMainActivity(currentUser)
         } else {
             loginActivityForgotPasswdFL.visibility = View.GONE
             toast(getString(R.string.log_general_error))
         }
     }
 
-    override fun onEmailFaliure() {
+    override fun onEmailFaliure(errorStringCode: Int) {
         loginActivityForgotPasswdFL.visibility = View.GONE
-        loginActivityUserName.error = getString(R.string.log_email_error)
+        loginActivityUserName.error = getString(errorStringCode)
         loginActivityUserName.requestFocus()
     }
 
-    override fun onPasswordFaliure() {
+    override fun onPasswordFaliure(errorStringCode: Int) {
         loginActivityForgotPasswdFL.visibility = View.GONE
-        loginActivityUserPasswd.error = getString(R.string.log_passwd_error)
+        loginActivityUserPasswd.error = getString(errorStringCode)
         loginActivityUserPasswd.requestFocus()
+    }
+
+    override fun onUsernameFaliure(errorStringCode: Int) {
+    }
+
+    private fun goToMainActivity(currentUser: FirebaseUser?) {
+        if (currentUser != null) {
+            CURRENT_USER = UserDao().get(currentUser.uid)
+            startActivity(Intent(this, MainActivity::class.java))
+            overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+            finish()
+        }
     }
 }
