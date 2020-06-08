@@ -110,11 +110,6 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author Victor Gonzalez
      */
     fun download(view: View) {
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 73b067ce8546eee0566062d76bd804ff8b9bb5bb
         when {
             Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium -> {
                 //si el user no es premium pero el libro sí
@@ -124,17 +119,13 @@ class ShowBookActivity : PreconfiguredActivity() {
 
             !controller.bookExist() -> {
                 //si no está en la base de datos local
-
-<<<<<<< HEAD
                 showBookBtnDownload.speed = 1f
                 showBookBtnDownload.playAnimation()
                 view.refreshDrawableState()
 
                 showBookBtnRead.isEnabled = false
-=======
                 showBookBtnRead.isEnabled = false
                 showBookBtnRead.isClickable = false
->>>>>>> 73b067ce8546eee0566062d76bd804ff8b9bb5bb
 
                 val titleBook = Constants.CURRENT_BOOK.title.toString() //nombre del libro
                 val documents =
