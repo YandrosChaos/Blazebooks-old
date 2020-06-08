@@ -26,6 +26,10 @@ android {
         }
     }
 
+    dataBinding{
+        enabled = true
+    }
+
     compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
@@ -44,11 +48,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.navigation:navigation-fragment:2.2.2'
-    implementation 'androidx.navigation:navigation-ui:2.2.2'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     implementation 'androidx.annotation:annotation:1.1.0'
 
     testImplementation 'junit:junit:4.13'
@@ -56,18 +55,34 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.android.support:multidex:1.0.3'
 
-    //Google extra
+    //Android navigation architecture
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0-beta01'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0-beta01'
+
+    //ViewModel and LiveData
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    //Kodein Dependency injection
+    implementation 'org.kodein.di:kodein-di-generic-jvm:6.2.1'
+    implementation 'org.kodein.di:kodein-di-framework-android-x:6.2.1'
+
+    //Google extra: Gson, viewpager2, mateiral, preference
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0-beta01'
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
     implementation "androidx.preference:preference:1.1.1"
     implementation 'com.google.code.gson:gson:2.8.6'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
+    //SQLittle ROOM
+    implementation 'androidx.room:room-runtime:2.2.5'
+    implementation 'androidx.room:room-ktx:2.2.5'
+    kapt "androidx.room:room-compiler:2.2.5"
 
     //Custom Spinners
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
@@ -88,10 +103,6 @@ dependencies {
 
     //Airbnb Lottie
     implementation 'com.airbnb.android:lottie:3.4.0'
-
-    //SQLittle ROOM
-    implementation "androidx.room:room-runtime:2.2.5"
-    kapt "androidx.room:room-compiler:2.2.5"
 
     // Prdownloader
     implementation 'com.mindorks.android:prdownloader:0.5.0'
