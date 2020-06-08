@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blazebooks.util.Constants
 import com.blazebooks.R
@@ -19,7 +18,6 @@ import com.blazebooks.util.toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,8 +27,7 @@ const val GOOGLE_SIGN_IN = 1984
 
 class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDialogListener,
     AuthListener {
-
-    private lateinit var auth: FirebaseAuth //Necesario para la autenticación
+    private lateinit var viewModel: AuthViewModel
 
     /**
      * @param savedInstanceState
@@ -40,10 +37,9 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
         super.onCreate(savedInstanceState)
         val binding: ActivityLoginBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_login)
-        val viewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
         viewModel.authListener = this
-        auth = FirebaseAuth.getInstance()
     }
 
     /**
@@ -81,7 +77,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
                     .getResult(ApiException::class.java)
 
                 if (account != null) {
-                    auth.signInWithCredential(
+                    viewModel.auth.signInWithCredential(
                         GoogleAuthProvider.getCredential(
                             account.idToken,
                             null
@@ -91,18 +87,18 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
 
                             //añadir nuevo usuario a la collection users
                             FirebaseFirestore.getInstance().collection("Users")
-                                .document(auth.currentUser?.uid.toString())
+                                .document(viewModel.auth.currentUser?.uid.toString())
                                 .set(
                                     User(
-                                        auth.currentUser!!.displayName.toString(),
+                                        viewModel.auth.currentUser!!.displayName.toString(),
                                         "unknown",
-                                        auth.currentUser!!.email.toString(),
+                                        viewModel.auth.currentUser!!.email.toString(),
                                         "https://example.com/jane-q-user/profile.jpg",
                                         false
                                     )
                                 )
 
-                            onSuccessAuth(auth.currentUser)
+                            onSuccessAuth(viewModel.auth.currentUser)
                         } else {
                             loginActivityLoadingSKV.visibility = View.GONE
                             Toast.makeText(
@@ -134,7 +130,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
      */
     override fun onStart() {
         super.onStart()
-        onSuccessAuth(auth.currentUser)
+        onSuccessAuth(viewModel.auth.currentUser)
     }//onStart
 
     /**
@@ -149,7 +145,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
         loginActivityForgotPasswdFL.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_bottom, R.anim.slide_to_top)
-            .replace(R.id.loginActivityForgotPasswdFL, ForgotPasswdDialog(auth))
+            .replace(R.id.loginActivityForgotPasswdFL, ForgotPasswdDialog(viewModel.auth))
             .commit()
     }
 
@@ -193,7 +189,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
     }
 
     override fun onStartAuth() {
-
+        loginActivityForgotPasswdFL.visibility = View.VISIBLE
     }
 
     /**
@@ -210,16 +206,19 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
             overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
             finish()
         } else {
+            loginActivityForgotPasswdFL.visibility = View.GONE
             toast(getString(R.string.log_general_error))
         }
     }
 
     override fun onEmailFaliure() {
+        loginActivityForgotPasswdFL.visibility = View.GONE
         loginActivityUserName.error = getString(R.string.log_email_error)
         loginActivityUserName.requestFocus()
     }
 
     override fun onPasswordFaliure() {
+        loginActivityForgotPasswdFL.visibility = View.GONE
         loginActivityUserPasswd.error = getString(R.string.log_passwd_error)
         loginActivityUserPasswd.requestFocus()
     }

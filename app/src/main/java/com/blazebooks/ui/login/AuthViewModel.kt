@@ -9,15 +9,11 @@ import com.google.firebase.auth.FirebaseAuth
  */
 class AuthViewModel : ViewModel(){
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     var email: String? = null
     var passwd: String? = null
     var authListener: AuthListener? = null
-
-    fun loginByGoogle(view: View){
-
-    }
 
     /**
      *
