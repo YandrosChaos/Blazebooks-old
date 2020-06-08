@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -24,7 +25,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_weight="1"
         android:id="@+id/menuContainerLL"
         android:layout_width="match_parent"
         android:layout_height="0sp"
@@ -32,44 +32,68 @@
         android:layout_marginTop="5sp"
         android:layout_marginEnd="10sp"
         android:layout_marginBottom="5sp"
+        android:layout_weight="1"
         android:background="@drawable/edit_text_background"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <ImageButton
+<!--
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/showBookBtnRead"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_marginTop="5sp"
-            android:layout_marginEnd="20sp"
-            android:layout_marginBottom="5sp"
-            android:background="@drawable/ic_reading_big"
-            android:contentDescription="@string/read"
-            android:onClick="read" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="read"
+            android:src="@drawable/ic_search"
+            app:layout_anchor="@id/menuContainerLL" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/showBookBtnDownload"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_marginStart="20sp"
-            android:layout_marginTop="5sp"
-            android:layout_marginEnd="20sp"
-            android:layout_marginBottom="5sp"
-            android:background="@drawable/ic_download"
-            android:contentDescription="@string/download"
-            android:onClick="download" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="read"
+            android:src="@drawable/ic_search"
+            app:layout_anchor="@id/menuContainerLL" />
 
-        <com.airbnb.lottie.LottieAnimationView
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/showBookBtnFav"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:layout_marginStart="20sp"
-            android:layout_marginTop="5sp"
-            android:layout_marginBottom="5sp"
-            android:onClick="addFav"
-            android:scaleType="center"
-            app:lottie_rawRes="@raw/like" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="read"
+            android:src="@drawable/ic_search"
+-->
+                <ImageButton
+                    android:id="@+id/showBookBtnRead"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginEnd="20sp"
+                    android:layout_marginBottom="5sp"
+                    android:onClick="read"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/ic_search"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:contentDescription="@string/read" />
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/showBookBtnDownload"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginEnd="20sp"
+                    android:layout_marginBottom="5sp"
+                    android:onClick="download"
+                    android:scaleType="fitCenter"
+                    app:lottie_rawRes="@raw/downloading" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/showBookBtnFav"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:onClick="addFav"
+                    android:scaleType="center"
+                    app:lottie_rawRes="@raw/like" />
     </LinearLayout>
-
 </LinearLayout>

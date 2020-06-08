@@ -46,7 +46,7 @@ class ReaderActivity : PreconfiguredActivity() {
         val epubInputStream: InputStream =
             File(this.getExternalFilesDir(null)?.absolutePath+"/$bookPath").inputStream()
         val book: Book = EpubReader().readEpub(epubInputStream)
-
+        epubInputStream.close()
         //obtiene informacion del epub
         val spine = book.spine
         val spineList = spine.spineReferences

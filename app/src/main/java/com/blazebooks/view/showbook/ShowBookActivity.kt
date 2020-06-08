@@ -67,6 +67,7 @@ class ShowBookActivity : PreconfiguredActivity() {
         Handler().postDelayed({
             //if current book is liked, set the drawable and boolean
             setLikeUI()
+            setDownloadUI()
         }, 500)
 
     }
@@ -90,7 +91,7 @@ class ShowBookActivity : PreconfiguredActivity() {
             false -> {
                 //add to favs
                 showBookBtnFav.speed = 1f
-                showBookBtnFav.playAnimation()
+               showBookBtnFav.playAnimation()
                 controller.insertLikedBook(Constants.CURRENT_BOOK)
             }
         }
@@ -105,20 +106,25 @@ class ShowBookActivity : PreconfiguredActivity() {
      *
      * @see BecomePremiumActivity
      *
-     * @author MounirZbayr
+     * @author Mounir Zbayr
      * @author Victor Gonzalez
      */
     fun download(view: View) {
-
         when {
             Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium -> {
-                //si no es premium
+                //si el user no es premium pero el libro sí
                 startActivity(Intent(this, BecomePremiumActivity::class.java))
                 overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
             }
 
             !controller.bookExist() -> {
                 //si no está en la base de datos local
+
+                showBookBtnDownload.speed = 1f
+                showBookBtnDownload.playAnimation()
+                view.refreshDrawableState()
+
+                showBookBtnRead.isEnabled = false
 
                 val titleBook = Constants.CURRENT_BOOK.title.toString() //nombre del libro
                 val documents =
@@ -159,7 +165,9 @@ class ShowBookActivity : PreconfiguredActivity() {
                     titleBook,
                     documents
                 )//almacena la info dentro de la base de datos local
-            }//if
+
+                showBookBtnRead.isEnabled = true
+            }
             else -> {
                 //si no es ninguno de los anteriores casos
                 Toast.makeText(
@@ -169,7 +177,6 @@ class ShowBookActivity : PreconfiguredActivity() {
                 ).show()
             }
         }
-
     }//download
 
     /**
@@ -183,6 +190,7 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author Victor Gonzalez
      */
     fun read(view: View) {
+
         if (Constants.CURRENT_USER.premium != Constants.CURRENT_BOOK.premium) {
             startActivity(Intent(this, BecomePremiumActivity::class.java))
             overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
@@ -226,9 +234,20 @@ class ShowBookActivity : PreconfiguredActivity() {
      */
     private fun setLikeUI() {
         if (controller.liked) {
-            showBookBtnFav.speed = 1f
-            showBookBtnFav.playAnimation()
+            showBookBtnFav.progress = 1f
             showBookBtnFav.refreshDrawableState()
+        }
+    }
+
+    /**
+     * Sets the GUI depending user stored books.
+     *
+     * @author Victor Gonzalez
+     */
+    private fun setDownloadUI() {
+        if (controller.bookExist()) {
+            showBookBtnDownload.progress = 1f
+            showBookBtnDownload.refreshDrawableState()
         }
     }
 

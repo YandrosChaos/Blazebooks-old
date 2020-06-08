@@ -87,7 +87,6 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialog.ForgotPasswdDi
 
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-            //lottie_loading_animation.loop(false)
             finish()
         }
     }
