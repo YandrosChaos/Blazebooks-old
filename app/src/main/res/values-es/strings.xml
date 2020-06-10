@@ -92,7 +92,7 @@
     <string name="login_password_hint">Contraseña</string>
     <string name="login_forgot_password">¿Olvidó su contraseña?</string>
     <string name="login_login_button">Login</string>
-    <string name="login_sign_in_button">Registrarse</string>
+    <string name="login_sign_up_button">Registrarse</string>
     <string name="google_auth_err">Error de autenticación con Google</string>
     <string name="google_access_button">Botón de Acceso con Google</string>
 
@@ -203,5 +203,6 @@
     <string name="become_premium_promotional_one">¿Estás listo para empezar a leer de verdad?</string>
     <string name="become_premium_promotional_two">¡Únete a los que ya lo han hecho!</string>
     <string name="wanna_be_premium">¡Quiero ser Premium! :D</string>
+    <string name="invalid_email_or_passwd">Invalid email or password.</string>
 
 </resources>

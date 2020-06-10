@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
 import com.blazebooks.model.User
+import com.blazebooks.util.DaoException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest.Builder
 import com.google.firebase.firestore.FirebaseFirestore
@@ -47,7 +48,7 @@ class UserDao() : DAO<User> {
                     if (document != null) {
                         user = document.toObject(User::class.java)!!
                     } else {
-                        throw DaoException("The document is null!")
+                        throw DaoException("The document is null!", task.exception)
                     }
                 } else {
                     throw  DaoException("Error getting the doc!", task.exception)

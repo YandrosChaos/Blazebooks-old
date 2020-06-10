@@ -21,17 +21,17 @@ import androidx.preference.PreferenceManager
 import coil.api.clear
 import coil.api.load
 import com.blazebooks.R
-import com.blazebooks.model.PreconfiguredActivity
-import com.blazebooks.ui.dialogs.ProfileImageDialog
-import com.blazebooks.ui.login.LoginActivity
+import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialog
+import com.blazebooks.ui.auth.LoginActivity
+import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialogListener
 import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.ui.settings.SettingsActivity
-import com.blazebooks.ui.search.SearchActivity
 import com.blazebooks.util.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main_complete.*
 
-class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDialogListener {
+class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
 
     private lateinit var navView: NavigationView
     private lateinit var headerImage: ImageView
@@ -197,36 +197,6 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
     }
 
     /**
-     * Starts a new activity and pass a String by param
-     * depending of the view.id
-     *
-     * @param view
-     * @author Victor Gonzalez
-     */
-    fun searchBooks(view: View) {
-        startActivity(
-            Intent(this, SearchActivity::class.java).apply {
-                putExtra(
-                    TOOLBAR_TITLE_CODE,
-                    when (view.id) {
-                        R.id.fragmentBooksBook ->
-                            getString(R.string.fav_books)
-                        R.id.fragmentBooksIb ->
-                            getString(R.string.interactive_books)
-                        R.id.fragmentBooksAll ->
-                            getString(R.string.all_books)
-                        R.id.fragmentHomeMyBooks ->
-                            getString(R.string.my_books)
-                        else -> "SEARCH"
-                    }
-
-                )
-            }
-        )
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
-    }
-
-    /**
      * Creates a new dialog for choose the profile image.
      *
      * @see ProfileImageDialog
@@ -237,7 +207,9 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialog.ProfileImageDia
         mainActivityProfileImgFragment.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
-            .replace(R.id.mainActivityProfileImgFragment, ProfileImageDialog())
+            .replace(R.id.mainActivityProfileImgFragment,
+                ProfileImageDialog()
+            )
             .commit()
     }
 

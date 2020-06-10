@@ -1,14 +1,15 @@
 package com.blazebooks.ui.splash
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
-import com.blazebooks.BuildConfig
 import com.blazebooks.R
-import com.blazebooks.model.PreconfiguredActivity
-import com.blazebooks.ui.login.LoginActivity
+import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.databinding.ActivitySplashBinding
+import com.blazebooks.ui.auth.LoginActivity
 import com.blazebooks.util.DEFAULT_LANGUAGE
 import com.blazebooks.util.LANGUAGE_SETTING_KEY
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -23,6 +24,7 @@ import java.util.*
  */
 class SplashActivity : PreconfiguredActivity() {
 
+    private lateinit var viewModel: SplashViewModel
     private val timeOut = 4000
     private val spanishLanguage = "es"
     private val englishLanguage = "en"
@@ -38,25 +40,24 @@ class SplashActivity : PreconfiguredActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        val binding: ActivitySplashBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_splash)
+        viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
+        binding.viewModel = viewModel
 
-        setUpAppVersion()
         loadLanguageConfig()
 
         Handler().postDelayed({
-            //execute this code after the time indicated
-            startActivity(
-                Intent(
-                    this@SplashActivity,
-                    LoginActivity::class.java
-                )
-            )
-            overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-
             //stop the loop of the animation
             iv_splash.progress = 1f
             iv_splash.loop(false)
-            finish()
+
+            //execute this code after the time indicated
+            Intent(this, LoginActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
+                startActivity(it)
+            }
         }, timeOut.toLong())
     }
 
@@ -77,19 +78,6 @@ class SplashActivity : PreconfiguredActivity() {
             "Spanish" -> defaultLocale = Locale(spanishLanguage)
             "English" -> defaultLocale = Locale(englishLanguage)
         }
-    }
-
-    /**
-     * Shows version's name in content view. The version number
-     * is stored in build.gradle (Module:app).
-     *
-     * @see onCreate
-     * @author Victor Gonzalez
-     */
-    @SuppressLint("SetTextI18n")
-    private fun setUpAppVersion() {
-        splashVersionTV.text =
-            "${resources.getString(R.string.app_name)} - ${BuildConfig.VERSION_NAME}"
     }
 
 }

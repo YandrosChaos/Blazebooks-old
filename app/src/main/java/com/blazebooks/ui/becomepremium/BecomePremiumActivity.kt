@@ -5,9 +5,9 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import com.blazebooks.R
-import com.blazebooks.model.PreconfiguredActivity
+import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.util.scrollToView
-import com.blazebooks.util.toast
+import com.blazebooks.util.snackbar
 
 /**
  * @author Victor Gonzalez
@@ -50,10 +50,10 @@ class BecomePremiumActivity : PreconfiguredActivity() {
     }
 
     fun onMonthlyVersionClicked(view: View) {
-        toast("Not implemented yet =>")
+        view.snackbar("Not implemented yet =>")
     }
 
     fun onYearlyVersionClicked(view: View) {
-        toast("Not implemented yet =>")
+        view.snackbar("Not implemented yet =>")
     }
 }

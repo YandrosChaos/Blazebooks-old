@@ -2,9 +2,11 @@ package com.blazebooks.ui.search.control
 
 import android.content.Context
 import com.blazebooks.R
-import com.blazebooks.data.localStorage.LocalStorageSingleton
+import com.blazebooks.data.db.AppDatabase
+import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.model.Book
 import com.blazebooks.model.Chapter
+import com.blazebooks.util.Coroutines
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -13,7 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore
  */
 class SearchActivityController(
     val context: Context,
-    private val downloadType: String
+    private val downloadType: String,
+    private val repository: StoredBooksRepository
 ) {
 
     private val db = FirebaseFirestore.getInstance()
@@ -70,11 +73,12 @@ class SearchActivityController(
      * @author Victor Gonzalez
      */
     private fun getStoredBooks() {
-        val storedBooks =
-            LocalStorageSingleton.getDatabase(context).storedBookDAO().getAll()
-        if (!storedBooks.isNullOrEmpty()) {
-            storedBooks.forEach { storedBook ->
-                dataList.add(storedBook.transformFromJsonData())
+        Coroutines.main {
+            val storedBooks = repository.getAllStoredBooks()
+            if (!storedBooks.isNullOrEmpty()) {
+                storedBooks.forEach { storedBook ->
+                    dataList.add(storedBook.transformFromJsonData())
+                }
             }
         }
     }

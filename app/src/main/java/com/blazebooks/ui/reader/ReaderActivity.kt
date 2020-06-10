@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import com.blazebooks.R
-import com.blazebooks.model.PreconfiguredActivity
+import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.util.PATH_CODE
 import com.blazebooks.util.READ_MODE_KEY
 import kotlinx.android.synthetic.main.activity_reader.*
@@ -44,7 +44,6 @@ class ReaderActivity : PreconfiguredActivity() {
         filesPath= this.getExternalFilesDir(null)?.absolutePath
 
         //Lee el epub y lo guarda en un objeto book
-
         val epubInputStream: InputStream =
             File(this.getExternalFilesDir(null)?.absolutePath+"/$bookPath").inputStream()
         val book: Book = EpubReader().readEpub(epubInputStream)

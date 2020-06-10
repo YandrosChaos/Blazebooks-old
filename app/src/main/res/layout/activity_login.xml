@@ -1,141 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Author: Victor Gonzalez -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewmodel"
-            type="com.blazebooks.ui.login.AuthViewModel" />
+            type="com.blazebooks.ui.auth.AuthViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/login_root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/side_nav_bar"
-        android:fitsSystemWindows="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center">
+        tools:context=".ui.auth.LoginActivity">
 
-        <LinearLayout
-            android:id="@+id/loginActivityMainLL"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="200sp"
-                android:layout_height="200sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="20dp"
-                android:src="@drawable/blazebooks_logo" />
-
-            <EditText
-                android:id="@+id/loginActivityUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="email"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_user"
-                android:drawablePadding="10dp"
-                android:hint="@string/login_email_hint"
-                android:inputType="textEmailAddress"
-                android:padding="10dp"
-                android:text="@={viewmodel.email}"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
-
-            <EditText
-                android:id="@+id/loginActivityUserPasswd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:autofillHints="password"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_passwd"
-                android:drawablePadding="10dp"
-                android:hint="@string/login_password_hint"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:text="@={viewmodel.passwd}"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
+            android:layout_height="match_parent"
+            android:background="@drawable/side_nav_bar"
+            android:fitsSystemWindows="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center">
 
             <LinearLayout
+                android:id="@+id/loginActivityMainLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/google_access_button"
-                    android:gravity="start"
-                    android:onClick="loginByGoogle"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/ic_gmail" />
+                    android:layout_width="200sp"
+                    android:layout_height="200sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/blazebooks_logo" />
+
+                <EditText
+                    android:id="@+id/loginActivityUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="email"
+                    android:background="@drawable/edit_text_background"
+                    android:drawableStart="@drawable/ic_user"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/login_email_hint"
+                    android:inputType="textEmailAddress"
+                    android:padding="10dp"
+                    android:text="@={viewmodel.email}"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/white" />
+
+                <EditText
+                    android:id="@+id/loginActivityUserPasswd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:autofillHints="password"
+                    android:background="@drawable/edit_text_background"
+                    android:drawableStart="@drawable/ic_passwd"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/login_password_hint"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:text="@={viewmodel.passwd}"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/google_access_button"
+                        android:gravity="start"
+                        android:onClick="loginByGoogle"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/ic_gmail" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:onClick="sendPasswordResetEmail"
+                        android:text="@string/login_forgot_password" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:onClick="@{viewmodel.loginClicked}"
+                    android:text="@string/login_login_button"
+                    android:textAllCaps="false"
+                    android:textSize="21sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:onClick="sendPasswordResetEmail"
-                    android:text="@string/login_forgot_password" />
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="@{viewmodel::onSignUn}"
+                    android:text="@string/login_sign_up_button"
+                    android:textSize="21sp" />
 
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <!-- this views will be added dynamically.-->
+            <FrameLayout
+                android:id="@+id/loginActivityForgotPasswdFL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:onClick="@{viewmodel.loginClicked}"
-                android:text="@string/login_login_button"
-                android:textAllCaps="false"
-                android:textSize="21sp" />
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:onClick="throwSignInActivity"
-                android:text="@string/login_sign_in_button"
-                android:textSize="21sp" />
+            <RelativeLayout
+                android:id="@+id/loginActivityLoadingSKV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@color/grayTransparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <com.github.ybq.android.spinkit.SpinKitView
+                    style="@style/SpinKitView.WanderingCubes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
 
-        <!-- this views will be added dynamically.-->
-        <FrameLayout
-            android:id="@+id/loginActivityForgotPasswdFL"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone" />
 
-        <RelativeLayout
-            android:id="@+id/loginActivityLoadingSKV"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@color/grayTransparent"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone">
-
-            <com.github.ybq.android.spinkit.SpinKitView
-                style="@style/SpinKitView.WanderingCubes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
         </RelativeLayout>
 
-
-    </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

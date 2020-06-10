@@ -1,8 +1,10 @@
 package com.blazebooks.util
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Point
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewParent
@@ -10,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.blazebooks.R
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -31,12 +34,21 @@ fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
-fun View.snackbar(message: String){
-    Snackbar.make(
-        this,
-        message,
-        Snackbar.LENGTH_LONG
-    ).setAction("Action", null).show()
+fun View.snackbar(message: String) {
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG).also { snackbar ->
+        snackbar.setAction("Ok") {
+            snackbar.dismiss()
+        }
+    }.show()
+}
+
+fun Context.positiveAlertDialog(title: String, message: String, buttonText: String): AlertDialog {
+    return with(AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogTheme))) {
+        setTitle(title)
+        setMessage(message)
+        setPositiveButton(buttonText, null)
+        create()
+    }
 }
 
 /**

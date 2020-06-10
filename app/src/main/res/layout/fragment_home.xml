@@ -1,126 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layoutAnimation="@anim/layout_animation_right_to_left"
-    android:background="@drawable/dark_background">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.blazebooks.ui.main.home.HomeViewModel" />
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10sp">
+        android:layout_height="match_parent"
 
-        <RelativeLayout
-            android:id="@+id/fragmentHomeMyBooks"
+        android:background="@drawable/dark_background"
+        android:layoutAnimation="@anim/layout_animation_right_to_left">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="5sp"
-            android:background="@drawable/container_round_blue"
-            android:gravity="center"
-            android:onClick="searchBooks"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="10sp">
 
-            <ImageView
+            <RelativeLayout
+                android:id="@+id/fragmentHomeMyBooks"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_reading"/>
-
-            <TextView
-                app:autoSizeTextType="uniform"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_height="200dp"
+                android:layout_margin="5sp"
+                android:background="@drawable/container_round_blue"
                 android:gravity="center"
-                android:background="@color/grayTransparent"
-                android:text="@string/my_books"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
+                android:onClick="@{viewModel::onMyBooks}"
+                android:padding="10sp">
 
-        </RelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_reading" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="5sp"
-            android:background="@drawable/container_round_orange"
-            android:gravity="center"
-            android:padding="10sp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/grayTransparent"
+                    android:gravity="center"
+                    android:text="@string/my_books"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    app:autoSizeTextType="uniform" />
 
-            <ImageView
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_theater_masks"/>
-
-            <TextView
-                app:autoSizeTextType="uniform"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_height="200dp"
+                android:layout_margin="5sp"
+                android:background="@drawable/container_round_orange"
                 android:gravity="center"
-                android:background="@color/grayTransparent"
-                android:text="@string/new_books_in_blazebooks"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
+                android:onClick="@{viewModel::notImplemented}"
+                android:padding="10sp">
 
-        </RelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_theater_masks" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="5sp"
-            android:background="@drawable/container_round_blue"
-            android:gravity="center"
-            android:padding="10sp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/grayTransparent"
+                    android:gravity="center"
+                    android:text="@string/new_books_in_blazebooks"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    app:autoSizeTextType="uniform" />
 
-            <ImageView
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_books_stack"/>
-
-            <TextView
-                app:autoSizeTextType="uniform"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_height="200dp"
+                android:layout_margin="5sp"
+                android:background="@drawable/container_round_blue"
                 android:gravity="center"
-                android:background="@color/grayTransparent"
-                android:text="@string/recommendations"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
-        </RelativeLayout>
+                android:onClick="@{viewModel::notImplemented}"
+                android:padding="10sp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="5sp"
-            android:background="@drawable/container_round_orange"
-            android:gravity="center"
-            android:padding="10sp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_books_stack" />
 
-            <ImageView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/grayTransparent"
+                    android:gravity="center"
+                    android:text="@string/recommendations"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    app:autoSizeTextType="uniform" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_about"/>
-
-            <TextView
-                app:autoSizeTextType="uniform"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_height="200dp"
+                android:layout_margin="5sp"
+                android:background="@drawable/container_round_orange"
                 android:gravity="center"
-                android:background="@color/grayTransparent"
-                android:text="@string/my_account"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
+                android:onClick="@{viewModel::notImplemented}"
+                android:padding="10sp">
 
-        </RelativeLayout>
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_about" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/grayTransparent"
+                    android:gravity="center"
+                    android:text="@string/my_account"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    app:autoSizeTextType="uniform" />
+
+            </RelativeLayout>
+        </LinearLayout>
 
 
-</ScrollView>
+    </ScrollView>
+
+</layout>

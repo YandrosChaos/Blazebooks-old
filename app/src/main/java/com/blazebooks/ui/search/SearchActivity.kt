@@ -14,28 +14,37 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
+import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.model.Book
 import com.blazebooks.model.CustomGridRecyclerView
-import com.blazebooks.model.PreconfiguredActivity
-import com.blazebooks.ui.dialogs.FilterDialog
+import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.ui.customdialogs.filter.FilterDialog
+import com.blazebooks.ui.customdialogs.filter.FilterDialogListener
 import com.blazebooks.ui.search.control.SearchActivityController
 import com.blazebooks.ui.search.control.SearchAdapter
 import com.blazebooks.ui.search.control.SearchFilterController
 import com.blazebooks.util.TOOLBAR_TITLE_CODE
 import com.blazebooks.util.hideKeyboard
 import kotlinx.android.synthetic.main.app_bar_search.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
 
 /**
  * Search book activity.
  *
  * @see PreconfiguredActivity
- * @see FilterDialog.FilterDialogListener
+ * @see FilterDialogListener
  * @see FilterDialog
  *
  * @author  Victor Gonzalez
  */
-class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListener {
+class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAware {
+
+    override val kodein by kodein()
+    private val storedBooksRepository by instance<StoredBooksRepository>()
+
     private val waitTime: Long = 500L
     private lateinit var mRecyclerView: CustomGridRecyclerView
     private var bookList: MutableList<Book> = mutableListOf()
@@ -64,7 +73,11 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
         //controllers
         searchFilterController = SearchFilterController(this)
         searchActivityController =
-            SearchActivityController(this, intent.getStringExtra(TOOLBAR_TITLE_CODE))
+            SearchActivityController(
+                this,
+                intent.getStringExtra(TOOLBAR_TITLE_CODE),
+                storedBooksRepository
+            )
 
         //set the title in the toolbar and show the progress bar
         activitySearchToolbarTv.text = intent.getStringExtra(TOOLBAR_TITLE_CODE)
@@ -147,7 +160,9 @@ class SearchActivity : PreconfiguredActivity(), FilterDialog.FilterDialogListene
             .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
             .replace(
                 R.id.searchActivityFilterFragment,
-                FilterDialog(searchFilterController.filterList)
+                FilterDialog(
+                    searchFilterController.filterList
+                )
             )
             .commit()
     }

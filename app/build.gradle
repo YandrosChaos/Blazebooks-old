@@ -83,6 +83,7 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.5'
     implementation 'androidx.room:room-ktx:2.2.5'
     kapt "androidx.room:room-compiler:2.2.5"
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 
     //Custom Spinners
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
@@ -96,16 +97,17 @@ dependencies {
         exclude group: 'xmlpull'
     }
     implementation 'org.slf4j:slf4j-android:1.7.30'
-
     implementation 'com.github.mertakdut:EpubParser:1.0.95'
-    implementation 'androidx.room:room-runtime:2.2.5'
-    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 
     //Airbnb Lottie
     implementation 'com.airbnb.android:lottie:3.4.0'
 
     // Prdownloader
     implementation 'com.mindorks.android:prdownloader:0.5.0'
+
+    //Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //folioreader
     /*

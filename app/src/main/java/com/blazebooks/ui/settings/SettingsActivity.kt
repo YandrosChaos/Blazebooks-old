@@ -6,7 +6,8 @@ import androidx.preference.PreferenceManager
 import com.blazebooks.R
 import com.blazebooks.data.dataAccessObjects.UserDao
 import com.blazebooks.model.User
-import com.blazebooks.model.PreconfiguredActivity
+import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.ui.settings.sharedpreferences.SharedPreferencesFragment
 import com.blazebooks.util.*
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -115,7 +116,9 @@ class SettingsActivity : PreconfiguredActivity() {
     private fun loadSettingsMainView() {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right)
-            .replace(R.id.settingsFrameLayout, SharedPreferencesFragment())
+            .replace(R.id.settingsFrameLayout,
+                SharedPreferencesFragment()
+            )
             .commit()
     }
 }

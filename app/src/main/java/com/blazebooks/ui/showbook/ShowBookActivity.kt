@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import com.blazebooks.R
-import com.blazebooks.data.localStorage.LocalStorageSingleton
-import com.blazebooks.model.PreconfiguredActivity
+import com.blazebooks.data.db.AppDatabase
+import com.blazebooks.data.repositories.StoredBooksRepository
+import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.reader.ReaderActivity
-import com.blazebooks.ui.showbook.control.ShowBookActivityController
-import com.blazebooks.ui.showbook.control.ShowBookViewPagerAdapter
 import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.CURRENT_USER
 import com.blazebooks.util.PATH_CODE
@@ -21,17 +20,20 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.item_show_book.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 import java.io.File
 
 
 /**
- * @see PreconfiguredActivity
- * @see ChapterFragment
- * @see SynopsisFragment
- *
  * @author Victor Gonzalez
  */
-class ShowBookActivity : PreconfiguredActivity() {
+class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
+
+    override val kodein by kodein()
+    private val storedBooksRepository by instance<StoredBooksRepository>()
+
     private val adapter by lazy {
         ShowBookViewPagerAdapter(
             this
@@ -39,10 +41,10 @@ class ShowBookActivity : PreconfiguredActivity() {
     }
     private lateinit var controller: ShowBookActivityController
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_book)
+
         activityShowBookViewPager.adapter = adapter
 
         //crear las diferentes pestañas
@@ -61,13 +63,16 @@ class ShowBookActivity : PreconfiguredActivity() {
         tabLayoutMediator.attach()
 
         //instanciar el controlador de la vista
-        controller = ShowBookActivityController(this)
+        controller = ShowBookActivityController(
+            this,
+            storedBooksRepository
+        )
 
-        //comprueba si el libro está en la lista de favs del user o no
+        //comprueba si el libro está en la lista de favs del user o no, y si está ya descargado o no
         controller.isFavBook()
+        controller.bookExist()
 
         Handler().postDelayed({
-            //if current book is liked, set the drawable and boolean
             setLikeUI()
             setDownloadUI()
         }, 500)
@@ -78,7 +83,7 @@ class ShowBookActivity : PreconfiguredActivity() {
      * If the current book is liked, then removes the like. Else, set liked to true the book.
      * Later refresh the drawable state.
      *
-     * @see LocalStorageSingleton
+     * @see AppDatabase
      *
      * @author Victor Gonzalez
      */
@@ -119,7 +124,7 @@ class ShowBookActivity : PreconfiguredActivity() {
                 overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
             }
 
-            !controller.bookExist() -> {
+            !controller.exist -> {
                 //si no está en la base de datos local
                 showBookBtnDownload.speed = 1f
                 showBookBtnDownload.playAnimation()
@@ -209,12 +214,11 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author Victor Gonzalez
      */
     fun read(view: View) {
-
         if (CURRENT_USER.premium != CURRENT_BOOK.premium) {
             startActivity(Intent(this, BecomePremiumActivity::class.java))
             overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
         } else {
-            if (controller.bookExist()) {
+            if (controller.exist) {
                 val titleBook = showBookTvTitle.text.toString()
                 val documents = "books/$titleBook"
                 val i = Intent(this, ReaderActivity::class.java)
@@ -233,7 +237,6 @@ class ShowBookActivity : PreconfiguredActivity() {
         }
 
     }
-
 
     /**
      * Returns to previous activity and sets custom animation transition.
@@ -264,7 +267,7 @@ class ShowBookActivity : PreconfiguredActivity() {
      * @author Victor Gonzalez
      */
     private fun setDownloadUI() {
-        if (controller.bookExist()) {
+        if (controller.exist) {
             showBookBtnDownload.progress = 1f
             showBookBtnDownload.refreshDrawableState()
         }
