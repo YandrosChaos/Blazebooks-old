@@ -9,105 +9,113 @@
             type="com.blazebooks.ui.auth.AuthViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root_signup_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/side_nav_bar"
-        android:fitsSystemWindows="true"
-        android:focusableInTouchMode="true">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@drawable/side_nav_bar"
+            android:fitsSystemWindows="true"
+            android:focusableInTouchMode="true">
 
-            <EditText
-                android:id="@+id/signInActivityUserName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="username"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_user"
-                android:drawablePadding="10dp"
-                android:hint="@string/signin_username_hint"
-                android:inputType="text"
-                android:padding="10dp"
-                android:text="@={viewModel.username}"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/singInActivityUserPasswd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:autofillHints="password"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_passwd"
-                android:drawablePadding="10dp"
-                android:hint="@string/signin_password_hint"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:text="@={viewModel.passwd}"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
+                <EditText
+                    android:id="@+id/signInActivityUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="username"
+                    android:background="@drawable/edit_text_background"
+                    android:drawableStart="@drawable/ic_user"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/signin_username_hint"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:text="@={viewModel.username}"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/white" />
 
-            <EditText
-                android:id="@+id/singInActivityUserPasswdAux"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:autofillHints="password"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_passwd"
-                android:drawablePadding="10dp"
-                android:hint="@string/signin_repeat_password_hint"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:text="@={viewModel.repeatPasswd}"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
+                <EditText
+                    android:id="@+id/singInActivityUserPasswd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:autofillHints="password"
+                    android:background="@drawable/edit_text_background"
+                    android:drawableStart="@drawable/ic_passwd"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/signin_password_hint"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:text="@={viewModel.passwd}"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/white" />
 
-            <EditText
-                android:id="@+id/singInActivityUserEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:autofillHints="email"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="10dp"
-                android:hint="@string/signin_email_hint"
-                android:inputType="textEmailAddress"
-                android:padding="10dp"
-                android:text="@={viewModel.email}"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/white" />
+                <EditText
+                    android:id="@+id/singInActivityUserPasswdAux"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:autofillHints="password"
+                    android:background="@drawable/edit_text_background"
+                    android:drawableStart="@drawable/ic_passwd"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/signin_repeat_password_hint"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:text="@={viewModel.repeatPasswd}"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/white" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/container_round_orange"
-                android:onClick="@{viewModel.singupClicked}"
-                android:text="@string/signin_sign_in_button"
-                android:textAllCaps="false"
-                android:textSize="21sp" />
+                <EditText
+                    android:id="@+id/singInActivityUserEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:autofillHints="email"
+                    android:background="@drawable/edit_text_background"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/signin_email_hint"
+                    android:inputType="textEmailAddress"
+                    android:padding="10dp"
+                    android:text="@={viewModel.email}"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/white" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/container_round_orange"
+                    android:onClick="@{viewModel.singupClicked}"
+                    android:text="@string/signin_sign_in_button"
+                    android:textAllCaps="false"
+                    android:textSize="21sp" />
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:onClick="@{viewModel::onLogin}"
-                android:text="@string/signin_go_back_button"
-                android:textSize="21sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="@{viewModel::onLogin}"
+                    android:text="@string/signin_go_back_button"
+                    android:textSize="21sp" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </ScrollView>
+        </ScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

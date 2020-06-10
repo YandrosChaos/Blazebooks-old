@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.preference.PreferenceManager
 import com.blazebooks.R
 import com.blazebooks.data.dataAccessObjects.UserDao
-import com.blazebooks.model.User
+import com.blazebooks.data.models.User
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.settings.sharedpreferences.SharedPreferencesFragment
 import com.blazebooks.util.*

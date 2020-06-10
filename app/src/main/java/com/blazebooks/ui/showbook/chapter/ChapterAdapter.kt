@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
-import com.blazebooks.model.Chapter
+import com.blazebooks.data.models.Chapter
 
 /**
  * @see com.blazebooks.ui.showbook.ShowBookActivity

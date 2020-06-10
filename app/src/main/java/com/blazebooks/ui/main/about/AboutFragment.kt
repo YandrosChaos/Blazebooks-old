@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
-import com.blazebooks.model.CustomGridRecyclerView
+import com.blazebooks.data.models.CustomGridRecyclerView
 
 /**
  * About fragment. This fragment is dynamically generated using arrays.xml resources.

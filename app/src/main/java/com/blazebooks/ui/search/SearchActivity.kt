@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
 import com.blazebooks.data.repositories.StoredBooksRepository
-import com.blazebooks.model.Book
-import com.blazebooks.model.CustomGridRecyclerView
+import com.blazebooks.data.models.Book
+import com.blazebooks.data.models.CustomGridRecyclerView
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.customdialogs.filter.FilterDialog
 import com.blazebooks.ui.customdialogs.filter.FilterDialogListener

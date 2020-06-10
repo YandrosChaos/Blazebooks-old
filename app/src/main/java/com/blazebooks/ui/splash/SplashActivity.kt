@@ -48,11 +48,8 @@ class SplashActivity : PreconfiguredActivity() {
         loadLanguageConfig()
 
         Handler().postDelayed({
-            //stop the loop of the animation
             iv_splash.progress = 1f
             iv_splash.loop(false)
-
-            //execute this code after the time indicated
             Intent(this, LoginActivity::class.java).also {
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)

@@ -1,7 +1,7 @@
 package com.blazebooks.util
 
-import com.blazebooks.model.Book
-import com.blazebooks.model.User
+import com.blazebooks.data.models.Book
+import com.blazebooks.data.models.User
 
 
 //INTENT'S CODES

@@ -2,8 +2,11 @@ package com.blazebooks
 
 import android.app.Application
 import com.blazebooks.data.db.AppDatabase
+import com.blazebooks.data.firebase.FirebaseSource
 import com.blazebooks.data.network.NetworkConnectionInterceptor
 import com.blazebooks.data.repositories.StoredBooksRepository
+import com.blazebooks.data.repositories.UserRepository
+import com.blazebooks.ui.auth.AuthViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -17,6 +20,9 @@ class App : Application(), KodeinAware {
         import(androidXModule(this@App))
 
         bind() from singleton { NetworkConnectionInterceptor(instance()) }
+        bind() from singleton { FirebaseSource() }
+        bind() from singleton { UserRepository(instance()) }
+        bind() from singleton { AuthViewModelFactory(instance())}
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { StoredBooksRepository(instance()) }
     }

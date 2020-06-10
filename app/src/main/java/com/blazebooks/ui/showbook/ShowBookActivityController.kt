@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.preference.PreferenceManager
-import com.blazebooks.model.Book
+import com.blazebooks.data.models.Book
 import com.blazebooks.data.db.entities.StoredBook
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.util.CURRENT_BOOK

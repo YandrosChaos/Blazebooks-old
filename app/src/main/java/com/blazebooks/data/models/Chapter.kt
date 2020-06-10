@@ -1,4 +1,4 @@
-package com.blazebooks.model
+package com.blazebooks.data.models
 
 data class Chapter(
     val number: Int = 0,

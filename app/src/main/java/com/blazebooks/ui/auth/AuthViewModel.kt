@@ -6,16 +6,29 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import com.blazebooks.R
 import com.blazebooks.data.dataAccessObjects.UserDao
-import com.blazebooks.model.User
+import com.blazebooks.data.models.User
+import com.blazebooks.data.repositories.UserRepository
 import com.blazebooks.util.CURRENT_USER
 import com.google.firebase.auth.FirebaseAuth
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * @author Victor Gonzalez
  */
-class AuthViewModel : ViewModel() {
+class AuthViewModel(
+    private val repository: UserRepository
+) : ViewModel() {
 
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    //disposable to dispose the Completable
+    private val disposables = CompositeDisposable()
+
+    val user by lazy {
+        repository.currentUser()
+    }
 
     var username: String? = null
     var email: String? = null
@@ -28,37 +41,36 @@ class AuthViewModel : ViewModel() {
      * @author Victor Gonzalez
      */
     fun loginClicked(view: View) {
-        authListener?.onStartAuth()
 
         //email validations
         if (email.isNullOrEmpty()) {
-            authListener?.onEmailFaliure(R.string.invalid_email_or_passwd)
+            authListener?.onFailureAuth(view.resources.getString(R.string.invalid_email_or_passwd))
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email!!).matches()) {
             //Comprueba que el campo email tiene el formato válido
-            authListener?.onEmailFaliure(R.string.invalid_email_or_passwd)
+            authListener?.onFailureAuth(view.resources.getString(R.string.invalid_email_or_passwd))
             return
         }
-
-        //pass validations
+        //passwd validation
         if (passwd.isNullOrEmpty()) {
-            authListener?.onPasswordFaliure(R.string.invalid_email_or_passwd)
+            authListener?.onFailureAuth(view.resources.getString(R.string.invalid_email_or_passwd))
             return
         }
+        authListener?.onStartAuth()
 
-        //Comprueba que los datos coinciden y si es así actualiza con el usuario , si no lo pone a nulo
-        auth.signInWithEmailAndPassword(
-            email!!,
-            passwd!!
-        ).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                authListener?.onSuccessAuth(auth.currentUser!!)
-                UserDao().get(auth.currentUser!!.uid)
-            } else {
-                authListener?.onSuccessAuth(null)
-            }
-        }
+        val disposable = repository.login(email!!, passwd!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                //success callback
+                authListener?.onSuccessAuth()
+            }, {
+                //failure callback
+                authListener?.onFailureAuth(it.message!!)
+            })
+
+        disposables.add(disposable)
     }
 
     /**
@@ -66,7 +78,6 @@ class AuthViewModel : ViewModel() {
      *  @author Victor Gonzalez
      */
     fun singupClicked(view: View) {
-        authListener?.onStartAuth()
         if (username.isNullOrEmpty()) {
             //Comprueba que el campo username no está vacío
             authListener?.onUsernameFaliure(R.string.signin_username_error)
@@ -99,8 +110,18 @@ class AuthViewModel : ViewModel() {
             return
         }
 
-
+        authListener?.onStartAuth()
+        val disposable = repository.register(email!!, passwd!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                authListener?.onSuccessAuth()
+            }, {
+                authListener?.onFailureAuth(it.message!!)
+            })
+        disposables.add(disposable)
         //Creacion e insercion del usuario en la base de datos
+        /*
         val user = User(
             username!!,
             passwd!!,
@@ -112,6 +133,8 @@ class AuthViewModel : ViewModel() {
         UserDao().insert(user)
         CURRENT_USER = user
         authListener?.onSuccessAuth(null)
+
+         */
     }
 
     /**
@@ -136,6 +159,14 @@ class AuthViewModel : ViewModel() {
         Intent(view.context, LoginActivity::class.java).also {
             view.context.startActivity(it)
         }
+    }
+
+    /**
+     *  Disposing the disposables.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        disposables.dispose()
     }
 
 }

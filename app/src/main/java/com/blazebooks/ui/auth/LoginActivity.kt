@@ -6,40 +6,43 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.blazebooks.R
-import com.blazebooks.databinding.ActivityLoginBinding
-import com.blazebooks.model.User
-import com.blazebooks.ui.main.MainActivity
 import com.blazebooks.PreconfiguredActivity
-import com.blazebooks.data.dataAccessObjects.UserDao
+import com.blazebooks.R
+import com.blazebooks.data.models.User
+import com.blazebooks.databinding.ActivityLoginBinding
 import com.blazebooks.ui.customdialogs.forgotpassword.ForgotPasswdDialog
 import com.blazebooks.ui.customdialogs.forgotpassword.ForgotPasswdDialogListener
-import com.blazebooks.util.CURRENT_USER
 import com.blazebooks.util.snackbar
+import com.blazebooks.util.startMainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
 const val GOOGLE_SIGN_IN = 1984
 
 class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener,
-    AuthListener {
+    AuthListener, KodeinAware {
+    override val kodein by kodein()
+    private val factory by instance<AuthViewModelFactory>()
     private lateinit var viewModel: AuthViewModel
 
     /**
-     * @param savedInstanceState
-     * @author Mounir Zbayr
+     * @author Víctor González
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding: ActivityLoginBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_login)
-        viewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
+
         viewModel.authListener = this
     }
 
@@ -99,7 +102,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener,
                                     )
                                 )
 
-                            onSuccessAuth(viewModel.auth.currentUser)
+                            onSuccessAuth()
                         } else {
                             loginActivityLoadingSKV.visibility = View.GONE
                             Toast.makeText(
@@ -131,7 +134,9 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener,
      */
     override fun onStart() {
         super.onStart()
-        onMainActivity(viewModel.auth.currentUser)
+        viewModel.user?.let {
+            startMainActivity()
+        }
     }//onStart
 
     /**
@@ -146,7 +151,8 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener,
         loginActivityForgotPasswdFL.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_bottom, R.anim.slide_to_top)
-            .replace(R.id.loginActivityForgotPasswdFL,
+            .replace(
+                R.id.loginActivityForgotPasswdFL,
                 ForgotPasswdDialog(
                     viewModel.auth
                 )
@@ -185,44 +191,22 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener,
         loginActivityForgotPasswdFL.visibility = View.VISIBLE
     }
 
-    /**
-     * Si el usuario no es nulo, se pasa al main.
-     * Si lo es, muestra un mensaje de error
-     *
-     * @author Mounir Zbayr
-     * @author Victor Gonzalez
-     */
-    override fun onSuccessAuth(currentUser: FirebaseUser?) {
-        if (currentUser != null) {
-            onMainActivity(currentUser)
-        } else {
-            loginActivityForgotPasswdFL.visibility = View.GONE
-            login_root_layout.snackbar(getString(R.string.log_general_error))
-        }
+    override fun onSuccessAuth() {
+        loginActivityLoadingSKV.visibility = View.GONE
+        startMainActivity()
+    }
+
+    override fun onFailureAuth(message: String) {
+        loginActivityForgotPasswdFL.visibility = View.GONE
+        login_root_layout.snackbar(message)
     }
 
     override fun onEmailFaliure(errorStringCode: Int) {
-        loginActivityForgotPasswdFL.visibility = View.GONE
-        login_root_layout.snackbar(getString(errorStringCode))
     }
 
     override fun onPasswordFaliure(errorStringCode: Int) {
-        loginActivityForgotPasswdFL.visibility = View.GONE
-        login_root_layout.snackbar(getString(errorStringCode))
     }
 
     override fun onUsernameFaliure(errorStringCode: Int) {
-    }
-
-    private fun onMainActivity(currentUser: FirebaseUser?) {
-        if (currentUser != null) {
-            //TODO -> getuser
-            CURRENT_USER =  UserDao().get(currentUser.uid)
-            Intent(this, MainActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-
-            }
-        }
     }
 }

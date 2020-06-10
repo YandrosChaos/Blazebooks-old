@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.blazebooks.R
-import com.blazebooks.model.Book
+import com.blazebooks.data.models.Book
 import com.blazebooks.ui.showbook.ShowBookActivity
 import com.blazebooks.util.CURRENT_BOOK
 

@@ -2,7 +2,7 @@ package com.blazebooks.ui.search.control
 
 import android.content.Context
 import com.blazebooks.R
-import com.blazebooks.model.Book
+import com.blazebooks.data.models.Book
 import java.util.*
 
 /**

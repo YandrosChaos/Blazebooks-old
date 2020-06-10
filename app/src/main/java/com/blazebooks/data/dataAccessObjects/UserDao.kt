@@ -3,7 +3,7 @@ package com.blazebooks.data.dataAccessObjects
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
-import com.blazebooks.model.User
+import com.blazebooks.data.models.User
 import com.blazebooks.util.DaoException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest.Builder

@@ -1,4 +1,4 @@
-package com.blazebooks.model
+package com.blazebooks.data.models
 
 import android.content.Context
 import android.util.AttributeSet

@@ -2,10 +2,9 @@ package com.blazebooks.ui.search.control
 
 import android.content.Context
 import com.blazebooks.R
-import com.blazebooks.data.db.AppDatabase
 import com.blazebooks.data.repositories.StoredBooksRepository
-import com.blazebooks.model.Book
-import com.blazebooks.model.Chapter
+import com.blazebooks.data.models.Book
+import com.blazebooks.data.models.Chapter
 import com.blazebooks.util.Coroutines
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

@@ -3,7 +3,7 @@ package com.blazebooks.ui.showbook.chapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
-import com.blazebooks.model.Chapter
+import com.blazebooks.data.models.Chapter
 import kotlinx.android.synthetic.main.item_show_book_chapter.view.*
 
 class ChapterViewHolder(itemView: View) :
