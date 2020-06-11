@@ -23,7 +23,7 @@ import coil.api.load
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialog
-import com.blazebooks.ui.auth.LoginActivity
+import com.blazebooks.ui.auth.login.LoginActivity
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialogListener
 import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.ui.settings.SettingsActivity

@@ -84,7 +84,7 @@
     <string name="send_passwd">Send My Password</string>
     <string name="log_email_error">Please enter email</string>
     <string name="log_passwd_error">Password cannot be empty</string>
-    <string name="log_general_error">Username or password incorrect!.</string>
+    <string name="log_general_error">Username or password incorrect!</string>
     <string name="log_dialog_email_sent">Email sent =)</string>
     <string name="log_dialog_email_error">Please, introduce your email account.</string>
     <string name="login_email_hint">Email</string>

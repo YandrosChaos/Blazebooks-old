@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.blazebooks.ui.auth.AuthViewModel" />
+            type="com.blazebooks.ui.auth.signup.SignupViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -115,6 +115,23 @@
             </LinearLayout>
 
         </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/signupActivityLoadingSKV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/grayTransparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                style="@style/SpinKitView.WanderingCubes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

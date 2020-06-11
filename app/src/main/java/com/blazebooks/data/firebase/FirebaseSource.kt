@@ -1,6 +1,11 @@
 package com.blazebooks.data.firebase
 
+import android.content.Intent
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.Completable
 
 /**
@@ -38,4 +43,20 @@ class FirebaseSource {
     fun logout() = firebaseAuth.signOut()
 
     fun currentUser() = firebaseAuth.currentUser
+
+    fun loginWithGoogle(account: GoogleSignInAccount) = Completable.create { emitter ->
+        firebaseAuth.signInWithCredential(
+            GoogleAuthProvider.getCredential(
+                account.idToken,
+                null
+            )
+        ).addOnCompleteListener {
+            if (!emitter.isDisposed) {
+                if (it.isSuccessful) emitter.onComplete()
+                else emitter.onError(it.exception!!)
+            }
+
+        }
+    }
+
 }

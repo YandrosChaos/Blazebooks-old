@@ -6,14 +6,14 @@
 
         <variable
             name="viewmodel"
-            type="com.blazebooks.ui.auth.AuthViewModel" />
+            type="com.blazebooks.ui.auth.login.LoginViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/login_root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.auth.LoginActivity">
+        tools:context=".ui.auth.login.LoginActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                         android:layout_weight="1"
                         android:contentDescription="@string/google_access_button"
                         android:gravity="start"
-                        android:onClick="loginByGoogle"
+                        android:onClick="@{viewmodel::googleSignUp}"
                         android:scaleType="fitStart"
                         android:src="@drawable/ic_gmail" />
 

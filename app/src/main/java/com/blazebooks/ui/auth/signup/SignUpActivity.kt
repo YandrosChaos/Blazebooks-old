@@ -1,44 +1,47 @@
-package com.blazebooks.ui.auth
+package com.blazebooks.ui.auth.signup
 
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.blazebooks.R
-import com.blazebooks.databinding.ActivitySignInBinding
 import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.databinding.ActivitySignUpBinding
 import com.blazebooks.util.snackbar
 import com.blazebooks.util.startMainActivity
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-class SignUpActivity : PreconfiguredActivity(), AuthListener, KodeinAware {
+class SignUpActivity : PreconfiguredActivity(),
+    SignupListener, KodeinAware {
     override val kodein by kodein()
-    private val factory by instance<AuthViewModelFactory>()
+    private val factory by instance<SignupViewModelFactory>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivitySignInBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
-        val viewModel: AuthViewModel =
-            ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
+        val binding: ActivitySignUpBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
+        val viewModel: SignupViewModel =
+            ViewModelProviders.of(this, factory).get(SignupViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.authListener = this
+        viewModel.signupListener = this
     }
 
     override fun onStartAuth() {
-        //TODO -> add progress bar!
+        signupActivityLoadingSKV.visibility = View.VISIBLE
     }
 
     override fun onSuccessAuth() {
-        //TODO -> quit progress bar!
+        signupActivityLoadingSKV.visibility = View.GONE
         startMainActivity()
     }
 
     override fun onFailureAuth(message: String) {
+        signupActivityLoadingSKV.visibility = View.GONE
         root_signup_layout.snackbar(message)
     }
 

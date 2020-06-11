@@ -1,25 +1,20 @@
-package com.blazebooks.ui.auth
+package com.blazebooks.ui.auth.signup
 
 import android.content.Intent
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.blazebooks.R
-import com.blazebooks.data.dataAccessObjects.UserDao
-import com.blazebooks.data.models.User
-import com.blazebooks.data.repositories.UserRepository
-import com.blazebooks.util.CURRENT_USER
+import com.blazebooks.data.repositories.LoginRepository
+import com.blazebooks.ui.auth.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-/**
- * @author Victor Gonzalez
- */
-class AuthViewModel(
-    private val repository: UserRepository
-) : ViewModel() {
+class SignupViewModel(
+    private val repository: LoginRepository
+) : ViewModel(){
 
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -34,44 +29,7 @@ class AuthViewModel(
     var email: String? = null
     var passwd: String? = null
     var repeatPasswd: String? = null
-    var authListener: AuthListener? = null
-
-    /**
-     * @author Mounir Zbayr
-     * @author Victor Gonzalez
-     */
-    fun loginClicked(view: View) {
-
-        //email validations
-        if (email.isNullOrEmpty()) {
-            authListener?.onFailureAuth(view.resources.getString(R.string.invalid_email_or_passwd))
-            return
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email!!).matches()) {
-            //Comprueba que el campo email tiene el formato válido
-            authListener?.onFailureAuth(view.resources.getString(R.string.invalid_email_or_passwd))
-            return
-        }
-        //passwd validation
-        if (passwd.isNullOrEmpty()) {
-            authListener?.onFailureAuth(view.resources.getString(R.string.invalid_email_or_passwd))
-            return
-        }
-        authListener?.onStartAuth()
-
-        val disposable = repository.login(email!!, passwd!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                //success callback
-                authListener?.onSuccessAuth()
-            }, {
-                //failure callback
-                authListener?.onFailureAuth(it.message!!)
-            })
-
-        disposables.add(disposable)
-    }
+    var signupListener: SignupListener? = null
 
     /**
      *  @author Mounir
@@ -80,44 +38,44 @@ class AuthViewModel(
     fun singupClicked(view: View) {
         if (username.isNullOrEmpty()) {
             //Comprueba que el campo username no está vacío
-            authListener?.onUsernameFaliure(R.string.signin_username_error)
+            signupListener?.onUsernameFaliure(R.string.signin_username_error)
             return
         }
 
         if (passwd.isNullOrEmpty()) {
             //Comprueba que el campo password no está vacío
-            authListener?.onPasswordFaliure(R.string.signin_passwd_empty)
+            signupListener?.onPasswordFaliure(R.string.signin_passwd_empty)
             return
         } else if (passwd!!.length < 6) {
             //Comprueba que el campo password tiene más de 6 caracteres (Hace falta para validarlo con firebase
-            authListener?.onPasswordFaliure(R.string.signin_passwd_length)
+            signupListener?.onPasswordFaliure(R.string.signin_passwd_length)
             return
         }
         if (repeatPasswd.isNullOrEmpty() || passwd != repeatPasswd) {
             //Comprueba que el campo password coincide con el password aux
-            authListener?.onPasswordFaliure(R.string.signin_passwd_not_match)
+            signupListener?.onPasswordFaliure(R.string.signin_passwd_not_match)
             return
         }
 
         if (email.isNullOrEmpty()) {
             //Comprueba que el campo email no está vacío
-            authListener?.onEmailFaliure(R.string.signin_email_empty)
+            signupListener?.onEmailFaliure(R.string.signin_email_empty)
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email!!).matches()) {
             //Comprueba que el campo email tiene el formato válido
-            authListener?.onEmailFaliure(R.string.signin_email_not_valid)
+            signupListener?.onEmailFaliure(R.string.signin_email_not_valid)
             return
         }
 
-        authListener?.onStartAuth()
+        signupListener?.onStartAuth()
         val disposable = repository.register(email!!, passwd!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                authListener?.onSuccessAuth()
+                signupListener?.onSuccessAuth()
             }, {
-                authListener?.onFailureAuth(it.message!!)
+                signupListener?.onFailureAuth(it.message!!)
             })
         disposables.add(disposable)
         //Creacion e insercion del usuario en la base de datos
@@ -135,18 +93,6 @@ class AuthViewModel(
         authListener?.onSuccessAuth(null)
 
          */
-    }
-
-    /**
-     * Throws SignInActivity
-     *
-     * @param view
-     * @author Victor Gonzalez
-     */
-    fun onSignUn(view: View) {
-        Intent(view.context, SignUpActivity::class.java).also {
-            view.context.startActivity(it)
-        }
     }
 
     /**

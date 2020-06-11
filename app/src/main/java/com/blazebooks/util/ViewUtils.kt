@@ -14,7 +14,7 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.blazebooks.R
-import com.blazebooks.ui.auth.LoginActivity
+import com.blazebooks.ui.auth.login.LoginActivity
 import com.blazebooks.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 

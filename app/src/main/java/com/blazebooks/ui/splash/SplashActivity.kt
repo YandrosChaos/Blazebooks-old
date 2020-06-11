@@ -9,7 +9,7 @@ import androidx.preference.PreferenceManager
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.databinding.ActivitySplashBinding
-import com.blazebooks.ui.auth.LoginActivity
+import com.blazebooks.ui.auth.login.LoginActivity
 import com.blazebooks.util.DEFAULT_LANGUAGE
 import com.blazebooks.util.LANGUAGE_SETTING_KEY
 import kotlinx.android.synthetic.main.activity_splash.*

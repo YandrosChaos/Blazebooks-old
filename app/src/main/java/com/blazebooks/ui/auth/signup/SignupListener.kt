@@ -1,6 +1,6 @@
-package com.blazebooks.ui.auth
+package com.blazebooks.ui.auth.signup
 
-interface AuthListener {
+interface SignupListener {
     fun onStartAuth()
     fun onSuccessAuth()
     fun onFailureAuth(message: String)
