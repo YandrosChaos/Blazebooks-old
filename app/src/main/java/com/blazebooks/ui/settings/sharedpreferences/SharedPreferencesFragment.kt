@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.blazebooks.R
-import com.blazebooks.data.dataAccessObjects.UserDao
 import com.blazebooks.util.DELETE_ACCOUNT_KEY
 
 /**
@@ -40,7 +39,7 @@ class SharedPreferencesFragment : PreferenceFragmentCompat() {
             .setCancelable(false)
             // positive button text and action
             .setPositiveButton(getString(R.string.delete_account_dialog_confirm)) { dialog, id ->
-                UserDao().delete("id")
+                //TODO -> UserDao().delete("id")
             }
             // negative button text and action
             .setNegativeButton(getString(R.string.delete_account_dialog_cancel)) { dialog, id ->

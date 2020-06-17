@@ -96,7 +96,7 @@
     <string name="google_auth_err">Error de autenticación con Google</string>
     <string name="google_access_button">Botón de Acceso con Google</string>
 
-    <!-- SignIn Activity -->
+    <!-- SignUp Activity -->
     <string name="signin_username_error">El usuario no puede estar vacío.</string>
     <string name="signin_passwd_empty">La contraseña no puede estar vacía.</string>
     <string name="signin_passwd_length">La contraseña debe tener al menos 6 caracteres.</string>

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.preference.PreferenceManager
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.db.entities.StoredBook
+import com.blazebooks.data.preferences.PreferenceProvider
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.Coroutines
@@ -28,6 +29,7 @@ import java.io.InputStream
 class ShowBookActivityController(
     val context: Context,
     private val repository: StoredBooksRepository
+    //private val prefs: PreferenceProvider
 ) {
 
     var liked = false
@@ -90,6 +92,7 @@ class ShowBookActivityController(
      * @author Victor Gonzalez
      */
     fun saveIntoSharedPreferences(url: String) {
+        //prefs.setLastBook(url)
         val editor: SharedPreferences.Editor =
             PreferenceManager.getDefaultSharedPreferences(context).edit()
         editor.putString(LAST_BOOK_SELECTED_KEY, url)

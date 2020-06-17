@@ -5,15 +5,17 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.data.preferences.PreferenceProvider
 import com.blazebooks.databinding.ActivitySplashBinding
-import com.blazebooks.ui.auth.login.LoginActivity
-import com.blazebooks.util.DEFAULT_LANGUAGE
-import com.blazebooks.util.LANGUAGE_SETTING_KEY
+import com.blazebooks.ui.auth.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*
+
+private const val ES_LAN = "es"
+private const val EN_LAN = "en"
+private const val TIME_OUT = 4000L
 
 /**
  * First activity. Preload data before the app start.
@@ -25,9 +27,6 @@ import java.util.*
 class SplashActivity : PreconfiguredActivity() {
 
     private lateinit var viewModel: SplashViewModel
-    private val timeOut = 4000
-    private val spanishLanguage = "es"
-    private val englishLanguage = "en"
 
     /**
      * After completion of Constants.SPLASH_SCREEN_TIME_OUT, executes the code
@@ -55,7 +54,7 @@ class SplashActivity : PreconfiguredActivity() {
                 overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
                 startActivity(it)
             }
-        }, timeOut.toLong())
+        }, TIME_OUT)
     }
 
     /**
@@ -67,13 +66,9 @@ class SplashActivity : PreconfiguredActivity() {
      * @author  Victor Gonzalez
      */
     private fun loadLanguageConfig() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        when (sharedPreferences.getString(
-            LANGUAGE_SETTING_KEY,
-            DEFAULT_LANGUAGE
-        )) {
-            "Spanish" -> defaultLocale = Locale(spanishLanguage)
-            "English" -> defaultLocale = Locale(englishLanguage)
+        when (PreferenceProvider(this).getLanguage()) {
+            "Spanish" -> defaultLocale = Locale(ES_LAN)
+            "English" -> defaultLocale = Locale(EN_LAN)
         }
     }
 

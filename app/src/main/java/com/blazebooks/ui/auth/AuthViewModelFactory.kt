@@ -1,16 +1,16 @@
-package com.blazebooks.ui.auth.login
+package com.blazebooks.ui.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.blazebooks.data.repositories.LoginRepository
 
 @Suppress("UNCHECKED_CAST")
-class LoginViewModelFactory(
-    private val repository: LoginRepository
+class AuthViewModelFactory(
+    private val LoginRepo: LoginRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LoginViewModel(repository) as T
+        return AuthViewModel(LoginRepo) as T
     }
 
 }

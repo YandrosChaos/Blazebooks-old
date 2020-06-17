@@ -91,7 +91,7 @@
     <string name="login_password_hint">Password</string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="login_login_button">Login</string>
-    <string name="login_sign_up_button">Sign Un</string>
+    <string name="login_sign_up_button">Sign Up</string>
     <string name="google_auth_err">Google authentication error</string>
     <string name="google_access_button">Google Access Button</string>
 
@@ -103,7 +103,7 @@
     <string name="signin_email_empty">Email cannot be empty</string>
     <string name="signin_email_not_valid">Please enter valid email</string>
     <string name="auth_fail">Authentication failed.</string>
-    <string name="signin_sign_in_button">Sign In</string>
+    <string name="signin_sign_in_button">Sign Up</string>
     <string name="signin_go_back_button">Go Back</string>
     <string name="signin_email_hint">Email</string>
     <string name="signin_repeat_password_hint">Repeat Password</string>

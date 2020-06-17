@@ -24,5 +24,3 @@ const val NEW_EMAIL_KEY = "emailPref"
 const val SELECTED_PROFILE_IMAGE_KEY = "selectedProfileImg"
 const val DELETE_ACCOUNT_KEY = "deleteAccount"
 const val LAST_BOOK_SELECTED_KEY = "lastBookSelected"
-
-//var ranking: MutableList<Player> = COMDatabaseSingleton.getDatabase(applicationContext).playerDAO().getAllOrderByPoints()

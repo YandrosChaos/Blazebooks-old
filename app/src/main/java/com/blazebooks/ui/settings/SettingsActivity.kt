@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import com.blazebooks.R
-import com.blazebooks.data.dataAccessObjects.UserDao
 import com.blazebooks.data.models.User
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.settings.sharedpreferences.SharedPreferencesFragment
@@ -87,9 +86,9 @@ class SettingsActivity : PreconfiguredActivity() {
             .addOnSuccessListener { documentSnapshot ->
                 val oldUser = documentSnapshot.toObject(User::class.java)
 
-                val credential = EmailAuthProvider
-                    .getCredential(oldUser?.email.toString(), oldUser?.password.toString())
-                firebaseUser?.reauthenticate(credential)
+                //TODO -> val credential = EmailAuthProvider
+                    //.getCredential(oldUser?.email.toString(), oldUser?.password.toString())
+                //firebaseUser?.reauthenticate(credential)
 
                 if (!newUsername.equals("")) {
                     oldUser?.userName = newUsername.toString()
@@ -102,12 +101,12 @@ class SettingsActivity : PreconfiguredActivity() {
                 }
 
                 if (!newPassword.equals("")) {
-                    oldUser?.password = newPassword.toString()
+                    //TODO -> oldUser?.password = newPassword.toString()
                     toast("Password updated")
                 }
 
                 if (oldUser != null) {
-                    UserDao().update(oldUser)
+                    //TODO -> UserDao().update(oldUser)
                 }
             }
 

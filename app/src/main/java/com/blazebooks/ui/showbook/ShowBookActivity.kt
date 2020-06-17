@@ -10,10 +10,7 @@ import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.reader.ReaderActivity
-import com.blazebooks.util.CURRENT_BOOK
-import com.blazebooks.util.CURRENT_USER
-import com.blazebooks.util.PATH_CODE
-import com.blazebooks.util.toast
+import com.blazebooks.util.*
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.google.android.material.tabs.TabLayoutMediator
@@ -168,8 +165,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 showBookBtnRead.isEnabled = true
             }
             else -> {
-                //si no es ninguno de los anteriores casos
-                toast(getString(R.string.already_dwnload))
+                view.snackbar(getString(R.string.already_dwnload))
             }
         }
     }//download
@@ -232,7 +228,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
                 finish()
             } else {
-                toast(getString(R.string.not_dwnload_yet))
+                view.snackbar(getString(R.string.not_dwnload_yet))
             }
         }
 

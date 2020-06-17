@@ -1,7 +1,6 @@
 package com.blazebooks.ui.main
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,21 +16,18 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.widget.Toolbar
-import androidx.preference.PreferenceManager
 import coil.api.clear
 import coil.api.load
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialog
-import com.blazebooks.ui.auth.login.LoginActivity
+import com.blazebooks.ui.auth.LoginActivity
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialogListener
-import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.ui.settings.SettingsActivity
-import com.blazebooks.util.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main_complete.*
 
-class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
+class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener, MainViewModelListener {
 
     private lateinit var navView: NavigationView
     private lateinit var headerImage: ImageView
@@ -39,11 +35,8 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
     private lateinit var email: TextView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var auth: FirebaseAuth
-    private lateinit var sharedPreferences: SharedPreferences
 
     /**
-     * @see setUpProfileDataView
-     *
      * @param savedInstanceState
      *
      * @author Victor Gonzalez
@@ -64,31 +57,9 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
         email = header.findViewById(R.id.nav_header_tv_userEmail)
         headerImage = header.findViewById(R.id.nav_header_imageView)
 
-        sharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(this)
-
         setSupportActionBar(toolbar)
         auth = FirebaseAuth.getInstance()
 
-        /**
-         * If exist a last book stored into shared preferences, then shows it. Else,
-         * shows a snackbar.
-         *
-         * @author Victor Gonzalez
-         */
-        fab.setOnClickListener { view ->
-            val lastBookUrl = sharedPreferences.getString(LAST_BOOK_SELECTED_KEY, null)
-
-            if (!lastBookUrl.isNullOrEmpty()) {
-                startActivity(
-                    Intent(this, ReaderActivity::class.java).apply
-                    { putExtra(PATH_CODE, lastBookUrl) }
-                )
-                overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-            } else {
-                view.snackbar("Last book cannot be found.")
-            }
-        }
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -103,7 +74,7 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
         navView.setupWithNavController(navController)
 
         //set username, email and profile image
-        setUpProfileDataView()
+        //setUpProfileDataView()
     }
 
     /**
@@ -154,40 +125,35 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
      * activity view. Calls other method, closing the dialog.
      *
      * @see ProfileImageDialog
-     * @see setProfileImage
-     * @see ProfileImageDialog.ProfileImageDialogListener
+     * @see onSetProfileImageDialog
      * @see onExitProfileImageDialog
-     * @see setUpProfileDataView
      *
      * @author Victor Gonzalez
      */
     override fun onReturnImageSelected(dialog: ProfileImageDialog) {
-        setUpProfileDataView()
+        //setUpProfileDataView()
         onExitProfileImageDialog(dialog)
     }
 
     /**
      * Restores the default profile image.
      *
-     * @see setUpProfileDataView
      * @see onExitProfileImageDialog
      * @see ProfileImageDialog
-     * @see ProfileImageDialog.ProfileImageDialogListener
-     * @see setProfileImage
+     * @see onSetProfileImageDialog
      *
      * @author Victor Gonzalez
      */
     override fun onCleanProfileImage(dialog: ProfileImageDialog) {
-        setUpProfileDataView()
+        //setUpProfileDataView()
         onExitProfileImageDialog(dialog)
     }
 
     /**
      * Closes the dialog.
      *
-     * @see setProfileImage
+     * @see onSetProfileImageDialog
      * @see ProfileImageDialog
-     * @see ProfileImageDialog.ProfileImageDialogListener
      *
      * @author Victor Gonzalez
      */
@@ -203,13 +169,11 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
      *
      * @author Victor Gonzalez
      */
-    fun setProfileImage(view: View) {
+    fun onSetProfileImageDialog(view: View) {
         mainActivityProfileImgFragment.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
-            .replace(R.id.mainActivityProfileImgFragment,
-                ProfileImageDialog()
-            )
+            .replace(R.id.mainActivityProfileImgFragment, ProfileImageDialog())
             .commit()
     }
 
@@ -224,7 +188,6 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginActivity::class.java))
-        sharedPreferences.edit().clear().apply()
         finish()
     }
 
@@ -239,6 +202,21 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
     }
 
+    /**
+     * Sets the profile image.
+     *
+     * @author Victor Gonzalez
+     */
+    override fun onLoadImage(image: String?, defaultImage: Int) {
+        headerImage.clear()
+        if (!image.isNullOrEmpty()) {
+            headerImage.load(image)
+        } else {
+            headerImage.load(defaultImage)
+        }
+    }
+
+    /*
     /**
      * Sets email, username and profile image.
      *
@@ -270,4 +248,6 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener {
             headerImage.load(R.drawable.ic_reading_big)
         }
     }
+
+     */
 }

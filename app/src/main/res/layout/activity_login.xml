@@ -2,18 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewmodel"
-            type="com.blazebooks.ui.auth.login.LoginViewModel" />
-    </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/login_root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.auth.login.LoginActivity">
+        tools:context=".ui.auth.LoginActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -36,7 +29,8 @@
                     android:layout_height="200sp"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="20dp"
-                    android:src="@drawable/blazebooks_logo" />
+                    android:src="@drawable/ic_reading_big"
+                    android:tint="@color/white" />
 
                 <EditText
                     android:id="@+id/loginActivityUserName"
@@ -49,7 +43,6 @@
                     android:hint="@string/login_email_hint"
                     android:inputType="textEmailAddress"
                     android:padding="10dp"
-                    android:text="@={viewmodel.email}"
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/white" />
 
@@ -65,7 +58,6 @@
                     android:hint="@string/login_password_hint"
                     android:inputType="textPassword"
                     android:padding="10dp"
-                    android:text="@={viewmodel.passwd}"
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/white" />
 
@@ -76,41 +68,41 @@
                     android:padding="10dp">
 
                     <ImageView
+                        android:id="@+id/buttonLoginGoogle"
                         android:layout_width="30sp"
                         android:layout_height="30sp"
                         android:layout_gravity="start"
                         android:layout_weight="1"
                         android:contentDescription="@string/google_access_button"
                         android:gravity="start"
-                        android:onClick="@{viewmodel::googleSignUp}"
                         android:scaleType="fitStart"
                         android:src="@drawable/ic_gmail" />
 
                     <TextView
+                        android:id="@+id/textViewForgotPassword"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:onClick="sendPasswordResetEmail"
                         android:text="@string/login_forgot_password" />
 
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp"
-                    android:onClick="@{viewmodel.loginClicked}"
                     android:text="@string/login_login_button"
                     android:textAllCaps="false"
                     android:textSize="21sp" />
 
                 <TextView
+                    android:id="@+id/textViewSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="@{viewmodel::onSignUn}"
                     android:text="@string/login_sign_up_button"
                     android:textSize="21sp" />
 

@@ -1,12 +1,10 @@
 package com.blazebooks.data.firebase
 
-import android.content.Intent
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.Completable
+import com.google.firebase.auth.UserProfileChangeRequest.Builder
 
 /**
  * Completable es una clase de RxJava que permite obtener una indicación cuando
@@ -40,9 +38,51 @@ class FirebaseSource {
         }
     }
 
+    fun delete() = Completable.create { emitter ->
+        firebaseAuth.currentUser?.delete()?.addOnCompleteListener { task ->
+            if (!emitter.isDisposed) {
+                if (task.isSuccessful) emitter.onComplete()
+                else emitter.onError(task.exception!!)
+            }
+        }
+    }
+
+    fun updateUserName(name: String) = Completable.create { emitter ->
+        val profileUpdates = Builder().setDisplayName(name)
+            .build()
+
+        firebaseAuth.currentUser?.updateProfile(profileUpdates)
+            ?.addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+    }
+
+    fun updateEmail(email: String) = Completable.create { emitter ->
+        firebaseAuth.currentUser?.updateEmail(email)
+            ?.addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+    }
+
+    fun updatePassword(passwd: String) = Completable.create { emitter ->
+        firebaseAuth.currentUser?.updatePassword(passwd)
+            ?.addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+    }
+
     fun logout() = firebaseAuth.signOut()
 
-    fun currentUser() = firebaseAuth.currentUser
+    fun currentFirebaseUser() = firebaseAuth.currentUser
 
     fun loginWithGoogle(account: GoogleSignInAccount) = Completable.create { emitter ->
         firebaseAuth.signInWithCredential(
@@ -55,8 +95,15 @@ class FirebaseSource {
                 if (it.isSuccessful) emitter.onComplete()
                 else emitter.onError(it.exception!!)
             }
-
         }
     }
 
+    fun sendPasswordReset(email: String) = Completable.create { emitter ->
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
+            if (!emitter.isDisposed) {
+                if (it.isSuccessful) emitter.onComplete()
+                else emitter.onError(it.exception!!)
+            }
+        }
+    }
 }
