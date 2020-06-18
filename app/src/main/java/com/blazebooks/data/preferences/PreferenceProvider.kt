@@ -33,32 +33,29 @@ class PreferenceProvider(
             appContext
         )
 
-    fun clearAll() {
-        preferences.edit().clear().apply()
-    }
+    fun clearAll() = preferences.edit().clear().apply()
 
     fun userImage(): String? {
         return preferences.getString(SELECTED_PROFILE_IMAGE_KEY, null)
     }
 
-    fun saveUserImage(url: String) {
+    fun saveUserImage(url: String) =
         preferences.edit().putString(SELECTED_PROFILE_IMAGE_KEY, url).apply()
-    }
 
-    fun getLanguage(): String?{
+    fun cleanUserImage() = preferences.edit().putString(SELECTED_PROFILE_IMAGE_KEY, null).apply()
+
+    fun getLanguage(): String? {
         return preferences.getString(LANGUAGE_SETTING_KEY, DEFAULT_LANGUAGE)
     }
 
-    fun setLanguage(lan: String){
-        preferences.edit().putString(LANGUAGE_SETTING_KEY, lan).apply()
-    }
+    fun setLanguage(lan: String) = preferences.edit().putString(LANGUAGE_SETTING_KEY, lan).apply()
 
-    fun getLastBook(): String?{
+    fun getLastBook(): String? {
         return preferences.getString(LAST_BOOK_SELECTED_KEY, null)
     }
 
-    fun setLastBook(url: String){
+    fun setLastBook(url: String) =
         preferences.edit().putString(LAST_BOOK_SELECTED_KEY, url).apply()
-    }
+
 
 }

@@ -7,4 +7,8 @@ class ProfileImageDialogViewModel(
     private val prefs: PreferenceProvider
 ) : ViewModel() {
 
+    fun storeSelectedImage(url: String) = prefs.saveUserImage(url)
+
+    fun cleanSelectedImage() = prefs.cleanUserImage()
+
 }

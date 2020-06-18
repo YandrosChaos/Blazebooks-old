@@ -9,12 +9,18 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import coil.api.load
 import com.blazebooks.R
+import com.blazebooks.databinding.DialogSetProfileImgBinding
 import com.blazebooks.util.SELECTED_PROFILE_IMAGE_KEY
 import java.lang.ClassCastException
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
 
 /**
  * Custom dialog. Lets choose a profile image and returns it by
@@ -22,9 +28,13 @@ import java.lang.ClassCastException
  *
  * @author Victor Gonzalez
  */
-class ProfileImageDialog : DialogFragment() {
-    private lateinit var listener: ProfileImageDialogListener
+class ProfileImageDialog : DialogFragment(), KodeinAware {
+    override val kodein by kodein()
+    private val factory by instance<ProfileImageViewModelFactory>()
 
+    private lateinit var binding: DialogSetProfileImgBinding
+    private lateinit var viewModel: ProfileImageDialogViewModel
+    private lateinit var listener: ProfileImageDialogListener
     private var selectedImage: ImageView? = null
 
     override fun onCreateView(
@@ -32,7 +42,10 @@ class ProfileImageDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_set_profile_img, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.dialog_set_profile_img, container, false)
+        viewModel = ViewModelProvider(this, factory).get(ProfileImageDialogViewModel::class.java)
+        return binding.root
     }
 
     /**
@@ -60,7 +73,7 @@ class ProfileImageDialog : DialogFragment() {
         }
 
         dialogSetImgCleanBtn.setOnClickListener {
-            storeSelectedImg(null)
+            viewModel.cleanSelectedImage()
             listener.onCleanProfileImage(this)
         }
     }
@@ -90,22 +103,9 @@ class ProfileImageDialog : DialogFragment() {
             imageView.load(url)
             imageView.setOnClickListener {
                 selectedImage = imageView
-                storeSelectedImg(url)
+                viewModel.storeSelectedImage(url)
                 listener.onReturnImageSelected(this)
             }
         }
-    }
-
-    /**
-     * Stores the imageURL selected into sharedPreferences file.
-     *
-     * @author Victor Gonzalez
-     */
-    private fun storeSelectedImg(url: String?) {
-        val sharedPreferences: SharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(context)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString(SELECTED_PROFILE_IMAGE_KEY, url)
-        editor.apply()
     }
 }

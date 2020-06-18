@@ -1,13 +1,16 @@
 package com.blazebooks.ui.becomepremium
 
 import android.os.Bundle
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.util.scrollToView
 import com.blazebooks.util.snackbar
+import kotlinx.android.synthetic.main.activity_become_premium.*
+import kotlinx.android.synthetic.main.item_free.*
+import kotlinx.android.synthetic.main.item_premium_month.*
+import kotlinx.android.synthetic.main.item_premium_year.*
 
 /**
  * @author Victor Gonzalez
@@ -26,34 +29,28 @@ class BecomePremiumActivity : PreconfiguredActivity() {
         premiumMonthLayout = findViewById(R.id.becomePremiumMainPricesPremiumMonth)
         freeLayout = findViewById(R.id.becomePremiumMainPricesPremiumFree)
 
-    }
+        //Scrolls to Free Plan View.
+        imageButtonClose.setOnClickListener {
+            scrollToView(scrollView, freeLayout)
+        }
 
-    /**
-     * Scrolls to Free Plan View.
-     */
-    fun scrollToFreeVersion(view: View) {
-        scrollToView(scrollView, freeLayout)
-    }
+        //Scrolls to Monthly Plan View.
+        wannaBePremiumBtn.setOnClickListener {
+            scrollToView(scrollView, premiumMonthLayout)
+        }
 
-    /**
-     * Scrolls to Monthly Plan View.
-     */
-    fun scrollToPlans(view: View) {
-        scrollToView(scrollView, premiumMonthLayout)
-    }
+        becomePremiumMonthlyBtn.setOnClickListener {
+            it.snackbar("Not implemented yet =>")
+        }
 
-    /**
-     * Finish the activity.
-     */
-    fun onFreeVersionClicked(view: View) {
-        finish()
-    }
+        becomePremiumYearlyBtn.setOnClickListener {
+            it.snackbar("Not implemented yet =>")
+        }
 
-    fun onMonthlyVersionClicked(view: View) {
-        view.snackbar("Not implemented yet =>")
-    }
+        //finish the activity
+        becomePremiumFreeBtn.setOnClickListener {
+            finish()
+        }
 
-    fun onYearlyVersionClicked(view: View) {
-        view.snackbar("Not implemented yet =>")
     }
 }

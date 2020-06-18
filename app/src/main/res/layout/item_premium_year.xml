@@ -43,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40sp"
                 android:layout_marginEnd="40sp"
-                android:onClick="onYearlyVersionClicked"
                 android:text="@string/yearly_plan_price"
                 android:textAlignment="center"
                 android:textSize="20sp" />

@@ -65,8 +65,6 @@
                 android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
-                app:autoSizeTextType="uniform"
-                android:onClick="onFreeVersionClicked"
                 android:id="@+id/becomePremiumFreeBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +72,8 @@
                 android:layout_marginEnd="40sp"
                 android:backgroundTint="@color/grayTransparent"
                 android:text="@string/free_plan_price"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                app:autoSizeTextType="uniform" />
 
 
         </LinearLayout>
