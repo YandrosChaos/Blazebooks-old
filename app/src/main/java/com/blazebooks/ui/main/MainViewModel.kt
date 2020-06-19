@@ -5,6 +5,8 @@ import com.blazebooks.data.preferences.PreferenceProvider
 import com.blazebooks.data.repositories.LoginRepository
 import com.blazebooks.ui.auth.LoginActivity
 
+private const val DEFAULT_USERNAME_VALUE = ""
+
 class MainViewModel(
     private val repository: LoginRepository,
     private val prefs: PreferenceProvider
@@ -15,7 +17,7 @@ class MainViewModel(
     }
 
     val urlBook: String? = prefs.getLastBook()
-    var username: String = user?.displayName.toString()
+    var username: String = user?.displayName ?: DEFAULT_USERNAME_VALUE
     var usermail: String = user?.email.toString()
 
 
@@ -32,8 +34,6 @@ class MainViewModel(
         prefs.clearAll()
     }
 
-    fun getStoredProfileImage(): String {
-           return (prefs.userImage()?: user?.photoUrl).toString()
-    }
+    fun getStoredProfileImage() = (prefs.userImage() ?: user?.photoUrl).toString()
 
 }

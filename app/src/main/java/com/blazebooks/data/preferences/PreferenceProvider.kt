@@ -18,6 +18,7 @@ private const val LAST_BOOK_SELECTED_KEY = "lastBookSelected"
 
 //DEFAULT PREFERENCES
 private const val DEFAULT_LANGUAGE: String = "English"
+private const val DEFAULT_USER_IMAGE = "https://cdn.pixabay.com/photo/2013/07/13/11/34/owl-158411_960_720.png"
 
 /**
  * SharedPreferences Operations
@@ -42,7 +43,7 @@ class PreferenceProvider(
     fun saveUserImage(url: String) =
         preferences.edit().putString(SELECTED_PROFILE_IMAGE_KEY, url).apply()
 
-    fun cleanUserImage() = preferences.edit().putString(SELECTED_PROFILE_IMAGE_KEY, null).apply()
+    fun cleanUserImage() = preferences.edit().putString(SELECTED_PROFILE_IMAGE_KEY, DEFAULT_USER_IMAGE).apply()
 
     fun getLanguage(): String? {
         return preferences.getString(LANGUAGE_SETTING_KEY, DEFAULT_LANGUAGE)

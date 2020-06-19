@@ -75,7 +75,6 @@ class SignUpActivity : PreconfiguredActivity(), KodeinAware {
             return
         }
 
-        binding.signupActivityLoadingSKV.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {
                 viewModel.signUp(email, pass)
@@ -93,7 +92,6 @@ class SignUpActivity : PreconfiguredActivity(), KodeinAware {
                 view.snackbar(e.message!!)
             }
         }
-        binding.signupActivityLoadingSKV.visibility = View.GONE
 
     }
 

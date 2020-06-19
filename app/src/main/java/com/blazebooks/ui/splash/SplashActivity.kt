@@ -1,15 +1,15 @@
 package com.blazebooks.ui.splash
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.data.preferences.PreferenceProvider
 import com.blazebooks.databinding.ActivitySplashBinding
 import com.blazebooks.ui.auth.LoginActivity
+import com.blazebooks.util.startLoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*
 
@@ -41,7 +41,7 @@ class SplashActivity : PreconfiguredActivity() {
         super.onCreate(savedInstanceState)
         val binding: ActivitySplashBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_splash)
-        viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
         binding.viewModel = viewModel
 
         loadLanguageConfig()
@@ -49,11 +49,7 @@ class SplashActivity : PreconfiguredActivity() {
         Handler().postDelayed({
             iv_splash.progress = 1f
             iv_splash.loop(false)
-            Intent(this, LoginActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
-                startActivity(it)
-            }
+            startLoginActivity()
         }, TIME_OUT)
     }
 

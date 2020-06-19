@@ -46,6 +46,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
 
         viewModel.getCurrentUser()?.let {
             startMainActivity()
+            finish()
         }
 
         //login button

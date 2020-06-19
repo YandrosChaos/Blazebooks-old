@@ -35,8 +35,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-private const val DEFAULT_USER_IMAGE = R.drawable.ic_reading
-
 class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener, KodeinAware {
     override val kodein by kodein()
     private val factory by instance<MainViewModelFactory>()
@@ -189,15 +187,8 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener, Kodein
     private fun onSetupGUI() {
         name.text = viewModel.username
         email.text = viewModel.usermail
-
-        val imageURL = viewModel.getStoredProfileImage()
-
         headerImage.clear()
-        if (imageURL.isNotEmpty()) {
-            headerImage.load(imageURL)
-        } else {
-            headerImage.load(DEFAULT_USER_IMAGE)
-        }
+        headerImage.load(viewModel.getStoredProfileImage())
     }
 
     /**

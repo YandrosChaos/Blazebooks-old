@@ -104,7 +104,6 @@ class ForgotPasswdDialog : DialogFragment(), KodeinAware {
             forgotpwdDialogUserName.requestFocus()
             return
         }
-        dialogLoadingSKV.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {
                 viewModel.sendEmail(email)
@@ -121,7 +120,6 @@ class ForgotPasswdDialog : DialogFragment(), KodeinAware {
                 view.snackbar("Check your internet connection please.")
             }
         }
-        dialogLoadingSKV.visibility = View.GONE
     }
 
 }
