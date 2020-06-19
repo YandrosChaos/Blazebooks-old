@@ -13,7 +13,7 @@ import com.blazebooks.data.db.entities.StoredBook
  *
  * @author Victor Gonzalez
  */
-@Database(entities = [StoredBook::class], version = 2)
+@Database(entities = [StoredBook::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getStoredBookDAO(): StoredBookDAO
 

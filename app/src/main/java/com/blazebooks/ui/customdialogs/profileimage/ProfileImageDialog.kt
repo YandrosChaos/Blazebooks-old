@@ -1,7 +1,6 @@
 package com.blazebooks.ui.customdialogs.profileimage
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,9 @@ import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import coil.api.load
 import com.blazebooks.R
 import com.blazebooks.databinding.DialogSetProfileImgBinding
-import com.blazebooks.util.SELECTED_PROFILE_IMAGE_KEY
 import java.lang.ClassCastException
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -74,7 +71,7 @@ class ProfileImageDialog : DialogFragment(), KodeinAware {
 
         dialogSetImgCleanBtn.setOnClickListener {
             viewModel.cleanSelectedImage()
-            listener.onCleanProfileImage(this)
+            listener.onExitProfileImageDialog(this)
         }
     }
 
@@ -90,8 +87,6 @@ class ProfileImageDialog : DialogFragment(), KodeinAware {
     /**
      * Receives an url and return an configured ImageView.
      *
-     * @see storeSelectedImg
-     *
      * @param url String that must contain the URL
      * @return ImageView
      *
@@ -104,7 +99,7 @@ class ProfileImageDialog : DialogFragment(), KodeinAware {
             imageView.setOnClickListener {
                 selectedImage = imageView
                 viewModel.storeSelectedImage(url)
-                listener.onReturnImageSelected(this)
+                listener.onExitProfileImageDialog(this)
             }
         }
     }

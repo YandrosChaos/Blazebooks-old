@@ -19,7 +19,6 @@
         app:cardElevation="10dp">
 
         <ImageView
-            android:onClick="onSetProfileImageDialog"
             android:id="@+id/nav_header_imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

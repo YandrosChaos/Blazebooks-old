@@ -31,13 +31,22 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
     private lateinit var binding: ActivityLoginBinding
 
     /**
-     * @author Víctor González
+     * Comprueba al iniciar si el usuario es nulo. Si lo es se carga el resto
+     * del login y si no pasa directo al main. También establece los eventos para
+     * los diferentes botones de la vista.
+     *
+     * @author Mounir Zbayr
+     * @author Victor Gonzalez
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         viewModel = ViewModelProvider(this, factory).get(AuthViewModel::class.java)
+
+        viewModel.getCurrentUser()?.let {
+            startMainActivity()
+        }
 
         //login button
         binding.buttonLogin.setOnClickListener {
@@ -50,7 +59,6 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
         //go to signup activity
         binding.textViewSignUp.setOnClickListener {
             startSignUpActivity()
-            finish()
         }
         //forgotPasswd button
         binding.textViewForgotPassword.setOnClickListener {
@@ -79,21 +87,17 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
         val email = binding.loginActivityUserName.text.toString().trim()
         val passwd = binding.loginActivityUserPasswd.text.toString().trim()
 
-        // validations
-        if (email.isEmpty()) {
-            view.snackbar(getString(R.string.invalid_email_or_passwd))
-            return
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            view.snackbar(getString(R.string.invalid_email_or_passwd))
-            return
-        }
-        if (passwd.isEmpty()) {
+        //validations
+        if (email.isEmpty()
+            || !Patterns.EMAIL_ADDRESS.matcher(email).matches()
+            || passwd.isEmpty()
+        ) {
             view.snackbar(getString(R.string.invalid_email_or_passwd))
             return
         }
 
-        binding.loginActivityLoadingSKV.visibility = View.VISIBLE
+
+        loginActivityLoadingSKV.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {
                 viewModel.userLogin(email, passwd)
@@ -111,8 +115,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
                 view.snackbar("Check your internet connection please.")
             }
         }
-        binding.loginActivityLoadingSKV.visibility = View.GONE
-
+        loginActivityLoadingSKV.visibility = View.GONE
     }
 
     /**
@@ -121,16 +124,17 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
      * @author Victor Gonzalez
      */
     private fun loginWithGoogle() {
-        binding.loginActivityLoadingSKV.visibility = View.VISIBLE
+        loginActivityLoadingSKV.visibility = View.VISIBLE
         val client = viewModel.getGoogleClient(applicationContext)
         //salir de la sesion actual de Google
         client.signOut()
 
         //start google login activity
-        startActivityForResult(client.signInIntent,
+        startActivityForResult(
+            client.signInIntent,
             GOOGLE_SIGN_IN
         )
-        binding.loginActivityLoadingSKV.visibility = View.GONE
+        loginActivityLoadingSKV.visibility = View.GONE
     }
 
     /**
@@ -142,9 +146,6 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_SIGN_IN) {
             binding.loginActivityLoadingSKV.visibility = View.VISIBLE
-
-
-
             lifecycleScope.launch {
                 try {
                     val account = viewModel.getGoogleAccount(data)
@@ -164,27 +165,11 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
                         binding.root.snackbar("Account does not exist!")
                     }
                 } catch (e: ApiException) {
-                    binding.root.snackbar(e.message!!)
                 }
             }
-
             binding.loginActivityLoadingSKV.visibility = View.GONE
         }
     }
-
-    /**
-     * Comprueba al iniciar si el usuario es nulo. Si lo es se muestra
-     * la vista del login y si no pasa directo al main
-     *
-     * @author Mounir Zbayr
-     * @author Victor Gonzalez
-     */
-    override fun onStart() {
-        super.onStart()
-        viewModel.getCurrentUser()?.let {
-            startMainActivity()
-        }
-    }//onStart
 
     /**
      * Receives the answer from the dialog and closes it.

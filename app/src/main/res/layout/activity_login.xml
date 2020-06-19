@@ -30,7 +30,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="20dp"
                     android:src="@drawable/ic_reading_big"
-                    android:tint="@color/white" />
+                    android:tint="@color/white"
+                    tools:ignore="ContentDescription" />
 
                 <EditText
                     android:id="@+id/loginActivityUserName"
@@ -117,24 +118,23 @@
                 android:focusable="true"
                 android:visibility="gone" />
 
-            <RelativeLayout
-                android:id="@+id/loginActivityLoadingSKV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:background="@color/grayTransparent"
-                android:clickable="true"
-                android:focusable="true"
-                android:visibility="gone">
+        </RelativeLayout>
 
-                <com.github.ybq.android.spinkit.SpinKitView
-                    style="@style/SpinKitView.WanderingCubes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/loginActivityLoadingSKV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/grayTransparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
 
-
+            <com.github.ybq.android.spinkit.SpinKitView
+                style="@style/SpinKitView.WanderingCubes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
