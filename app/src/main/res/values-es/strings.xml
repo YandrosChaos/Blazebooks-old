@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Blazebooks</string>
+
     <string name="navigation_drawer_open">Abrir drawer</string>
     <string name="navigation_drawer_close">Cerrar drawer</string>
     <string name="nav_header_desc">Cabecera de Navegación</string>

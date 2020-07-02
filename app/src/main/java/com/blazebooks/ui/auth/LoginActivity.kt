@@ -22,7 +22,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-const val GOOGLE_SIGN_IN = 1984
+private const val GOOGLE_SIGN_IN = 1984
 
 class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, KodeinAware {
     override val kodein by kodein()
@@ -84,6 +84,12 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
             ).commit()
     }
 
+    /**
+     * Login an user with the email and password.
+     *
+     * @author Victor Gonzalez
+     * @author Mounir Zbayr
+     */
     private fun loginUser(view: View) {
         val email = binding.loginActivityUserName.text.toString().trim()
         val passwd = binding.loginActivityUserPasswd.text.toString().trim()
@@ -166,6 +172,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
                         binding.root.snackbar("Account does not exist!")
                     }
                 } catch (e: ApiException) {
+                    binding.root.snackbar("Error: " + e.message)
                 }
             }
             binding.loginActivityLoadingSKV.visibility = View.GONE

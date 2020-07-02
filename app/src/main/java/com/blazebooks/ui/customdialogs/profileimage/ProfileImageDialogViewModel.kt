@@ -1,14 +1,15 @@
 package com.blazebooks.ui.customdialogs.profileimage
 
 import androidx.lifecycle.ViewModel
-import com.blazebooks.data.preferences.PreferenceProvider
+import com.blazebooks.data.repositories.SettingsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ProfileImageDialogViewModel(
-    private val prefs: PreferenceProvider
+    private val repository: SettingsRepository
 ) : ViewModel() {
 
-    fun storeSelectedImage(url: String) = prefs.saveUserImage(url)
-
-    fun cleanSelectedImage() = prefs.cleanUserImage()
+    suspend fun updatePhotoUri(url: String?) =
+        withContext(Dispatchers.IO) { repository.updatePhotoUri(url) }
 
 }

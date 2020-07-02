@@ -11,9 +11,14 @@ import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import coil.api.load
 import com.blazebooks.R
 import com.blazebooks.databinding.DialogSetProfileImgBinding
+import com.blazebooks.util.snackbar
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.lang.ClassCastException
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -32,7 +37,6 @@ class ProfileImageDialog : DialogFragment(), KodeinAware {
     private lateinit var binding: DialogSetProfileImgBinding
     private lateinit var viewModel: ProfileImageDialogViewModel
     private lateinit var listener: ProfileImageDialogListener
-    private var selectedImage: ImageView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,8 +74,7 @@ class ProfileImageDialog : DialogFragment(), KodeinAware {
         }
 
         dialogSetImgCleanBtn.setOnClickListener {
-            viewModel.cleanSelectedImage()
-            listener.onExitProfileImageDialog(this)
+            updateProfileImage(null)
         }
     }
 
@@ -97,9 +100,34 @@ class ProfileImageDialog : DialogFragment(), KodeinAware {
             imageView.layoutParams = ViewGroup.LayoutParams(300, 300)
             imageView.load(url)
             imageView.setOnClickListener {
-                selectedImage = imageView
-                viewModel.storeSelectedImage(url)
-                listener.onExitProfileImageDialog(this)
+                updateProfileImage(url)
+            }
+        }
+    }
+
+    /**
+     * Se le proporciona una url de imagen con la que actualiza el perfil.
+     * Si se elimina la imagen, utiliza una por defecto.
+     *
+     * @param url
+     *
+     * @author Victor Gonzalez
+     */
+    private fun updateProfileImage(url: String?) {
+        lifecycleScope.launch {
+            try {
+                viewModel.updatePhotoUri(url)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        binding.root.snackbar("Success!")
+                        listener.onExitProfileImageDialog(this@ProfileImageDialog)
+
+                    }, {
+                        binding.root.snackbar("An error occurred.!")
+                    })
+            } catch (e: Exception) {
+                binding.root.snackbar("Check your internet connection please.")
             }
         }
     }

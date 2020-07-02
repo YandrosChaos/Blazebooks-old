@@ -31,6 +31,12 @@ fun Context.startLoginActivity() =
         startActivity(it)
     }
 
+fun Fragment.startLoginActivity() =
+    Intent(this.context, LoginActivity::class.java).also {
+        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(it)
+    }
+
 fun Context.startSignUpActivity() =
     Intent(this, SignUpActivity::class.java).also {
         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -53,6 +59,10 @@ fun Context.hideKeyboard(view: View) {
 
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Fragment.toast(message: String) {
+    Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
 }
 
 fun View.snackbar(message: String) {

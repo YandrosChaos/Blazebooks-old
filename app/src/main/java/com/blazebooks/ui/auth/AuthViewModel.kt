@@ -14,17 +14,31 @@ import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * @author Victor Gonzalez
+ */
 class AuthViewModel(
     private val loginRepo: LoginRepository
 ) : ViewModel() {
 
     fun getCurrentUser() = loginRepo.currentUser()
 
+    /**
+     * Login a user with an email and pass.
+     *
+     * @param email
+     * @param passwd
+     */
     suspend fun userLogin(
         email: String,
         passwd: String
     ) = withContext(Dispatchers.IO) { loginRepo.login(email, passwd) }
 
+    /**
+     * Gets the googleClient.
+     *
+     * @param context
+     */
     fun getGoogleClient(
         context: Context
     ): GoogleSignInClient = GoogleSignIn.getClient(
@@ -35,10 +49,20 @@ class AuthViewModel(
             .build()
     )
 
+    /**
+     * Login a user with an google account.
+     *
+     * @param account
+     */
     suspend fun loginWithGoogle(
         account: GoogleSignInAccount
     ) = withContext(Dispatchers.IO) { loginRepo.loginWithGoogle(account) }
 
+    /**
+     * Gets the current google account.
+     *
+     * @param data
+     */
     suspend fun getGoogleAccount(
         data: Intent?
     ) = withContext(Dispatchers.IO) {
@@ -47,6 +71,12 @@ class AuthViewModel(
             .getResult(ApiException::class.java)
     }
 
+    /**
+     * Sign up an user to the Firestore database.
+     *
+     * @param email
+     * @param password
+     */
     suspend fun signUp(
         email: String,
         password: String

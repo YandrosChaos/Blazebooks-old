@@ -1,5 +1,7 @@
 package com.blazebooks.data.firebase
 
+import android.net.Uri
+import com.blazebooks.util.DEFAULT_PROFILE_IMAGE
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -39,12 +41,13 @@ class FirebaseSource {
     }
 
     fun delete() = Completable.create { emitter ->
-        firebaseAuth.currentUser?.delete()?.addOnCompleteListener { task ->
+        currentFirebaseUser()!!.delete().addOnCompleteListener { task ->
             if (!emitter.isDisposed) {
                 if (task.isSuccessful) emitter.onComplete()
                 else emitter.onError(task.exception!!)
             }
         }
+
     }
 
     fun updateUserName(name: String) = Completable.create { emitter ->
@@ -58,6 +61,29 @@ class FirebaseSource {
                     else emitter.onError(task.exception!!)
                 }
             }
+    }
+
+    fun updatePhotoUri(uri: String?) = Completable.create { emitter ->
+        var newImage = uri
+        val user = currentFirebaseUser()
+
+        if(newImage.isNullOrEmpty()){
+            newImage = DEFAULT_PROFILE_IMAGE
+        }
+
+        val profileUpdates = Builder()
+            .setDisplayName(user!!.displayName)
+            .setPhotoUri(Uri.parse(newImage))
+            .build()
+
+        user.updateProfile(profileUpdates)
+            .addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+
     }
 
     fun updateEmail(email: String) = Completable.create { emitter ->

@@ -32,25 +32,20 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="ACCOUNT">
-        <EditTextPreference
-            android:dialogTitle="@string/username_account_dialog_title"
+        <Preference
             android:icon="@drawable/ic_reading_big"
-            android:inputType="textPersonName"
             android:key="usernamePref"
             android:summary="@string/username_account_desc"
             android:title="@string/username_account_title" />
-        <EditTextPreference
-            android:dialogTitle="@string/passwd_account_dialog_title"
+
+        <Preference
             android:icon="@drawable/ic_passwd"
-            android:inputType="textPassword"
             android:key="passwdPref"
             android:summary="@string/paswd_account_text"
             android:title="@string/passwd_account_title" />
 
-        <EditTextPreference
-            android:dialogTitle="@string/email_acount_dialog_title"
+        <Preference
             android:icon="@drawable/ic_email"
-            android:inputType="textEmailAddress"
             android:key="emailPref"
             android:summary="@string/email_account_desc"
             android:title="@string/email_account_title" />
