@@ -1,4 +1,4 @@
-package com.blazebooks.ui.auth
+package com.blazebooks.ui.becomepremium
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,13 +6,13 @@ import com.blazebooks.data.repositories.LoginRepository
 import com.blazebooks.data.repositories.PremiumRepository
 
 @Suppress("UNCHECKED_CAST")
-class AuthViewModelFactory(
-    private val LoginRepo: LoginRepository,
-    private val premiumRepo: PremiumRepository
+class BecomePremiumViewModelFactory(
+    private val premiumRepo: PremiumRepository,
+    private val LoginRepo: LoginRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return AuthViewModel(LoginRepo, premiumRepo) as T
+        return BecomePremiumViewModel(premiumRepo, LoginRepo) as T
     }
 
 }

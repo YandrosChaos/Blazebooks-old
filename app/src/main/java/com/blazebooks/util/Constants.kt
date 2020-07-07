@@ -9,8 +9,8 @@ const val PATH_CODE = "PATH_CODE"
 const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
 
 //CURRENT DATA
+var premium = false
 lateinit var CURRENT_BOOK: Book
-lateinit var CURRENT_USER: User
 
 //SHARED PREFERENCES KEYS
 const val LANGUAGE_SETTING_KEY = "language"

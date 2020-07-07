@@ -45,6 +45,24 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
         viewModel = ViewModelProvider(this, factory).get(AuthViewModel::class.java)
 
         viewModel.getCurrentUser()?.let {
+
+            lifecycleScope.launch {
+                try {
+                    viewModel.isPremium()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            //true
+                            premium = true
+                        }, {
+                            //false
+                            premium = false
+                        })
+                } catch (e: ApiException) {
+                    binding.root.snackbar("Check your internet conection, please.")
+                }
+            }
+
             startMainActivity()
             finish()
         }

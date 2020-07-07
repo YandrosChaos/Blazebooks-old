@@ -6,13 +6,16 @@ import android.util.Log
 import androidx.preference.PreferenceManager
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.db.entities.StoredBook
-import com.blazebooks.data.preferences.PreferenceProvider
+import com.blazebooks.data.repositories.LoginRepository
+import com.blazebooks.data.repositories.PremiumRepository
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.Coroutines
 import com.blazebooks.util.LAST_BOOK_SELECTED_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.domain.Resources
 import nl.siegmann.epublib.epub.EpubReader
@@ -28,8 +31,9 @@ import java.io.InputStream
  */
 class ShowBookActivityController(
     val context: Context,
-    private val repository: StoredBooksRepository
-    //private val prefs: PreferenceProvider
+    private val repository: StoredBooksRepository,
+    private val premiumRepo: PremiumRepository,
+    private val firebaseRepo: LoginRepository
 ) {
 
     var liked = false
@@ -147,7 +151,7 @@ class ShowBookActivityController(
                         directory, "Images/"
                                 + it.href.replace("Images/", "")
                     )
-                    image.parentFile.mkdirs()
+                    image.parentFile?.mkdirs()
                     image.createNewFile()
                     val fos1 = FileOutputStream(image)
                     fos1.write(it.data)
@@ -157,7 +161,7 @@ class ShowBookActivityController(
                         directory, "Styles/"
                                 + it.href.replace("Styles/", "")
                     )
-                    style.parentFile.mkdirs()
+                    style.parentFile?.mkdirs()
                     style.createNewFile()
                     val fos = FileOutputStream(style)
                     fos.write(it.data)
@@ -169,4 +173,8 @@ class ShowBookActivityController(
             Log.v("error", e.message.toString())
         }
     }
+
+    suspend fun isPremium() =
+        withContext(Dispatchers.IO) { premiumRepo.getPremiumUid(firebaseRepo.currentUser()!!.uid) }
+
 }

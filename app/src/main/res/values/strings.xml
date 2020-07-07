@@ -43,12 +43,8 @@
         Developer I - Victor Develops  \n
         Developer II - Mounir Zbayr Samadi \n\n
 
-        Writer I- Alfredo Panic \n
-        Writer II - Jose BulletKid \n\n
-
         Sound Efects - Dirge Inferno \n\n
         Composer I - Victor Develops \n
-        Composer II - Alfredo Panic\n\n
 
         RESOURCES\n
         icons - prettycons from flaticon.com\n
@@ -63,6 +59,9 @@
         Material\n
         Coil\n
         Epublib\n
+        Kodein\n
+        RxJava\n
+        SQLite Room\n
         Airbnb Lottie Android\n\n
     </string>
 

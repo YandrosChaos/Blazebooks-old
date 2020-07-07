@@ -8,6 +8,8 @@ import com.blazebooks.R
 import com.blazebooks.data.db.AppDatabase
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.data.repositories.LoginRepository
+import com.blazebooks.data.repositories.PremiumRepository
 import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.util.*
@@ -30,6 +32,8 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
 
     override val kodein by kodein()
     private val storedBooksRepository by instance<StoredBooksRepository>()
+    private val premiumRepository by instance<PremiumRepository>()
+    private val firebaseRepository by instance<LoginRepository>()
 
     private val adapter by lazy {
         ShowBookViewPagerAdapter(
@@ -62,7 +66,9 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
         //instanciar el controlador de la vista
         controller = ShowBookActivityController(
             this,
-            storedBooksRepository
+            storedBooksRepository,
+            premiumRepository,
+            firebaseRepository
         )
 
         //comprueba si el libro está en la lista de favs del user o no, y si está ya descargado o no
@@ -114,8 +120,9 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * @author Victor Gonzalez
      */
     fun download(view: View) {
+
         when {
-            CURRENT_USER.premium != CURRENT_BOOK.premium -> {
+            !premium && CURRENT_BOOK.premium -> {
                 //si el user no es premium pero el libro sí
                 startActivity(Intent(this, BecomePremiumActivity::class.java))
                 overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
@@ -210,7 +217,8 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * @author Victor Gonzalez
      */
     fun read(view: View) {
-        if (CURRENT_USER.premium != CURRENT_BOOK.premium) {
+
+        if (!premium && CURRENT_BOOK.premium) {
             startActivity(Intent(this, BecomePremiumActivity::class.java))
             overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
         } else {

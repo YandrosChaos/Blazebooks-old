@@ -5,11 +5,9 @@ import com.blazebooks.data.db.AppDatabase
 import com.blazebooks.data.firebase.FirebaseSource
 import com.blazebooks.data.firebase.FirestoreDataBase
 import com.blazebooks.data.preferences.PreferenceProvider
-import com.blazebooks.data.repositories.LoginRepository
-import com.blazebooks.data.repositories.SettingsRepository
-import com.blazebooks.data.repositories.StoredBooksRepository
-import com.blazebooks.data.repositories.UsersRepository
+import com.blazebooks.data.repositories.*
 import com.blazebooks.ui.auth.AuthViewModelFactory
+import com.blazebooks.ui.becomepremium.BecomePremiumViewModelFactory
 import com.blazebooks.ui.customdialogs.forgotpassword.ForgotPasswdViewModelFactory
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageViewModelFactory
 import com.blazebooks.ui.main.MainViewModelFactory
@@ -37,12 +35,14 @@ class App : Application(), KodeinAware {
         bind() from singleton { UsersRepository(instance()) }
         bind() from singleton { StoredBooksRepository(instance()) }
         bind() from singleton { SettingsRepository(instance()) }
+        bind() from singleton { PremiumRepository(instance()) }
 
         //factories
-        bind() from singleton { AuthViewModelFactory(instance()) }
+        bind() from singleton { AuthViewModelFactory(instance(), instance()) }
         bind() from singleton { ForgotPasswdViewModelFactory(instance()) }
         bind() from singleton { ProfileImageViewModelFactory(instance()) }
         bind() from singleton { MainViewModelFactory(instance(), instance()) }
+        bind() from singleton { BecomePremiumViewModelFactory(instance(), instance()) }
 
         //controller
         bind() from singleton { SharedPrefController(instance(), instance()) }

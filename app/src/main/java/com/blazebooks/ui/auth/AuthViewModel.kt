@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import com.blazebooks.R
 import com.blazebooks.data.repositories.LoginRepository
+import com.blazebooks.data.repositories.PremiumRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -18,7 +19,8 @@ import kotlinx.coroutines.withContext
  * @author Victor Gonzalez
  */
 class AuthViewModel(
-    private val loginRepo: LoginRepository
+    private val loginRepo: LoginRepository,
+    private val premiumRepo: PremiumRepository
 ) : ViewModel() {
 
     fun getCurrentUser() = loginRepo.currentUser()
@@ -81,5 +83,9 @@ class AuthViewModel(
         email: String,
         password: String
     ) = withContext(Dispatchers.IO) { loginRepo.register(email, password) }
+
+    suspend fun isPremium() =
+        withContext(Dispatchers.IO) { premiumRepo.getPremiumUid(loginRepo.currentUser()!!.uid) }
+
 
 }

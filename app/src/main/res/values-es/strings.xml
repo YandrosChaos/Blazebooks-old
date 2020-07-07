@@ -41,29 +41,28 @@
     <string name="instagram_button">Ir a Instagram</string>
     <string name="twiter_button">Ir a Twitter</string>
     <string name="credits">
-        Desarrollador I - Victor Develops  \n
-        Desarrollador II - Mounir Zbayr Samadi \n\n
+        Developer I - Victor Develops  \n
+        Developer II - Mounir Zbayr Samadi \n\n
 
-        Escritor I- Alfredo Panic \n
-        Escritor II - Jose BulletKid \n\n
+        Sound Efects - Dirge Inferno \n\n
+        Composer I - Victor Develops \n
 
-        Efectos de Sonido - Dirge Inferno \n\n
-        Compositor I - Victor Develops \n
-        Compositor II - Alfredo Panic\n\n
+        RESOURCES\n
+        icons - prettycons from flaticon.com\n
+        icons - Freepik from freepik.com\n
+        Font - github.com/theleagueof/league-spartan
+        Images - pixabay.com\n\n
 
-        RECURSOS\n
-        Iconos - prettycons de flaticon.com\n
-        Iconos - Freepik de freepik.com\n
-        Fuente - github.com/theleagueof/league-spartan
-        Imágenes - pixabay.com\n\n
-
-        DEPENDENCIAS\n
+        DEPENDENCIES\n
         Android-SpinKit\n
         Firebase\n
         Viewpager2\n
         Material\n
         Coil\n
         Epublib\n
+        Kodein\n
+        RxJava\n
+        SQLite Room\n
         Airbnb Lottie Android\n\n
     </string>
 
