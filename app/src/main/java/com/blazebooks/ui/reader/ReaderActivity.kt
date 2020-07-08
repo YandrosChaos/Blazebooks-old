@@ -2,22 +2,28 @@ package com.blazebooks.ui.reader
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import androidx.preference.PreferenceManager
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.databinding.ActivityReaderBinding
 import com.blazebooks.util.PATH_CODE
-import com.blazebooks.util.READ_MODE_KEY
 import kotlinx.android.synthetic.main.activity_reader.*
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.epub.EpubReader
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 import java.io.File
 import java.io.InputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+private const val ENCODING = "UTF-8"
+private const val MIME_TYPE = "text/html"
+private const val FIRST_PAGE = 1
 
 /**
  * Muestra la vista de lectura del libro y lleva el flujo de la lectura.
@@ -25,63 +31,90 @@ import java.time.format.DateTimeFormatter
  * @author Mounir Zbayr
  * @author Víctor González
  */
-class ReaderActivity : PreconfiguredActivity() {
+class ReaderActivity : PreconfiguredActivity(), KodeinAware {
+    override val kodein by kodein()
+    private val factory by instance<ReaderViewModelFactory>()
+    private lateinit var viewModel: ReaderViewModel
+    private lateinit var binding: ActivityReaderBinding
 
     private lateinit var layoutFilter: ImageView
-    private var num = 1 //representa el número de página actual
-    private var filesPath: String?= ""
+    private var lastPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reader)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_reader)
         layoutFilter = findViewById(R.id.readerFilterImageView)
+
+        viewModel = ViewModelProvider(this, factory).get(ReaderViewModel::class.java)
 
         loadLightMode()
         clock()
 
         val bookPath = intent.getStringExtra(PATH_CODE)
         val bookFolder = intent.getStringExtra("documents")
-        filesPath= this.getExternalFilesDir(null)?.absolutePath
+        viewModel.filesPath = this.getExternalFilesDir(null)?.absolutePath
 
-        //Lee el epub y lo guarda en un objeto book
+        val book = readEPub(bookPath)
+
+        //obtiene el número de la última página del epub
+        lastPage = book.spine.spineReferences.size
+        page(book, viewModel.currentPage, bookFolder)
+
+        buttonNext.setOnClickListener {
+            nextPag(
+                book,
+                bookFolder
+            )
+        } //Botón para ir a la página siguiente
+        buttonPrevious.setOnClickListener {
+            previousPag(
+                book,
+                bookFolder
+            )
+        } //Botón para ir a la página anterior
+
+    }
+
+    /**
+     * Lee el epub y lo guarda en un objeto book
+     *
+     * @author Mounir Zbayr
+     * @author Victor Gonzalez
+     */
+    private fun readEPub(bookPath: String?): Book {
         val epubInputStream: InputStream =
-            File(this.getExternalFilesDir(null)?.absolutePath+"/$bookPath").inputStream()
+            File(this.getExternalFilesDir(null)?.absolutePath + "/$bookPath").inputStream()
         val book: Book = EpubReader().readEpub(epubInputStream)
         epubInputStream.close()
-        //obtiene informacion del epub
-        val spine = book.spine
-        val spineList = spine.spineReferences
-        val numPages = spineList.size
-
-        page(book, num, bookFolder)
-
-        tNumPages.text = String.format(resources.getString(R.string.pageNumber), num, numPages)
-
-
-        buttonNext.setOnClickListener { next(book, numPages, bookFolder) } //Botón para ir a la página siguiente
-        buttonPrevious.setOnClickListener { previous(book, numPages, bookFolder) } //Botón para ir a la página anterior
-
+        return book
     }
 
 
     /**
-     * Este método coge el contenido del libro y lo lee por capitulos dependiendo del numero que reciba. Despues lo muestra en el WebView
+     * Este método coge el contenido del libro y lo lee por capitulos dependiendo
+     * del numero que reciba. Despues lo muestra en el WebView.
      *
      * @author Mounir Zbayr
      */
-    private fun page(book: Book, numPage : Int, documents: String?){
+    private fun page(book: Book, numPage: Int, documents: String?) {
+        updatePageTextView()
+        val baseUrl = "file://${this.getExternalFilesDir(null)?.absolutePath}"
+        webViewReader.loadDataWithBaseURL(
+            baseUrl,
+            viewModel.loadData(book, numPage, documents),
+            MIME_TYPE,
+            ENCODING,
+            null
+        )
+    }
 
-
-        val baseUrl="file://"+this.getExternalFilesDir(null)?.absolutePath
-        var data = "<style>img{display: inline;height: auto;max-width: 100%;}</style>"+String(book.contents[numPage-1].data)
-
-        data= data.replace("../Images/", "$filesPath/$documents/Images/")
-        data= data.replace("../Styles/", "$filesPath/$documents/Styles/")
-
-        webViewReader.loadDataWithBaseURL(baseUrl,
-            data, "text/html", "UTF-8", null)
-
-        Log.d("html", data)
+    private fun updatePageTextView() {
+        binding.tNumPages.text =
+            String.format(
+                resources.getString(R.string.pageNumber),
+                viewModel.currentPage,
+                lastPage
+            )
     }
 
     /**
@@ -91,25 +124,24 @@ class ReaderActivity : PreconfiguredActivity() {
      * @author Mounir Zbayr
      * @author Victor Gonzalez
      */
-    private fun next(book: Book, pages : Int, bookFolder: String?) {
-        if (num != pages) {
-            num++
-            page(book, num, bookFolder)
-            tNumPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
+    private fun nextPag(book: Book, bookFolder: String?) {
+        if (viewModel.currentPage != lastPage) {
+            viewModel.nextPage()
+            page(book, viewModel.currentPage, bookFolder)
         }
     }
 
     /**
-     * Método que aporta al botón buttonPrevious la función de retroceder a la pagina anterior
+     * Método que aporta al botón buttonPrevious la función de retroceder a la pagina
+     * anterior.
      *
      * @author Mounir
      * @author Víctor González
      */
-    private fun previous(book: Book, pages : Int, bookFolder: String?) {
-        if (num != 1) {
-            num--
-            page(book, num, bookFolder)
-            tNumPages.text = String.format(resources.getString(R.string.pageNumber), num, pages)
+    private fun previousPag(book: Book, bookFolder: String?) {
+        if (viewModel.currentPage != FIRST_PAGE) {
+            viewModel.previousPage()
+            page(book, viewModel.currentPage, bookFolder)
         }
     }
 
@@ -138,15 +170,13 @@ class ReaderActivity : PreconfiguredActivity() {
     }
 
 
-
     /**
      * If ReadMode preference is switch on, then sets a dark background for the view.
      *
      * @author Victor Gonzalez
      */
     private fun loadLightMode() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        if (sharedPreferences.getBoolean(READ_MODE_KEY, false)) {
+        if (viewModel.isLightModeOn()) {
             layoutFilter.visibility = View.VISIBLE
         }
     }

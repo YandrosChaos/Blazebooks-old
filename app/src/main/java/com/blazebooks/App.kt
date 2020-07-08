@@ -11,6 +11,7 @@ import com.blazebooks.ui.becomepremium.BecomePremiumViewModelFactory
 import com.blazebooks.ui.customdialogs.forgotpassword.ForgotPasswdViewModelFactory
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageViewModelFactory
 import com.blazebooks.ui.main.MainViewModelFactory
+import com.blazebooks.ui.reader.ReaderViewModelFactory
 import com.blazebooks.ui.settings.sharedpreferences.SharedPrefController
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -41,6 +42,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { AuthViewModelFactory(instance(), instance()) }
         bind() from singleton { ForgotPasswdViewModelFactory(instance()) }
         bind() from singleton { ProfileImageViewModelFactory(instance()) }
+        bind() from singleton { ReaderViewModelFactory(instance()) }
         bind() from singleton { MainViewModelFactory(instance(), instance()) }
         bind() from singleton { BecomePremiumViewModelFactory(instance(), instance()) }
 

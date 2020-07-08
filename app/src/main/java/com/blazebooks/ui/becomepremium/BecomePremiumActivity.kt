@@ -61,32 +61,33 @@ class BecomePremiumActivity : PreconfiguredActivity(), KodeinAware {
         }
 
         becomePremiumYearlyBtn.setOnClickListener {
-            lifecycleScope.launch {
-                try {
-                    viewModel.savePremiumUser()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            //success
-                            premium = true
-                            binding.root.snackbar("Your profile is updated!")
-                        }, {
-                            //failure
-                            binding.root.snackbar("Error!" + it.message)
-                        })
-
-                } catch (e: ApiException) {
-                    binding.root.snackbar("Check your internet connection please.")
-                }
-            }
-
-
+            newYearlySubscription()
         }
 
         //finish the activity
         becomePremiumFreeBtn.setOnClickListener {
             finish()
         }
+    }
 
+    private fun newYearlySubscription() {
+        lifecycleScope.launch {
+            try {
+                viewModel.savePremiumUser()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        //success
+                        premium = true
+                        binding.root.snackbar("Your profile is updated!")
+                    }, {
+                        //failure
+                        binding.root.snackbar("Error!" + it.message)
+                    })
+
+            } catch (e: ApiException) {
+                binding.root.snackbar("Check your internet connection please.")
+            }
+        }
     }
 }

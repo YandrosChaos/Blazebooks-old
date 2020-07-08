@@ -58,5 +58,7 @@ class PreferenceProvider(
     fun setLastBook(url: String) =
         preferences.edit().putString(LAST_BOOK_SELECTED_KEY, url).apply()
 
+    fun getLightMode() = preferences.getBoolean(READ_MODE_KEY, false)
+
 
 }
