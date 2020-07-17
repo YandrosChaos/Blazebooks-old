@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!-- AUTHORS: Mounir Zbayr; Víctor González-->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +19,9 @@
                 app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNext"
                 app:layout_constraintStart_toStartOf="@+id/buttonPrevious"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout" >
+
+            </WebView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -106,8 +109,19 @@
                 android:layout_height="0dp"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_readerSettings"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_readerSettings"
+                android:layout_width="24dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/baseline_settings_black_18"
+                android:text="Button"
+                app:layout_constraintBottom_toTopOf="@+id/webViewReader"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

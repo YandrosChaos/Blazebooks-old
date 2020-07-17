@@ -13,7 +13,7 @@ private const val DEFAULT_STYLE =
 class ReaderViewModel(
     private val preferenceProvider: PreferenceProvider
 ) : ViewModel() {
-    var currentPage = 1 //representa el número de la página actual
+    var currentPage: Int = 1 //representa el número de la página actual
     var filesPath: String? = ""
 
     /**

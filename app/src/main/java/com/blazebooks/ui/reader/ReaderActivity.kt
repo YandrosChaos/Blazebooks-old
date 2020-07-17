@@ -1,5 +1,8 @@
 package com.blazebooks.ui.reader
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,6 +13,7 @@ import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.databinding.ActivityReaderBinding
 import com.blazebooks.util.PATH_CODE
+import com.blazebooks.util.toast
 import kotlinx.android.synthetic.main.activity_reader.*
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.epub.EpubReader
@@ -36,23 +40,33 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
     private val factory by instance<ReaderViewModelFactory>()
     private lateinit var viewModel: ReaderViewModel
     private lateinit var binding: ActivityReaderBinding
+    private lateinit var sharedPreference: SharedPreferences
+    private var bookPath : String? = ""
 
     private lateinit var layoutFilter: ImageView
     private var lastPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reader)
         layoutFilter = findViewById(R.id.readerFilterImageView)
 
         viewModel = ViewModelProvider(this, factory).get(ReaderViewModel::class.java)
 
+
+
         loadLightMode()
         clock()
 
-        val bookPath = intent.getStringExtra(PATH_CODE)
+
+        bookPath = intent.getStringExtra(PATH_CODE)
         val bookFolder = intent.getStringExtra("documents")
         viewModel.filesPath = this.getExternalFilesDir(null)?.absolutePath
+
+        viewModel.currentPage= sharedPreference.getInt(bookPath+"Page", 1)
 
         val book = readEPub(bookPath)
 
@@ -72,6 +86,14 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
                 bookFolder
             )
         } //Botón para ir a la página anterior
+
+        btn_readerSettings.setOnClickListener{
+
+            val cssPath= this.getExternalFilesDir(null)?.absolutePath+"/"+bookFolder+"/Styles/style.css"
+            val i= Intent(this, BookStyleActivity::class.java)
+            i.putExtra("cssPath", cssPath)
+            startActivity(i)
+        }
 
     }
 
@@ -190,6 +212,15 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         super.onBackPressed()
         overridePendingTransition(R.anim.static_animation, R.anim.zoom_out)
         finish()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        var editor = sharedPreference.edit()
+        editor.putInt(bookPath+"Page",viewModel.currentPage)
+        editor.apply()
+
     }
 
 }//class
