@@ -36,4 +36,8 @@ class ReaderViewModel(
         return data
 
     }
+
+    fun saveLastPagePref(key: String) = preferenceProvider.setLastPage(key, currentPage)
+
+    fun getLastPage(key: String) = preferenceProvider.getLastPage(key)
 }

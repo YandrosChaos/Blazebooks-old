@@ -60,5 +60,13 @@ class PreferenceProvider(
 
     fun getLightMode() = preferences.getBoolean(READ_MODE_KEY, false)
 
+    fun setLastPage(key: String, currentPage: Int) = preferences.edit().putInt(key, currentPage).apply()
+
+    fun getLastPage(key: String) = preferences.getInt(key, 1)
+
+    fun setFontSize(key: String, fontSize: Int) = preferences.edit().putInt(key ,fontSize).apply()
+
+    fun getFontSize(key: String) = preferences.getInt(key, 14)
+
 
 }

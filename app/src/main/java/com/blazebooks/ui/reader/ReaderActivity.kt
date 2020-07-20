@@ -1,19 +1,17 @@
 package com.blazebooks.ui.reader
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.R
 import com.blazebooks.databinding.ActivityReaderBinding
 import com.blazebooks.util.PATH_CODE
-import com.blazebooks.util.toast
 import kotlinx.android.synthetic.main.activity_reader.*
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.epub.EpubReader
@@ -40,7 +38,6 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
     private val factory by instance<ReaderViewModelFactory>()
     private lateinit var viewModel: ReaderViewModel
     private lateinit var binding: ActivityReaderBinding
-    private lateinit var sharedPreference: SharedPreferences
     private var bookPath : String? = ""
 
     private lateinit var layoutFilter: ImageView
@@ -49,24 +46,20 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reader)
         layoutFilter = findViewById(R.id.readerFilterImageView)
-
         viewModel = ViewModelProvider(this, factory).get(ReaderViewModel::class.java)
-
-
 
         loadLightMode()
         clock()
 
-
         bookPath = intent.getStringExtra(PATH_CODE)
+
         val bookFolder = intent.getStringExtra("documents")
+
         viewModel.filesPath = this.getExternalFilesDir(null)?.absolutePath
 
-        viewModel.currentPage= sharedPreference.getInt(bookPath+"Page", 1)
+        viewModel.currentPage= viewModel.getLastPage(bookPath+"Page")
 
         val book = readEPub(bookPath)
 
@@ -74,25 +67,31 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         lastPage = book.spine.spineReferences.size
         page(book, viewModel.currentPage, bookFolder)
 
+        //Botón para ir a la página siguiente
         buttonNext.setOnClickListener {
-            nextPag(
-                book,
-                bookFolder
-            )
-        } //Botón para ir a la página siguiente
-        buttonPrevious.setOnClickListener {
-            previousPag(
-                book,
-                bookFolder
-            )
-        } //Botón para ir a la página anterior
+            nextPag(book, bookFolder)
+        }
 
+        //Botón para ir a la página anterior
+        buttonPrevious.setOnClickListener {
+            previousPag(book, bookFolder)
+        }
+
+        //Botón para acceder a los ajustes del libro
         btn_readerSettings.setOnClickListener{
 
             val cssPath= this.getExternalFilesDir(null)?.absolutePath+"/"+bookFolder+"/Styles/style.css"
             val i= Intent(this, BookStyleActivity::class.java)
             i.putExtra("cssPath", cssPath)
             startActivity(i)
+        }
+
+        //Botón que cambia la orientación de la activity
+        ibtn_orientation.setOnClickListener{
+            requestedOrientation = if(this.resources.configuration.orientation== ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            else
+                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
     }
@@ -109,6 +108,16 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         val book: Book = EpubReader().readEpub(epubInputStream)
         epubInputStream.close()
         return book
+    }
+
+    /**
+     * Al volver a la actividad se actualiza para mostrar los cambios
+     *
+     * @author Mounir Zbayr
+     */
+    override fun onRestart() {
+        super.onRestart()
+        recreate()
     }
 
 
@@ -130,6 +139,9 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         )
     }
 
+    /**
+     * Muestra el numero de pagina actual
+     */
     private fun updatePageTextView() {
         binding.tNumPages.text =
             String.format(
@@ -157,7 +169,7 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
      * Método que aporta al botón buttonPrevious la función de retroceder a la pagina
      * anterior.
      *
-     * @author Mounir
+     * @author Mounir Zbayr
      * @author Víctor González
      */
     private fun previousPag(book: Book, bookFolder: String?) {
@@ -214,12 +226,15 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         finish()
     }
 
+
+    /**
+     * Guarda la ultima página en el SharedPreferences cuando la activity está detenida
+     *
+     * @author Mounir Zbayr
+     */
     override fun onStop() {
         super.onStop()
-
-        var editor = sharedPreference.edit()
-        editor.putInt(bookPath+"Page",viewModel.currentPage)
-        editor.apply()
+        viewModel.saveLastPagePref(bookPath+"Page")
 
     }
 

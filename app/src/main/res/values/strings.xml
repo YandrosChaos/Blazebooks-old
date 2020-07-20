@@ -204,9 +204,9 @@
 
     <string-array name="fonts">
         <item>Arial</item>
-        <item>Minion Pro</item>
+        <item>MinionPro</item>
         <item>Montserrat</item>
-        <item>Times new Roman</item>
+        <item>Droid</item>
         <item>Verdana</item>
     </string-array>
 
