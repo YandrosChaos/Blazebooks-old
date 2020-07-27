@@ -1,19 +1,14 @@
 package com.blazebooks.ui.showbook
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.preference.PreferenceManager
+import androidx.lifecycle.ViewModel
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.db.entities.StoredBook
-import com.blazebooks.data.repositories.LoginRepository
-import com.blazebooks.data.repositories.PremiumRepository
+import com.blazebooks.data.preferences.PreferenceProvider
+import com.blazebooks.data.repositories.LikedBooksRepository
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.Coroutines
-import com.blazebooks.util.LAST_BOOK_SELECTED_KEY
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Resource
@@ -28,88 +23,54 @@ import java.io.InputStream
 
 /**
  * @author Victor Gonzalez
+ * @author Mounir Zbayr
  */
-class ShowBookActivityController(
-    val context: Context,
-    private val repository: StoredBooksRepository,
-    private val premiumRepo: PremiumRepository,
-    private val firebaseRepo: LoginRepository
-) {
+class ShowBookViewModel(
+    private val preferences: PreferenceProvider,
+    private val storedBooksRepository: StoredBooksRepository,
+    private val likedBooksRepository: LikedBooksRepository
+) : ViewModel() {
 
     var liked = false
     var exist = false
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
 
     /**
      * Queries to DDBB if the book is stored into FavBooks database and set
      * the Liked default value.
      *
      * @see liked
-     *
-     * @author Victor Gonzalez
      */
-    fun isFavBook() {
-        db.collection("FavBooks")
-            .document(firebaseUserID)
-            .collection("likedBooks")
-            .document(CURRENT_BOOK.title.toString().replace(" ", ""))
-            .get()
-            .addOnSuccessListener { doc ->
-                if (doc != null) {
-                    liked = doc.exists()
-                }
-            }
+    suspend fun isFavBook() = withContext(Dispatchers.IO) {
+        likedBooksRepository.isLiked(CURRENT_BOOK.title.toString())
     }
+
 
     /**
      * Saves a book into the user favBooks collection.
-     *
-     * @author Victor Gonzalez
      */
-    fun insertLikedBook(likedBook: Book) {
-        liked = true
-        db.collection("FavBooks")
-            .document(firebaseUserID)
-            .collection("likedBooks")
-            .document(likedBook.title.toString().replace(" ", ""))
-            .set(likedBook)
+    suspend fun insertLikedBook(likedBook: Book) = withContext(Dispatchers.IO) {
+        likedBooksRepository.save(likedBook)
     }
+
 
     /**
      * Deletes a book from user favBook collection.
-     *
-     * @author Victor Gonzalez
      */
-    fun deleteLikedBook(title: String) {
-        liked = false
-        db.collection("FavBooks")
-            .document(firebaseUserID)
-            .collection("likedBooks")
-            .document(title.replace(" ", ""))
-            .delete()
+    suspend fun deleteLikedBook(title: String) = withContext(Dispatchers.IO) {
+        likedBooksRepository.delete(title)
     }
 
     /**
      * Saves the last readed book into sharedPreferences.
-     *
-     * @author Victor Gonzalez
      */
-    fun saveIntoSharedPreferences(url: String) {
-        //prefs.setLastBook(url)
-        val editor: SharedPreferences.Editor =
-            PreferenceManager.getDefaultSharedPreferences(context).edit()
-        editor.putString(LAST_BOOK_SELECTED_KEY, url)
-        editor.apply()
-    }
+    fun saveIntoSharedPreferences(url: String) = preferences.setLastBook(url)
+
 
     /**
      * Almacena la información del libro dentro de la base de datos local.
      *
      * @param titleBook El título del libro.
      * @param path La ruta en la que se guardó el libro.
-     *
-     * @author Victor Gonzalez
      */
     fun storeBookIntoLocalDatabase(titleBook: String, path: String) {
         //preparar objeto para almacenar localmente
@@ -117,16 +78,15 @@ class ShowBookActivityController(
             StoredBook(titleBook, path, 0, "")
         storedBook.storeToJsonData(CURRENT_BOOK)
         //guardar en la base de datos
-
         Coroutines.main {
-            repository.saveStoredBook(storedBook)
+            storedBooksRepository.saveStoredBook(storedBook)
             exist = true
         }
     }
 
     fun bookExist() {
         Coroutines.main {
-            exist = repository.exist(CURRENT_BOOK.title.toString())
+            exist = storedBooksRepository.exist(CURRENT_BOOK.title.toString())
         }
     }
 
@@ -168,13 +128,9 @@ class ShowBookActivityController(
                     fos.close()
                 }
             }
-
         } catch (e: java.lang.Exception) {
             Log.v("error", e.message.toString())
         }
     }
-
-    suspend fun isPremium() =
-        withContext(Dispatchers.IO) { premiumRepo.getPremiumUid(firebaseRepo.currentUser()!!.uid) }
 
 }

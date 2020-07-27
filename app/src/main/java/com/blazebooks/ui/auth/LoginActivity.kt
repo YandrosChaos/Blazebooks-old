@@ -59,7 +59,7 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
                             premium = false
                         })
                 } catch (e: ApiException) {
-                    binding.root.snackbar("Check your internet conection, please.")
+                    binding.root.snackbar("Check your internet connection, please.")
                 }
             }
 

@@ -4,21 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.blazebooks.R
 import com.blazebooks.data.db.AppDatabase
-import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.PreconfiguredActivity
-import com.blazebooks.data.repositories.LoginRepository
-import com.blazebooks.data.repositories.PremiumRepository
+import com.blazebooks.databinding.ActivityShowBookBinding
 import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.util.*
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.storage.FirebaseStorage
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.android.synthetic.main.item_show_book.*
+import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -26,31 +31,46 @@ import java.io.File
 
 
 /**
+ * @author Mounir Zbayr
  * @author Victor Gonzalez
  */
 class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
 
     override val kodein by kodein()
-    private val storedBooksRepository by instance<StoredBooksRepository>()
-    private val premiumRepository by instance<PremiumRepository>()
-    private val firebaseRepository by instance<LoginRepository>()
+    private val factory by instance<ShowBookViewModelFactory>()
 
     private val adapter by lazy {
         ShowBookViewPagerAdapter(
             this
         )
     }
-    private lateinit var controller: ShowBookActivityController
+    private lateinit var viewModel: ShowBookViewModel
+    private lateinit var binding: ActivityShowBookBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_book)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_show_book)
+        binding.activityShowBookViewPager.adapter = adapter
 
-        activityShowBookViewPager.adapter = adapter
+        viewModel = ViewModelProvider(this, factory).get(ShowBookViewModel::class.java)
+        createTabs()
+        isLiked()
+        viewModel.bookExist()
 
-        //crear las diferentes pestañas
+        Handler().postDelayed({
+            setLikeUI()
+            setDownloadUI()
+        }, 500)
+
+    }
+
+    /**
+     * Crea las diferentes tabs
+     */
+    private fun createTabs() {
+
         val tabLayoutMediator =
-            TabLayoutMediator(activityShowBookTabLayout, activityShowBookViewPager,
+            TabLayoutMediator(binding.activityShowBookTabLayout, binding.activityShowBookViewPager,
                 TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                     when (position) {
                         0 -> {
@@ -62,24 +82,26 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                     }
                 })
         tabLayoutMediator.attach()
+    }
 
-        //instanciar el controlador de la vista
-        controller = ShowBookActivityController(
-            this,
-            storedBooksRepository,
-            premiumRepository,
-            firebaseRepository
-        )
-
-        //comprueba si el libro está en la lista de favs del user o no, y si está ya descargado o no
-        controller.isFavBook()
-        controller.bookExist()
-
-        Handler().postDelayed({
-            setLikeUI()
-            setDownloadUI()
-        }, 500)
-
+    /**
+     * comprueba si el libro está en la lista de favs del user o no, y si está ya descargado o no
+     */
+    private fun isLiked() {
+        lifecycleScope.launch {
+            try {
+                viewModel.isFavBook()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        //success
+                        viewModel.liked = true
+                    }
+            } catch (e: ApiException) {
+                binding.root.snackbar("Check your internet connection, please.")
+            } catch (e: DocumentNotFoundException) {
+            }
+        }
     }
 
     /**
@@ -91,18 +113,48 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * @author Victor Gonzalez
      */
     fun addFav(view: View) {
-        when (controller.liked) {
+        when (viewModel.liked) {
             true -> {
                 //remove from favs
-                showBookBtnFav.speed = -1f
-                showBookBtnFav.playAnimation()
-                controller.deleteLikedBook(CURRENT_BOOK.title.toString())
+                lifecycleScope.launch {
+                    try {
+                        viewModel.deleteLikedBook(CURRENT_BOOK.title.toString())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                //success
+                                binding.showBookBtnFav.speed = -1f
+                                binding.showBookBtnFav.playAnimation()
+                                viewModel.liked = false
+                            }, {
+                                //failure
+                                binding.root.snackbar("Something went wrong :/ Try again.")
+                            })
+                    } catch (e: ApiException) {
+                        binding.root.snackbar("Check your internet connection, please.")
+                    }
+                }
             }
             false -> {
                 //add to favs
-                showBookBtnFav.speed = 1f
-                showBookBtnFav.playAnimation()
-                controller.insertLikedBook(CURRENT_BOOK)
+                lifecycleScope.launch {
+                    try {
+                        viewModel.insertLikedBook(CURRENT_BOOK)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                //success
+                                binding.showBookBtnFav.speed = 1f
+                                binding.showBookBtnFav.playAnimation()
+                                viewModel.liked = true
+                            }, {
+                                //failure
+                                binding.root.snackbar("Something went wrong :/ Try again.")
+                            })
+                    } catch (e: ApiException) {
+                        binding.root.snackbar("Check your internet connection, please.")
+                    }
+                }
             }
         }
         view.refreshDrawableState()
@@ -128,15 +180,15 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
             }
 
-            !controller.exist -> {
+            !viewModel.exist -> {
                 //si no está en la base de datos local
-                showBookBtnDownload.speed = 1f
-                showBookBtnDownload.playAnimation()
+                binding.showBookBtnDownload.speed = 1f
+                binding.showBookBtnDownload.playAnimation()
                 view.refreshDrawableState()
 
-                showBookBtnRead.isEnabled = false
-                showBookBtnRead.isEnabled = false
-                showBookBtnRead.isClickable = false
+                binding.showBookBtnRead.isEnabled = false
+                binding.showBookBtnRead.isEnabled = false
+                binding.showBookBtnRead.isClickable = false
 
                 val titleBook = CURRENT_BOOK.title.toString() //nombre del libro
                 val documents =
@@ -164,12 +216,12 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                     documentsFolder.delete() //Borra la carpeta creada al dar error
                 }
 
-                controller.storeBookIntoLocalDatabase(
+                viewModel.storeBookIntoLocalDatabase(
                     titleBook,
                     documents
                 )//almacena la info dentro de la base de datos local
 
-                showBookBtnRead.isEnabled = true
+                binding.showBookBtnRead.isEnabled = true
             }
             else -> {
                 view.snackbar(getString(R.string.already_dwnload))
@@ -188,7 +240,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
             .build()
             .start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
-                    controller.saveBookResources(
+                    viewModel.saveBookResources(
                         File("$dirPath/$fileName"),
                         dirPath
                     )
@@ -222,13 +274,13 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
             startActivity(Intent(this, BecomePremiumActivity::class.java))
             overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
         } else {
-            if (controller.exist) {
+            if (viewModel.exist) {
                 val titleBook = showBookTvTitle.text.toString()
                 val documents = "books/$titleBook"
                 val i = Intent(this, ReaderActivity::class.java)
                 val bookUrl = "$documents/$titleBook.epub"
 
-                controller.saveIntoSharedPreferences(bookUrl)
+                viewModel.saveIntoSharedPreferences(bookUrl)
                 i.putExtra(PATH_CODE, bookUrl)
                 i.putExtra("documents", documents)
 
@@ -259,9 +311,9 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * @author Victor Gonzalez
      */
     private fun setLikeUI() {
-        if (controller.liked) {
-            showBookBtnFav.progress = 1f
-            showBookBtnFav.refreshDrawableState()
+        if (viewModel.liked) {
+            binding.showBookBtnFav.progress = 1f
+            binding.showBookBtnFav.refreshDrawableState()
         }
     }
 
@@ -271,9 +323,9 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * @author Victor Gonzalez
      */
     private fun setDownloadUI() {
-        if (controller.exist) {
-            showBookBtnDownload.progress = 1f
-            showBookBtnDownload.refreshDrawableState()
+        if (viewModel.exist) {
+            binding.showBookBtnDownload.progress = 1f
+            binding.showBookBtnDownload.refreshDrawableState()
         }
     }
 

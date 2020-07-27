@@ -18,8 +18,6 @@ class ReaderViewModel(
 
     /**
      * Check if the light mode status: on/off.
-     *
-     * @author Víctor González
      */
     fun isLightModeOn() = preferenceProvider.getLightMode()
 

@@ -1,99 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?><!--Author: Victor Gonzalez-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/vewPagerContainerLL"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/activityShowBookTabLayout"
+        <LinearLayout
+            android:id="@+id/vewPagerContainerLL"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:orientation="vertical">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/activityShowBookViewPager"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/activityShowBookTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/activityShowBookViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menuContainerLL"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="5sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginBottom="5sp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_background"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!--
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/showBookBtnRead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="read"
+                        android:src="@drawable/ic_search"
+                        app:layout_anchor="@id/menuContainerLL" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/showBookBtnDownload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="read"
+                        android:src="@drawable/ic_search"
+                        app:layout_anchor="@id/menuContainerLL" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/showBookBtnFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="read"
+                        android:src="@drawable/ic_search"
+            -->
+            <ImageButton
+                android:id="@+id/showBookBtnRead"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="20sp"
+                android:layout_marginBottom="5sp"
+                android:background="@drawable/ic_search"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="@string/read"
+                android:onClick="read"
+                android:scaleType="fitCenter" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/showBookBtnDownload"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="20sp"
+                android:layout_marginBottom="5sp"
+                android:onClick="download"
+                android:scaleType="fitCenter"
+                app:lottie_rawRes="@raw/downloading" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/showBookBtnFav"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginBottom="5sp"
+                android:onClick="addFav"
+                android:scaleType="center"
+                app:lottie_rawRes="@raw/like" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/menuContainerLL"
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="5sp"
-        android:layout_marginEnd="10sp"
-        android:layout_marginBottom="5sp"
-        android:layout_weight="1"
-        android:background="@drawable/edit_text_background"
-        android:gravity="center"
-        android:orientation="horizontal">
-<!--
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/showBookBtnRead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="read"
-            android:src="@drawable/ic_search"
-            app:layout_anchor="@id/menuContainerLL" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/showBookBtnDownload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="read"
-            android:src="@drawable/ic_search"
-            app:layout_anchor="@id/menuContainerLL" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/showBookBtnFav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="read"
-            android:src="@drawable/ic_search"
--->
-                <ImageButton
-                    android:id="@+id/showBookBtnRead"
-                    android:layout_width="40sp"
-                    android:layout_height="40sp"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginEnd="20sp"
-                    android:layout_marginBottom="5sp"
-                    android:onClick="read"
-                    android:scaleType="fitCenter"
-                    android:background="@drawable/ic_search"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:contentDescription="@string/read" />
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/showBookBtnDownload"
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:layout_marginStart="20sp"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginEnd="20sp"
-                    android:layout_marginBottom="5sp"
-                    android:onClick="download"
-                    android:scaleType="fitCenter"
-                    app:lottie_rawRes="@raw/downloading" />
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/showBookBtnFav"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:layout_marginStart="20sp"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginBottom="5sp"
-                    android:onClick="addFav"
-                    android:scaleType="center"
-                    app:lottie_rawRes="@raw/like" />
-    </LinearLayout>
-</LinearLayout>
+</layout>

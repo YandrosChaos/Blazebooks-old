@@ -4,6 +4,7 @@ import android.app.Application
 import com.blazebooks.data.db.AppDatabase
 import com.blazebooks.data.firebase.FirebaseSource
 import com.blazebooks.data.firebase.FirestoreDataBase
+import com.blazebooks.data.firebase.FirestoreLikedBooks
 import com.blazebooks.data.preferences.PreferenceProvider
 import com.blazebooks.data.repositories.*
 import com.blazebooks.ui.auth.AuthViewModelFactory
@@ -13,6 +14,7 @@ import com.blazebooks.ui.customdialogs.profileimage.ProfileImageViewModelFactory
 import com.blazebooks.ui.main.MainViewModelFactory
 import com.blazebooks.ui.reader.ReaderViewModelFactory
 import com.blazebooks.ui.settings.sharedpreferences.SharedPrefController
+import com.blazebooks.ui.showbook.ShowBookViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -28,6 +30,7 @@ class App : Application(), KodeinAware {
         //databases
         bind() from singleton { FirebaseSource() }
         bind() from singleton { FirestoreDataBase() }
+        bind() from singleton { FirestoreLikedBooks() }
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { PreferenceProvider(instance()) }
 
@@ -37,6 +40,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { StoredBooksRepository(instance()) }
         bind() from singleton { SettingsRepository(instance()) }
         bind() from singleton { PremiumRepository(instance()) }
+        bind() from singleton { LikedBooksRepository(instance()) }
 
         //factories
         bind() from singleton { AuthViewModelFactory(instance(), instance()) }
@@ -45,6 +49,13 @@ class App : Application(), KodeinAware {
         bind() from singleton { ReaderViewModelFactory(instance()) }
         bind() from singleton { MainViewModelFactory(instance(), instance()) }
         bind() from singleton { BecomePremiumViewModelFactory(instance(), instance()) }
+        bind() from singleton {
+            ShowBookViewModelFactory(
+                instance(),
+                instance(),
+                instance()
+            )
+        }
 
         //controller
         bind() from singleton { SharedPrefController(instance(), instance()) }
