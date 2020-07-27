@@ -12,6 +12,7 @@ import com.blazebooks.ui.becomepremium.BecomePremiumViewModelFactory
 import com.blazebooks.ui.customdialogs.forgotpassword.ForgotPasswdViewModelFactory
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageViewModelFactory
 import com.blazebooks.ui.main.MainViewModelFactory
+import com.blazebooks.ui.reader.BookStyleViewModelFactory
 import com.blazebooks.ui.reader.ReaderViewModelFactory
 import com.blazebooks.ui.settings.sharedpreferences.SharedPrefController
 import com.blazebooks.ui.showbook.ShowBookViewModelFactory
@@ -49,6 +50,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { ReaderViewModelFactory(instance()) }
         bind() from singleton { MainViewModelFactory(instance(), instance()) }
         bind() from singleton { BecomePremiumViewModelFactory(instance(), instance()) }
+<<<<<<< HEAD
         bind() from singleton {
             ShowBookViewModelFactory(
                 instance(),
@@ -56,6 +58,9 @@ class App : Application(), KodeinAware {
                 instance()
             )
         }
+=======
+        bind() from singleton { BookStyleViewModelFactory(instance()) }
+>>>>>>> c3f6c30c58d5ff5500fecea8eccf5836f67afd85
 
         //controller
         bind() from singleton { SharedPrefController(instance(), instance()) }

@@ -202,4 +202,12 @@
     <string name="wanna_be_premium">I want to be premium! :D</string>
     <string name="invalid_email_or_passwd">Invalid email or password.</string>
 
+    <string-array name="fonts">
+        <item>Arial</item>
+        <item>MinionPro</item>
+        <item>Montserrat</item>
+        <item>Droid</item>
+        <item>Verdana</item>
+    </string-array>
+
 </resources>
