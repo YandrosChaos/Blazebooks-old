@@ -1,12 +1,12 @@
 package com.blazebooks.ui.settings.sharedpreferences
 
 import com.blazebooks.data.repositories.LoginRepository
-import com.blazebooks.data.repositories.SettingsRepository
+import com.blazebooks.data.repositories.AccountRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class SharedPrefController(
-    private val repository: SettingsRepository,
+    private val repository: AccountRepository,
     private val logRepo: LoginRepository
 ) {
     suspend fun deleteAccount() = withContext(Dispatchers.IO) { repository.deleteAccount() }

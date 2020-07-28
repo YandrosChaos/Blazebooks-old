@@ -7,14 +7,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class BecomePremiumViewModel(
-    private val premiumRepository: PremiumRepository,
-    private val usersRepository: LoginRepository
+    private val premiumRepository: PremiumRepository
 ) : ViewModel() {
 
-    val user by lazy { usersRepository.currentUser() }
-
     suspend fun savePremiumUser() = withContext(Dispatchers.IO) {
-        premiumRepository.savePremiumUid(user!!.uid)
+        premiumRepository.savePremiumAccount()
     }
 
 }

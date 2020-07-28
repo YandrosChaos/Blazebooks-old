@@ -2,7 +2,7 @@ package com.blazebooks.data.repositories
 
 import com.blazebooks.data.firebase.FirebaseSource
 
-class SettingsRepository(
+class AccountRepository(
     private val firebase: FirebaseSource
 ) {
     fun updateUsername(name: String) = firebase.updateUserName(name)
@@ -13,5 +13,5 @@ class SettingsRepository(
 
     fun updatePassword(passwd: String) = firebase.updatePassword(passwd)
 
-    fun deleteAccount() = firebase.delete()
+    fun deleteAccount() = firebase.deleteFavBook()
 }

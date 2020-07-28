@@ -40,24 +40,24 @@ class ShowBookViewModel(
      *
      * @see liked
      */
-    suspend fun isFavBook() = withContext(Dispatchers.IO) {
-        likedBooksRepository.isLiked(CURRENT_BOOK.title.toString())
+    suspend fun isFavBook(book: Book) = withContext(Dispatchers.IO) {
+        likedBooksRepository.isFavBook(book)
     }
 
 
     /**
      * Saves a book into the user favBooks collection.
      */
-    suspend fun insertLikedBook(likedBook: Book) = withContext(Dispatchers.IO) {
-        likedBooksRepository.save(likedBook)
+    suspend fun insertLikedBook(book: Book) = withContext(Dispatchers.IO) {
+        likedBooksRepository.saveFavBook(book)
     }
 
 
     /**
      * Deletes a book from user favBook collection.
      */
-    suspend fun deleteLikedBook(title: String) = withContext(Dispatchers.IO) {
-        likedBooksRepository.delete(title)
+    suspend fun deleteLikedBook(book: Book) = withContext(Dispatchers.IO) {
+        likedBooksRepository.deleteFavBook(book)
     }
 
     /**
@@ -73,14 +73,19 @@ class ShowBookViewModel(
      * @param path La ruta en la que se guardó el libro.
      */
     fun storeBookIntoLocalDatabase(titleBook: String, path: String) {
-        //preparar objeto para almacenar localmente
-        val storedBook =
-            StoredBook(titleBook, path, 0, "")
-        storedBook.storeToJsonData(CURRENT_BOOK)
-        //guardar en la base de datos
         Coroutines.main {
-            storedBooksRepository.saveStoredBook(storedBook)
+            storedBooksRepository.saveStoredBook(createStoredBookItem(titleBook, path))
             exist = true
+        }
+    }
+
+    /**
+     * Devuelve un objeto StoredBook listo para ser guardado en la base de
+     * datos local, con toda la información del libro guardada en formato json.
+     */
+    private fun createStoredBookItem(title: String, path: String): StoredBook {
+        return StoredBook(title, path).apply {
+            storeToJsonData(CURRENT_BOOK)
         }
     }
 

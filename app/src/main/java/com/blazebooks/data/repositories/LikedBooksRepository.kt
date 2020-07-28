@@ -1,22 +1,19 @@
 package com.blazebooks.data.repositories
 
-import com.blazebooks.data.firebase.FirestoreLikedBooks
+import com.blazebooks.data.firebase.FirebaseSource
 import com.blazebooks.data.models.Book
 
 /**
- * Llama a las funciones dentro de FirestoreLikedBooks.
- *
- * @see FirestoreLikedBooks
  * @author Victor Gonzalez
  */
 class LikedBooksRepository(
-    private val likedBooksRepository: FirestoreLikedBooks
+    private val firebaseSource: FirebaseSource
 ) {
 
-    fun isLiked(title: String) = likedBooksRepository.isLiked(title)
+    fun isFavBook(book: Book) = firebaseSource.isFavBook(book)
 
-    fun save(book : Book) = likedBooksRepository.save(book)
+    fun saveFavBook(book: Book) = firebaseSource.saveFavBook(book)
 
-    fun delete(title: String) = likedBooksRepository.delete(title)
+    fun deleteFavBook(book: Book) = firebaseSource.deleteFavBook(book)
 
 }

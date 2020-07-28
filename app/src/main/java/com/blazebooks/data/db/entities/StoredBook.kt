@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey
 import com.blazebooks.data.models.Book
 import com.google.gson.Gson
 
+/**
+ * @author Victor Gonzalez
+ */
 @Entity(tableName = "stored_books")
 data class StoredBook(
     @PrimaryKey(autoGenerate = false)
@@ -18,6 +21,8 @@ data class StoredBook(
     @ColumnInfo(name = "json")
     var jsonData: String
 ) {
+
+    constructor(title: String, path: String) : this(title, path, 0, "")
 
     /**
      * Stores a book in json format inside this object.

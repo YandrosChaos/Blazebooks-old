@@ -1,14 +1,14 @@
 package com.blazebooks.data.repositories
 
-import com.blazebooks.data.firebase.FirestoreDataBase
+import com.blazebooks.data.firebase.FirebaseSource
 
 class PremiumRepository(
-    private val db: FirestoreDataBase
+    private val firebaseSource: FirebaseSource
 ) {
 
-    fun savePremiumUid(uid: String) = db.savePremiumUid(uid)
+    fun savePremiumAccount() = firebaseSource.savePremiumAccount()
 
-    fun deletePremiumUid(uid: String) = db.deletePremiumUid(uid)
+    fun deletePremiumAccount() = firebaseSource.deletePremiumAccount()
 
-    fun getPremiumUid(uid: String) = db.isPremium(uid)
+    fun getPremiumAccount() = firebaseSource.isPremiumAccount()
 }

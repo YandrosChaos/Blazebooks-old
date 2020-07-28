@@ -85,12 +85,12 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     }
 
     /**
-     * comprueba si el libro está en la lista de favs del user o no, y si está ya descargado o no
+     * Comprueba si el libro está en la lista de favs del user o no.
      */
     private fun isLiked() {
         lifecycleScope.launch {
             try {
-                viewModel.isFavBook()
+                viewModel.isFavBook(CURRENT_BOOK)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
@@ -118,7 +118,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 //remove from favs
                 lifecycleScope.launch {
                     try {
-                        viewModel.deleteLikedBook(CURRENT_BOOK.title.toString())
+                        viewModel.deleteLikedBook(CURRENT_BOOK)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({

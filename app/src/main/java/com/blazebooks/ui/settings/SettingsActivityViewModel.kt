@@ -2,11 +2,11 @@ package com.blazebooks.ui.settings
 
 import androidx.lifecycle.ViewModel
 import com.blazebooks.data.preferences.PreferenceProvider
-import com.blazebooks.data.repositories.SettingsRepository
+import com.blazebooks.data.repositories.AccountRepository
 
 class SettingsActivityViewModel(
     private val prefs: PreferenceProvider,
-    private val repository: SettingsRepository
+    private val repository: AccountRepository
 ) : ViewModel() {
 
     fun saveLanguagePref(lan: String) = prefs.setLanguage(lan)

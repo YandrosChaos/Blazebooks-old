@@ -1,12 +1,22 @@
 package com.blazebooks.data.firebase
 
 import android.net.Uri
+import com.blazebooks.data.models.Book
+import com.blazebooks.data.models.User
 import com.blazebooks.util.DEFAULT_PROFILE_IMAGE
+import com.blazebooks.util.FirestoreDatabaseException
+import com.blazebooks.util.PremiumAccountNotFoundException
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.Completable
 import com.google.firebase.auth.UserProfileChangeRequest.Builder
+import com.google.firebase.firestore.FirebaseFirestore
+
+private const val FAV_BOOKS_COLLECTION = "FavBooks"
+private const val FAV_BOOKS_SUBCOLLECTION = "likedBooks"
+private const val PREMIUM_ACCOUNTS_COLLECTION = "PremiumAccounts"
+private const val PREMIUM_ACCOUNT_KEY = "account"
 
 /**
  * Completable es una clase de RxJava que permite obtener una indicación cuando
@@ -20,6 +30,10 @@ import com.google.firebase.auth.UserProfileChangeRequest.Builder
 class FirebaseSource {
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
+    }
+
+    private val db: FirebaseFirestore by lazy {
+        FirebaseFirestore.getInstance()
     }
 
     fun login(email: String, passwd: String) = Completable.create { emitter ->
@@ -40,7 +54,7 @@ class FirebaseSource {
         }
     }
 
-    fun delete() = Completable.create { emitter ->
+    fun deleteFavBook() = Completable.create { emitter ->
         currentFirebaseUser()!!.delete().addOnCompleteListener { task ->
             if (!emitter.isDisposed) {
                 if (task.isSuccessful) emitter.onComplete()
@@ -67,7 +81,7 @@ class FirebaseSource {
         var newImage = uri
         val user = currentFirebaseUser()
 
-        if(newImage.isNullOrEmpty()){
+        if (newImage.isNullOrEmpty()) {
             newImage = DEFAULT_PROFILE_IMAGE
         }
 
@@ -131,5 +145,81 @@ class FirebaseSource {
                 else emitter.onError(it.exception!!)
             }
         }
+    }
+
+    fun isFavBook(book: Book) = Completable.create { emitter ->
+        db.collection(FAV_BOOKS_COLLECTION)
+            .document(currentFirebaseUser()!!.uid)
+            .collection(FAV_BOOKS_SUBCOLLECTION)
+            .document(book.title.toString())
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc != null && doc.exists()) emitter.onComplete()
+            }
+    }
+
+
+    fun saveFavBook(likedBook: Book) = Completable.create { emitter ->
+        db.collection(FAV_BOOKS_COLLECTION)
+            .document(currentFirebaseUser()!!.uid)
+            .collection(FAV_BOOKS_SUBCOLLECTION)
+            .document(likedBook.title.toString())
+            .set(likedBook)
+            .addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+    }
+
+    fun deleteFavBook(book: Book) = Completable.create { emitter ->
+        db.collection(FAV_BOOKS_COLLECTION)
+            .document(currentFirebaseUser()!!.uid)
+            .collection(FAV_BOOKS_SUBCOLLECTION)
+            .document(book.title.toString())
+            .delete()
+            .addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+    }
+
+    fun savePremiumAccount() = Completable.create { emitter ->
+        db.collection(PREMIUM_ACCOUNTS_COLLECTION)
+            .document(currentFirebaseUser()!!.uid)
+            .set(mapOf(PREMIUM_ACCOUNT_KEY to currentFirebaseUser()!!.uid))
+            .addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+    }
+
+    fun deletePremiumAccount() = Completable.create { emitter ->
+        db.collection(PREMIUM_ACCOUNTS_COLLECTION)
+            .document(currentFirebaseUser()!!.uid)
+            .delete()
+            .addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) emitter.onComplete()
+                    else emitter.onError(task.exception!!)
+                }
+            }
+    }
+
+    fun isPremiumAccount() = Completable.create { emitter ->
+        db.collection(PREMIUM_ACCOUNTS_COLLECTION)
+            .document(currentFirebaseUser()!!.uid)
+            .get()
+            .addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful && task.result != null && task.result!!.exists()) emitter.onComplete()
+                    else emitter.onError(PremiumAccountNotFoundException("Premium account not found!"))
+                }
+            }
     }
 }

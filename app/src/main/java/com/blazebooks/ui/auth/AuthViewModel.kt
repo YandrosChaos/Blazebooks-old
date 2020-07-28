@@ -85,7 +85,7 @@ class AuthViewModel(
     ) = withContext(Dispatchers.IO) { loginRepo.register(email, password) }
 
     suspend fun isPremium() =
-        withContext(Dispatchers.IO) { premiumRepo.getPremiumUid(loginRepo.currentUser()!!.uid) }
+        withContext(Dispatchers.IO) { premiumRepo.getPremiumAccount() }
 
 
 }
