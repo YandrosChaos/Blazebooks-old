@@ -29,6 +29,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 import java.io.File
 
+private const val DELAYED_UI_CONFIG_TIME: Long = 500
 
 /**
  * @author Mounir Zbayr
@@ -60,48 +61,19 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
         Handler().postDelayed({
             setLikeUI()
             setDownloadUI()
-        }, 500)
+        }, DELAYED_UI_CONFIG_TIME)
 
     }
 
     /**
-     * Crea las diferentes tabs
+     * Returns to previous activity and sets custom animation transition.
+     *
+     * @author Victor Gonzalez
      */
-    private fun createTabs() {
-
-        val tabLayoutMediator =
-            TabLayoutMediator(binding.activityShowBookTabLayout, binding.activityShowBookViewPager,
-                TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                    when (position) {
-                        0 -> {
-                            tab.text = getString(R.string.synopsis)
-                        }
-                        1 -> {
-                            tab.text = getString(R.string.chapters)
-                        }
-                    }
-                })
-        tabLayoutMediator.attach()
-    }
-
-    /**
-     * Comprueba si el libro está en la lista de favs del user o no.
-     */
-    private fun isLiked() {
-        lifecycleScope.launch {
-            try {
-                viewModel.isFavBook(CURRENT_BOOK)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        //success
-                        viewModel.liked = true
-                    }
-            } catch (e: ApiException) {
-                binding.root.snackbar("Check your internet connection, please.")
-            } catch (e: DocumentNotFoundException) {
-            }
-        }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
+        finish()
     }
 
     /**
@@ -113,49 +85,10 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * @author Victor Gonzalez
      */
     fun addFav(view: View) {
-        when (viewModel.liked) {
-            true -> {
-                //remove from favs
-                lifecycleScope.launch {
-                    try {
-                        viewModel.deleteLikedBook(CURRENT_BOOK)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                //success
-                                binding.showBookBtnFav.speed = -1f
-                                binding.showBookBtnFav.playAnimation()
-                                viewModel.liked = false
-                            }, {
-                                //failure
-                                binding.root.snackbar("Something went wrong :/ Try again.")
-                            })
-                    } catch (e: ApiException) {
-                        binding.root.snackbar("Check your internet connection, please.")
-                    }
-                }
-            }
-            false -> {
-                //add to favs
-                lifecycleScope.launch {
-                    try {
-                        viewModel.insertLikedBook(CURRENT_BOOK)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                //success
-                                binding.showBookBtnFav.speed = 1f
-                                binding.showBookBtnFav.playAnimation()
-                                viewModel.liked = true
-                            }, {
-                                //failure
-                                binding.root.snackbar("Something went wrong :/ Try again.")
-                            })
-                    } catch (e: ApiException) {
-                        binding.root.snackbar("Check your internet connection, please.")
-                    }
-                }
-            }
+        if (viewModel.liked) {
+            removeFromFav()
+        } else {
+            addToFav()
         }
         view.refreshDrawableState()
     }
@@ -230,35 +163,6 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     }//download
 
     /**
-     * Recibe la URL y la ruta de destino y descarga el archivo usando PRDownloader
-     *
-     * @author Mounir Zbayr
-     */
-    private fun downloadFile(url: String, fileName: String, dirPath: String) {
-
-        PRDownloader.download(url, dirPath, fileName)
-            .build()
-            .start(object : OnDownloadListener {
-                override fun onDownloadComplete() {
-                    viewModel.saveBookResources(
-                        File("$dirPath/$fileName"),
-                        dirPath
-                    )
-
-                    showBookBtnRead.isEnabled = true
-                    showBookBtnRead.isClickable = true
-
-                    toast(getString(R.string.dwnload_cmplete))
-                }
-
-                override fun onError(error: com.downloader.Error?) {
-                    toast(getString(R.string.dwnload_error))
-                }
-            })
-
-    }
-
-    /**
      * Método de pulsado del boton Read, el cual lleva al libro elegido.
      * Si el usuario no es premium mostrará BecomePremiumActivity. Guarda el
      * libro en sharedPreferences para poder abrirlo directamente desde el main.
@@ -295,14 +199,32 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     }
 
     /**
-     * Returns to previous activity and sets custom animation transition.
+     * Recibe la URL y la ruta de destino y descarga el archivo usando PRDownloader
      *
-     * @author Victor Gonzalez
+     * @author Mounir Zbayr
      */
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
-        finish()
+    private fun downloadFile(url: String, fileName: String, dirPath: String) {
+
+        PRDownloader.download(url, dirPath, fileName)
+            .build()
+            .start(object : OnDownloadListener {
+                override fun onDownloadComplete() {
+                    viewModel.saveBookResources(
+                        File("$dirPath/$fileName"),
+                        dirPath
+                    )
+
+                    showBookBtnRead.isEnabled = true
+                    showBookBtnRead.isClickable = true
+
+                    toast(getString(R.string.dwnload_cmplete))
+                }
+
+                override fun onError(error: com.downloader.Error?) {
+                    toast(getString(R.string.dwnload_error))
+                }
+            })
+
     }
 
     /**
@@ -326,6 +248,81 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
         if (viewModel.exist) {
             binding.showBookBtnDownload.progress = 1f
             binding.showBookBtnDownload.refreshDrawableState()
+        }
+    }
+
+    /**
+     * Crea las diferentes tabs
+     */
+    private fun createTabs() {
+        TabLayoutMediator(binding.activityShowBookTabLayout, binding.activityShowBookViewPager,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                when (position) {
+                    0 -> tab.text = getString(R.string.synopsis)
+                    1 -> tab.text = getString(R.string.chapters)
+                }
+            }).attach()
+    }
+
+    /**
+     * Comprueba si el libro está en la lista de favs del user o no.
+     */
+    private fun isLiked() {
+        lifecycleScope.launch {
+            try {
+                viewModel.isFavBook(CURRENT_BOOK)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        //success
+                        viewModel.liked = true
+                    }
+            } catch (e: ApiException) {
+                binding.root.snackbar("Check your internet connection, please.")
+            } catch (e: DocumentNotFoundException) {
+            }
+        }
+    }
+
+    private fun addToFav() {
+        lifecycleScope.launch {
+            try {
+                viewModel.insertLikedBook(CURRENT_BOOK)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        //success
+                        binding.showBookBtnFav.speed = 1f
+                        binding.showBookBtnFav.playAnimation()
+                        viewModel.liked = true
+                    }, {
+                        //failure
+                        binding.root.snackbar("Something went wrong :/ Try again.")
+                    })
+            } catch (e: ApiException) {
+                binding.root.snackbar("Check your internet connection, please.")
+            }
+        }
+    }
+
+    private fun removeFromFav() {
+        lifecycleScope.launch {
+            try {
+                viewModel.deleteLikedBook(CURRENT_BOOK)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        //success
+                        binding.showBookBtnFav.speed = -1f
+                        binding.showBookBtnFav.playAnimation()
+                        viewModel.liked = false
+                    }, {
+                        //failure
+                        binding.root.snackbar("Something went wrong :/ Try again.")
+                    })
+            } catch (e: ApiException) {
+                binding.root.snackbar("Check your internet connection, please.")
+            }
         }
     }
 

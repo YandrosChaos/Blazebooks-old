@@ -20,7 +20,7 @@ import com.blazebooks.data.models.CustomGridRecyclerView
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.ui.customdialogs.filter.FilterDialog
 import com.blazebooks.ui.customdialogs.filter.FilterDialogListener
-import com.blazebooks.ui.search.control.SearchActivityController
+import com.blazebooks.ui.search.control.SearchActivityViewModel
 import com.blazebooks.ui.search.control.SearchAdapter
 import com.blazebooks.ui.search.control.SearchFilterController
 import com.blazebooks.util.TOOLBAR_TITLE_CODE
@@ -48,7 +48,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
     private val waitTime: Long = 500L
     private lateinit var mRecyclerView: CustomGridRecyclerView
     private var bookList: MutableList<Book> = mutableListOf()
-    private lateinit var searchActivityController: SearchActivityController
+    private lateinit var searchActivityViewModel: SearchActivityViewModel
     private lateinit var mAdapter: SearchAdapter
     private lateinit var mSearchView: EditText
     private lateinit var mFilterDialogFrameLayout: FrameLayout
@@ -72,8 +72,8 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
 
         //controllers
         searchFilterController = SearchFilterController(this)
-        searchActivityController =
-            SearchActivityController(
+        searchActivityViewModel =
+            SearchActivityViewModel(
                 this,
                 intent.getStringExtra(TOOLBAR_TITLE_CODE),
                 storedBooksRepository
@@ -90,7 +90,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         mRecyclerView.adapter = mAdapter
 
         //load data
-        bookList = searchActivityController.data()
+        bookList = searchActivityViewModel.data()
 
         //wait to get data from data base
         Handler().postDelayed({

@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 /**
  * @author Victor Gonzalez
  */
-class SearchActivityController(
+class SearchActivityViewModel(
     val context: Context,
     private val downloadType: String,
     private val repository: StoredBooksRepository
