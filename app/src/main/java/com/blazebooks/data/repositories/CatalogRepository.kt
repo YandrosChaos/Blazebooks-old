@@ -6,7 +6,7 @@ import com.blazebooks.data.models.Book
 /**
  * @author Victor Gonzalez
  */
-class LikedBooksRepository(
+class CatalogRepository(
     private val firebaseSource: FirebaseSource
 ) {
 
@@ -15,5 +15,9 @@ class LikedBooksRepository(
     fun saveFavBook(book: Book) = firebaseSource.saveFavBook(book)
 
     fun deleteFavBook(book: Book) = firebaseSource.deleteFavBook(book)
+
+    fun getAllFavBooks() = firebaseSource.getAllFavBooks()
+
+    fun getAllBooks() = firebaseSource.getAllBooks()
 
 }

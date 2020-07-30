@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.db.entities.StoredBook
 import com.blazebooks.data.preferences.PreferenceProvider
-import com.blazebooks.data.repositories.LikedBooksRepository
+import com.blazebooks.data.repositories.CatalogRepository
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.Coroutines
@@ -28,7 +28,7 @@ import java.io.InputStream
 class ShowBookViewModel(
     private val preferences: PreferenceProvider,
     private val storedBooksRepository: StoredBooksRepository,
-    private val likedBooksRepository: LikedBooksRepository
+    private val catalogRepository: CatalogRepository
 ) : ViewModel() {
 
     var liked = false
@@ -41,7 +41,7 @@ class ShowBookViewModel(
      * @see liked
      */
     suspend fun isFavBook(book: Book) = withContext(Dispatchers.IO) {
-        likedBooksRepository.isFavBook(book)
+        catalogRepository.isFavBook(book)
     }
 
 
@@ -49,7 +49,7 @@ class ShowBookViewModel(
      * Saves a book into the user favBooks collection.
      */
     suspend fun insertLikedBook(book: Book) = withContext(Dispatchers.IO) {
-        likedBooksRepository.saveFavBook(book)
+        catalogRepository.saveFavBook(book)
     }
 
 
@@ -57,7 +57,7 @@ class ShowBookViewModel(
      * Deletes a book from user favBook collection.
      */
     suspend fun deleteLikedBook(book: Book) = withContext(Dispatchers.IO) {
-        likedBooksRepository.deleteFavBook(book)
+        catalogRepository.deleteFavBook(book)
     }
 
     /**

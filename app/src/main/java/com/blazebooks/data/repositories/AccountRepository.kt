@@ -13,5 +13,5 @@ class AccountRepository(
 
     fun updatePassword(passwd: String) = firebase.updatePassword(passwd)
 
-    fun deleteAccount() = firebase.deleteFavBook()
+    fun deleteAccount() = firebase.deleteAccount()
 }

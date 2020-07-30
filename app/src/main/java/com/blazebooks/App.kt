@@ -12,6 +12,7 @@ import com.blazebooks.ui.customdialogs.profileimage.ProfileImageViewModelFactory
 import com.blazebooks.ui.main.MainViewModelFactory
 import com.blazebooks.ui.reader.BookStyleViewModelFactory
 import com.blazebooks.ui.reader.ReaderViewModelFactory
+import com.blazebooks.ui.search.SearchActivityViewModelFactory
 import com.blazebooks.ui.settings.sharedpreferences.SharedPrefController
 import com.blazebooks.ui.showbook.ShowBookViewModelFactory
 import org.kodein.di.Kodein
@@ -36,7 +37,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { StoredBooksRepository(instance()) }
         bind() from singleton { AccountRepository(instance()) }
         bind() from singleton { PremiumRepository(instance()) }
-        bind() from singleton { LikedBooksRepository(instance()) }
+        bind() from singleton { CatalogRepository(instance()) }
 
         //factories
         bind() from singleton { AuthViewModelFactory(instance(), instance()) }
@@ -45,6 +46,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { ReaderViewModelFactory(instance()) }
         bind() from singleton { MainViewModelFactory(instance(), instance()) }
         bind() from singleton { BecomePremiumViewModelFactory(instance()) }
+        bind() from singleton { SearchActivityViewModelFactory(instance(), instance()) }
         bind() from singleton {
             ShowBookViewModelFactory(
                 instance(),

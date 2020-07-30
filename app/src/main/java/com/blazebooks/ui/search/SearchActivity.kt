@@ -7,29 +7,39 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
-import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.models.CustomGridRecyclerView
 import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.databinding.ActivitySearchBinding
 import com.blazebooks.ui.customdialogs.filter.FilterDialog
 import com.blazebooks.ui.customdialogs.filter.FilterDialogListener
 import com.blazebooks.ui.search.control.SearchActivityViewModel
 import com.blazebooks.ui.search.control.SearchAdapter
 import com.blazebooks.ui.search.control.SearchFilterController
+import com.blazebooks.util.Coroutines
 import com.blazebooks.util.TOOLBAR_TITLE_CODE
 import com.blazebooks.util.hideKeyboard
+import com.blazebooks.util.snackbar
+import com.google.android.gms.common.api.ApiException
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.app_bar_search.*
+import kotlinx.android.synthetic.main.app_bar_search.view.*
+import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
+private const val DELAYED_GETDATA_TIME: Long = 500
 
 /**
  * Search book activity.
@@ -43,15 +53,13 @@ import org.kodein.di.generic.instance
 class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAware {
 
     override val kodein by kodein()
-    private val storedBooksRepository by instance<StoredBooksRepository>()
-
-    private val waitTime: Long = 500L
-    private lateinit var mRecyclerView: CustomGridRecyclerView
-    private var bookList: MutableList<Book> = mutableListOf()
-    private lateinit var searchActivityViewModel: SearchActivityViewModel
+    private val factory by instance<SearchActivityViewModelFactory>()
+    private lateinit var binding: ActivitySearchBinding
+    private lateinit var viewModel: SearchActivityViewModel
     private lateinit var mAdapter: SearchAdapter
+
+    private var bookList: MutableList<Book> = mutableListOf()
     private lateinit var mSearchView: EditText
-    private lateinit var mFilterDialogFrameLayout: FrameLayout
     private lateinit var searchFilterController: SearchFilterController
 
     /**
@@ -64,41 +72,25 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+        viewModel = ViewModelProvider(this, factory).get(SearchActivityViewModel::class.java)
 
-        mRecyclerView = findViewById(R.id.recyclerView_search)
-        mSearchView = findViewById(R.id.searchViewEditText)
-        mFilterDialogFrameLayout = findViewById(R.id.searchActivityFilterFragment)
-
-        //controllers
+        mSearchView = binding.searchToolbar.searchViewEditText
         searchFilterController = SearchFilterController(this)
-        searchActivityViewModel =
-            SearchActivityViewModel(
-                this,
-                intent.getStringExtra(TOOLBAR_TITLE_CODE),
-                storedBooksRepository
-            )
 
-        //set the title in the toolbar and show the progress bar
-        activitySearchToolbarTv.text = intent.getStringExtra(TOOLBAR_TITLE_CODE)
+        intent.getStringExtra(TOOLBAR_TITLE_CODE)?.apply {
+            setToolbarTitle(this)
+            data(this)
+        }
 
-        //configure and load adapter and manager
-        mAdapter = SearchAdapter(bookList, this)
-        mRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
-        mRecyclerView.layoutAnimation =
-            AnimationUtils.loadLayoutAnimation(this, R.anim.gridlayout_animation_from_bottom)
-        mRecyclerView.adapter = mAdapter
+        configureLayout()
+        configureAdapter()
 
-        //load data
-        bookList = searchActivityViewModel.data()
-
-        //wait to get data from data base
         Handler().postDelayed({
             mAdapter.updateList(bookList)
             mAdapter.notifyDataSetChanged()
-            //run the custom recyclerView animation.
             runRecyclerViewAnimation()
-        }, waitTime)
+        }, DELAYED_GETDATA_TIME)
 
 
         //Search Event. After text change, filter the list and updates the adapter
@@ -155,7 +147,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * @author Victor Gonzalez
      */
     fun createFilterDialog(view: View) {
-        mFilterDialogFrameLayout.visibility = View.VISIBLE
+        binding.searchActivityFilterFragment.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
             .replace(
@@ -171,7 +163,6 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * Returns the filters from the FilterDialog.
      *
      * @see FilterDialog
-     * @see FilterDialog.FilterDialogListener
      *
      * @author Victor Gonzalez
      */
@@ -184,7 +175,6 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * Clean the list of filters.
      *
      * @see FilterDialog
-     * @see FilterDialog.FilterDialogListener
      * @author Victor Gonzalez
      */
     override fun onClearFilters(dialog: FilterDialog) {
@@ -194,14 +184,36 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
     /**
      * Closes the filter dialog and updates the view.
      *
-     * @see FilterDialog.FilterDialogListener
      * @author Victor Gonzalez
      */
     override fun onCloseDialog(dialog: FilterDialog) {
         mAdapter.updateList(searchFilterController.filterList("", bookList))
         dialog.dismiss()
-        mFilterDialogFrameLayout.visibility = View.GONE
+        binding.searchActivityFilterFragment.visibility = View.GONE
         runRecyclerViewAnimation()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
+        finish()
+    }
+
+    private fun setToolbarTitle(title: String) {
+        activitySearchToolbarTv.text = title
+    }
+
+    private fun configureLayout() =
+        binding.recyclerViewSearch.apply {
+            layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+            layoutAnimation =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.gridlayout_animation_from_bottom)
+        }
+
+
+    private fun configureAdapter() {
+        mAdapter = SearchAdapter(bookList, this)
+        binding.recyclerViewSearch.adapter = mAdapter
     }
 
     /**
@@ -214,7 +226,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      */
     private fun runRecyclerViewAnimation() {
         mAdapter.notifyDataSetChanged()
-        mRecyclerView.scheduleLayoutAnimation()
+        binding.recyclerViewSearch.scheduleLayoutAnimation()
     }
 
     /**
@@ -263,10 +275,52 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
 
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
-        finish()
+    /**
+     * Load data from database.
+     *
+     * @see SearchAdapter.updateList
+     *
+     * @author Victor Gonzalez
+     * @author Mounir Zbayr
+     */
+    private fun data(downloadType: String) {
+        when (downloadType) {
+            getString(R.string.fav_books) -> getFavBooks()
+            getString(R.string.my_books) -> getLocalBooks()
+            else -> getAllBooks()
+        }
+        bookList = viewModel.dataList
     }
+
+    private fun getLocalBooks() = Coroutines.main { viewModel.getStoredBooks() }
+
+    private fun getFavBooks() = lifecycleScope.launch {
+        try {
+            viewModel.getFavBooks()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    viewModel.dataList.addAll(it)
+                }, {
+                    binding.root.snackbar(it.message.toString())
+                })
+        } catch (e: ApiException) {
+        }
+    }
+
+    private fun getAllBooks() = lifecycleScope.launch {
+        try {
+            viewModel.getAllBooks()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    viewModel.dataList.addAll(it)
+                }, {
+                    binding.root.snackbar(it.message.toString())
+                })
+        } catch (e: ApiException) {
+        }
+    }
+
 
 }
