@@ -22,9 +22,8 @@ import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.databinding.ActivitySearchBinding
 import com.blazebooks.ui.customdialogs.filter.FilterDialog
 import com.blazebooks.ui.customdialogs.filter.FilterDialogListener
-import com.blazebooks.ui.search.control.SearchActivityViewModel
 import com.blazebooks.ui.search.control.SearchAdapter
-import com.blazebooks.ui.search.control.SearchFilterController
+import com.blazebooks.ui.search.control.SearchFilter
 import com.blazebooks.util.Coroutines
 import com.blazebooks.util.TOOLBAR_TITLE_CODE
 import com.blazebooks.util.hideKeyboard
@@ -60,7 +59,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
 
     private var bookList: MutableList<Book> = mutableListOf()
     private lateinit var mSearchView: EditText
-    private lateinit var searchFilterController: SearchFilterController
+    private lateinit var searchFilter: SearchFilter
 
     /**
      * Sets toolbar title. Gets a list of items and add the Text Change Listener, filter the list and
@@ -76,7 +75,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         viewModel = ViewModelProvider(this, factory).get(SearchActivityViewModel::class.java)
 
         mSearchView = binding.searchToolbar.searchViewEditText
-        searchFilterController = SearchFilterController(this)
+        searchFilter = SearchFilter(this)
 
         intent.getStringExtra(TOOLBAR_TITLE_CODE)?.apply {
             setToolbarTitle(this)
@@ -96,7 +95,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         //Search Event. After text change, filter the list and updates the adapter
         mSearchView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                mAdapter.updateList(searchFilterController.filterList(p0.toString(), bookList))
+                mAdapter.updateList(searchFilter.filterList(p0.toString(), bookList))
                 runRecyclerViewAnimation()
             }
 
@@ -119,7 +118,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      *
      * @author Victor Gonzalez
      */
-    fun previousActivity(view: View) {
+    fun previousActivity(view: View) =
         if (!mSearchView.isVisible) {
             onBackPressed()
         } else {
@@ -127,19 +126,15 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
             switchToolbarMode(true)
         }
 
-    }
 
     /**
      * When the button is clicked, switches search view.
      *
      * @see switchToolbarMode
-     * @param view
      * @author  Victor Gonzalez
      */
-    fun showSearchBarItem(view: View) {
-        mSearchView.hint = getString(R.string.looking_for)
-        switchToolbarMode(mSearchView.isVisible)
-    }
+    fun showSearchBarItem(view: View) = switchToolbarMode(mSearchView.isVisible)
+
 
     /**
      * Shows the filter menu.
@@ -153,10 +148,9 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
             .replace(
                 R.id.searchActivityFilterFragment,
                 FilterDialog(
-                    searchFilterController.filterList
+                    searchFilter.filterList
                 )
-            )
-            .commit()
+            ).commit()
     }
 
     /**
@@ -167,7 +161,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * @author Victor Gonzalez
      */
     override fun onReturnFilters(dialog: FilterDialog) {
-        searchFilterController.updateFilters(dialog.filterReturnList)
+        searchFilter.updateFilters(dialog.filterReturnList)
         onCloseDialog(dialog)
     }
 
@@ -177,9 +171,8 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * @see FilterDialog
      * @author Victor Gonzalez
      */
-    override fun onClearFilters(dialog: FilterDialog) {
-        searchFilterController.clearFilters()
-    }
+    override fun onClearFilters(dialog: FilterDialog) = searchFilter.clearFilters()
+
 
     /**
      * Closes the filter dialog and updates the view.
@@ -187,7 +180,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * @author Victor Gonzalez
      */
     override fun onCloseDialog(dialog: FilterDialog) {
-        mAdapter.updateList(searchFilterController.filterList("", bookList))
+        mAdapter.updateList(searchFilter.filterList("", bookList))
         dialog.dismiss()
         binding.searchActivityFilterFragment.visibility = View.GONE
         runRecyclerViewAnimation()
@@ -235,44 +228,38 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * @param searchVisible
      * @author Victor González
      */
-    private fun switchToolbarMode(searchVisible: Boolean) {
+    private fun switchToolbarMode(searchVisible: Boolean) =
         if (!searchVisible) {
-            //shows the bar and occult the title
-            mSearchView.visibility = View.VISIBLE
-            activitySearchToolbarTv.visibility = View.GONE
-
-            //set toolbar search colors
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnReturn.background,
-                ContextCompat.getColor(this, R.color.colorPrimaryDark)
-            )//return button
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnFilter.background,
-                ContextCompat.getColor(this, R.color.colorPrimaryDark)
-            )//filter button
-            DrawableCompat.setTint(
-                activitySearchToolbarBtnSearch.background,
-                ContextCompat.getColor(this, R.color.colorPrimaryDark)
-            )//search button
+            showSearchEditText()
+            setSearchViewColors(R.color.colorPrimaryDark)
         } else {
-            //occult the bar and shows the title
-            mSearchView.visibility = View.GONE
-            activitySearchToolbarTv.visibility = View.VISIBLE
-            //set colors
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnReturn.background,
-                ContextCompat.getColor(this, R.color.white)
-            )//return button
-            DrawableCompat.setTint(
-                activitySearchToolBarBtnFilter.background,
-                ContextCompat.getColor(this, R.color.white)
-            )//filter button
-            DrawableCompat.setTint(
-                activitySearchToolbarBtnSearch.background,
-                ContextCompat.getColor(this, R.color.white)
-            )//search button
+            hideSearchEditText()
+            setSearchViewColors(R.color.white)
         }
 
+    private fun showSearchEditText() {
+        mSearchView.visibility = View.VISIBLE
+        activitySearchToolbarTv.visibility = View.GONE
+    }
+
+    private fun hideSearchEditText() {
+        mSearchView.visibility = View.GONE
+        activitySearchToolbarTv.visibility = View.VISIBLE
+    }
+
+    private fun setSearchViewColors(color: Int) {
+        DrawableCompat.setTint(
+            activitySearchToolBarBtnReturn.background,
+            ContextCompat.getColor(this, color)
+        )
+        DrawableCompat.setTint(
+            activitySearchToolBarBtnFilter.background,
+            ContextCompat.getColor(this, color)
+        )
+        DrawableCompat.setTint(
+            activitySearchToolbarBtnSearch.background,
+            ContextCompat.getColor(this, color)
+        )
     }
 
     /**

@@ -1,11 +1,10 @@
-package com.blazebooks.ui.search.control
+package com.blazebooks.ui.search
 
 import androidx.lifecycle.ViewModel
 import com.blazebooks.data.db.entities.StoredBook
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.repositories.CatalogRepository
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -8,7 +8,7 @@ import java.util.*
 /**
  * @author Victor Gonzalez
  */
-class SearchFilterController(val context: Context) {
+class SearchFilter(val context: Context) {
     val filterList: MutableList<Pair<String, String>> = mutableListOf()
 
     /**
@@ -22,58 +22,48 @@ class SearchFilterController(val context: Context) {
      * <p> When list is filtered, calls to the adapter, updates the list and run the
      * animation.</p>
      *
-     * @param filterCharacter Strings which the filter searches in book's titles.
-     * @param filterList Checkbox which used for filter books by language, author, genre...
-     *
      * @author Victor Gonzalez
      */
     fun filterList(
         filterCharacter: String,
         booksToFilter: MutableList<Book>
     ): MutableList<Book> {
-
-        //filter by title
-        var tempListWithFilters = mutableListOf<Book>()
-        tempListWithFilters = filterByTitle(booksToFilter, filterCharacter)
-
-        if (!filterList.isNullOrEmpty()) {
-            filterList.forEach { filterItem ->
-                when (filterItem.first) {
-
-                    context.getString(R.string.genres) -> {
-                        //filter by genre
-                        tempListWithFilters = filterByGenre(tempListWithFilters, filterItem.second)
-                    }
-
-                    context.getString(R.string.premium) -> {
-                        tempListWithFilters =
-                            filterByPremium(tempListWithFilters, filterItem.second)
-                    }
-
-                    context.getString(R.string.authors) -> {
-                        //filter by author
-                        tempListWithFilters = filterByAuthor(tempListWithFilters, filterItem.second)
-                    }
-
-                    context.getString(R.string.language) -> {
-                        //filter by language
-                        //TODO -> FILTER BY LANGUAGE
-                    }
-
-                }
-            }
-        }
+        var tempListWithFilters: MutableList<Book> = filterByTitle(booksToFilter, filterCharacter)
+        if (!filterList.isNullOrEmpty()) tempListWithFilters =
+            filterByFilterList(tempListWithFilters)
         return tempListWithFilters
     }
 
-    fun updateFilters(newFilterList: MutableList<Pair<String, String>>){
+    fun updateFilters(newFilterList: MutableList<Pair<String, String>>) {
         filterList.clear()
         filterList.addAll(newFilterList)
     }
 
-    fun clearFilters(){
+    fun clearFilters() {
         filterList.clear()
     }
+
+    private fun filterByFilterList(tempListWithFilters: MutableList<Book>): MutableList<Book> {
+        var filteredList = tempListWithFilters
+        filterList.forEach { filterItem ->
+            when (filterItem.first) {
+                context.getString(R.string.genres) -> filteredList =
+                    filterByGenre(filteredList, filterItem.second)
+
+                context.getString(R.string.premium) -> filteredList =
+                    filterByPremium(filteredList, filterItem.second)
+
+                context.getString(R.string.authors) -> filteredList =
+                    filterByAuthor(filteredList, filterItem.second)
+
+                context.getString(R.string.language) -> {
+                    //TODO -> FILTER BY LANGUAGE
+                }
+            }
+        }
+        return filteredList
+    }
+
 
     private fun filterByTitle(
         booksToFilter: MutableList<Book>,
