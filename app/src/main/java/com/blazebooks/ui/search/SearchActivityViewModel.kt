@@ -5,7 +5,6 @@ import com.blazebooks.data.db.entities.StoredBook
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.repositories.CatalogRepository
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -17,7 +16,6 @@ class SearchActivityViewModel(
     private val catalogRepository: CatalogRepository
 ) : ViewModel() {
 
-    private val db = FirebaseFirestore.getInstance()
     val dataList = mutableListOf<Book>()
 
     /**

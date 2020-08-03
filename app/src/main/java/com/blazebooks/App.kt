@@ -47,6 +47,7 @@ class App : Application(), KodeinAware {
         bind() from singleton { MainViewModelFactory(instance(), instance()) }
         bind() from singleton { BecomePremiumViewModelFactory(instance()) }
         bind() from singleton { SearchActivityViewModelFactory(instance(), instance()) }
+        bind() from singleton { BookStyleViewModelFactory(instance()) }
         bind() from singleton {
             ShowBookViewModelFactory(
                 instance(),
@@ -54,9 +55,8 @@ class App : Application(), KodeinAware {
                 instance()
             )
         }
-        bind() from singleton { BookStyleViewModelFactory(instance()) }
 
-        //controller
+        //controllers
         bind() from singleton { SharedPrefController(instance(), instance()) }
     }
 }

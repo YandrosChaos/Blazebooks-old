@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import com.blazebooks.R
 import com.blazebooks.ui.auth.LoginActivity
 import com.blazebooks.ui.auth.SignUpActivity
+import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -40,6 +41,11 @@ fun Fragment.startLoginActivity() =
 fun Context.startSignUpActivity() =
     Intent(this, SignUpActivity::class.java).also {
         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(it)
+    }
+
+fun Context.startBecomePremiumActivity() =
+    Intent(this, BecomePremiumActivity::class.java).also {
         startActivity(it)
     }
 

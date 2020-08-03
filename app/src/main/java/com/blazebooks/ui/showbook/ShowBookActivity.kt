@@ -108,9 +108,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
 
         when {
             !premium && CURRENT_BOOK.premium -> {
-                //si el user no es premium pero el libro sí
-                startActivity(Intent(this, BecomePremiumActivity::class.java))
-                overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
+                startBecomePremiumActivity()
             }
 
             !viewModel.exist -> {
@@ -182,8 +180,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     fun read(view: View) {
 
         if (!premium && CURRENT_BOOK.premium) {
-            startActivity(Intent(this, BecomePremiumActivity::class.java))
-            overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
+            startBecomePremiumActivity()
         } else {
             if (viewModel.exist) {
                 val titleBook = showBookTvTitle.text.toString()
