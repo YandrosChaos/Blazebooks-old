@@ -86,6 +86,19 @@ class ShowBookViewModel(
     }
 
     /**
+     * Almacena la información del libro dentro de la base de datos local.
+     *
+     * @param titleBook El título del libro.
+     * @param path La ruta en la que se guardó el libro.
+     */
+    fun deleteBookFromLocalDatabase(titleBook: String, path: String) {
+        Coroutines.main {
+            storedBooksRepository.deleteStoredBook(createStoredBookItem(titleBook, path))
+            exist = false
+        }
+    }
+
+    /**
      * Devuelve un objeto StoredBook listo para ser guardado en la base de
      * datos local, con toda la información del libro guardada en formato json.
      */

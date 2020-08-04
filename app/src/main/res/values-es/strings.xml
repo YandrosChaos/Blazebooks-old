@@ -128,7 +128,9 @@
     <string name="read">Leer</string>
     <string name="add_to_favs">Añadir a favoritos</string>
     <string name="readied">Leído</string>
-
+    <string name="message_delete_book">¿Desea borrar este libro? Esta acción no se puede deshacer.</string>
+    <string name="cancel_delete_book">Cancelar</string>
+    <string name="accept_delete_book">Aceptar</string>
 
     <!-- Search Activity -->
     <string name="looking_for">Buscando…</string>

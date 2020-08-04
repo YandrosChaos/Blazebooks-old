@@ -107,6 +107,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         })
     }
 
+
     /**
      * If search view is occult, finishes the activity. Else, closes the search view, updates
      * the view and hides the keyboard.

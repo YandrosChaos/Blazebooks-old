@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.R
 import com.blazebooks.data.db.AppDatabase
-import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.databinding.ActivityShowBookBinding
 import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.reader.ReaderActivity
@@ -87,6 +88,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     fun addFav(view: View) {
         if (viewModel.liked) {
             removeFromFav()
+
         } else {
             addToFav()
         }
@@ -106,6 +108,12 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      */
     fun download(view: View) {
 
+        val titleBook = CURRENT_BOOK.title.toString() //nombre del libro
+        val documents =
+            "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
+        val documentsFolder = File(this.filesDir, documents)
+        val filesPath = this.getExternalFilesDir(null)?.absolutePath
+
         when {
             !PREMIUM && CURRENT_BOOK.premium -> {
                 startBecomePremiumActivity()
@@ -121,11 +129,6 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 binding.showBookBtnRead.isEnabled = false
                 binding.showBookBtnRead.isClickable = false
 
-                val titleBook = CURRENT_BOOK.title.toString() //nombre del libro
-                val documents =
-                    "books/$titleBook" //La carpeta creada irá dentro de la carpeta books
-                val documentsFolder = File(this.filesDir, documents)
-                val filesPath = this.getExternalFilesDir(null)?.absolutePath
 
                 toast(getString(R.string.dwnloading))
 
@@ -153,15 +156,29 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 binding.showBookBtnRead.isEnabled = true
             }
             else -> {
-                //TODO -> REMOVE
+
                 binding.showBookBtnDownload.playAnimation()
                 view.refreshDrawableState()
 
-                positiveAlertDialog(
-                    "Eliminar",
-                    "¿Desea borrar este libro? Esta acción no se puede deshacer.",
-                    "Cancelar"
-                ).show()
+                val dialogBuilder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+
+                //Borra el libro seleccionado de la base de datos y de la memoria interna
+                dialogBuilder.setMessage((getString(R.string.message_delete_book)))
+                    .setCancelable(false)
+                    .setPositiveButton((getString(R.string.accept_delete_book))) { _, _ ->
+                        viewModel.deleteBookFromLocalDatabase(
+                            titleBook,
+                            documents
+                        )
+
+                        File( "$filesPath/$documents" ).deleteRecursively()
+                        finish()
+
+                    }
+                    .setNegativeButton((getString(R.string.cancel_delete_book))) { dialog, _ ->
+                        dialog.cancel()
+                    }
+                dialogBuilder.create().show()
 
             }
         }
