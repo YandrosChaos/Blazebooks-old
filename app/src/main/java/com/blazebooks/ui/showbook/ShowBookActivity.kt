@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +30,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 import java.io.File
 
-private const val DELAYED_UI_CONFIG_TIME: Long = 500
+private const val DELAYED_UI_CONFIG_TIME: Long = 1000
 
 /**
  * @author Mounir Zbayr
@@ -56,13 +57,12 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
         viewModel = ViewModelProvider(this, factory).get(ShowBookViewModel::class.java)
         createTabs()
         isLiked()
-        viewModel.bookExist()
+        isDownloaded()
 
         Handler().postDelayed({
             setLikeUI()
             setDownloadUI()
         }, DELAYED_UI_CONFIG_TIME)
-
     }
 
     /**
@@ -107,10 +107,8 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     fun download(view: View) {
 
         when {
-            !premium && CURRENT_BOOK.premium -> {
-                //si el user no es premium pero el libro sí
-                startActivity(Intent(this, BecomePremiumActivity::class.java))
-                overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
+            !PREMIUM && CURRENT_BOOK.premium -> {
+                startBecomePremiumActivity()
             }
 
             !viewModel.exist -> {
@@ -142,8 +140,6 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                         "$titleBook.epub",
                         "$filesPath/$documents"
                     )
-
-
                 }.addOnFailureListener {
                     toast(getString(R.string.dwnload_error))
                     documentsFolder.delete() //Borra la carpeta creada al dar error
@@ -157,7 +153,16 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 binding.showBookBtnRead.isEnabled = true
             }
             else -> {
-                view.snackbar(getString(R.string.already_dwnload))
+                //TODO -> REMOVE
+                binding.showBookBtnDownload.playAnimation()
+                view.refreshDrawableState()
+
+                positiveAlertDialog(
+                    "Eliminar",
+                    "¿Desea borrar este libro? Esta acción no se puede deshacer.",
+                    "Cancelar"
+                ).show()
+
             }
         }
     }//download
@@ -174,9 +179,8 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      */
     fun read(view: View) {
 
-        if (!premium && CURRENT_BOOK.premium) {
-            startActivity(Intent(this, BecomePremiumActivity::class.java))
-            overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top)
+        if (!PREMIUM && CURRENT_BOOK.premium) {
+            startBecomePremiumActivity()
         } else {
             if (viewModel.exist) {
                 val titleBook = showBookTvTitle.text.toString()
@@ -246,8 +250,10 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      */
     private fun setDownloadUI() {
         if (viewModel.exist) {
-            binding.showBookBtnDownload.progress = 1f
-            binding.showBookBtnDownload.refreshDrawableState()
+            binding.showBookBtnDownload.apply {
+                setAnimation(R.raw.delete)
+                scaleType = ImageView.ScaleType.FIT_CENTER
+            }.refreshDrawableState()
         }
     }
 
@@ -267,7 +273,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     /**
      * Comprueba si el libro está en la lista de favs del user o no.
      */
-    private fun isLiked() {
+    private fun isLiked() =
         lifecycleScope.launch {
             try {
                 viewModel.isFavBook(CURRENT_BOOK)
@@ -282,6 +288,10 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
             } catch (e: DocumentNotFoundException) {
             }
         }
+
+
+    private fun isDownloaded() = lifecycleScope.launch {
+        viewModel.bookExist()
     }
 
     private fun addToFav() {

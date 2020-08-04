@@ -1,55 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Author: Victor Gonzalez -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <data>
+        <variable
+            name="book"
+            type="com.blazebooks.data.models.Book" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:cardCornerRadius="@dimen/round_corner_radious"
-        app:cardElevation="5dp"
-        android:id="@+id/bookSearchItemCv">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="200dp"
+            app:cardCornerRadius="@dimen/round_corner_radious"
+            app:cardElevation="5dp"
+            android:id="@+id/bookSearchItemCv">
 
-            <ImageView
-                android:src="@drawable/blazebooks_logo"
-                android:id="@+id/searchBookItemImg"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/book_description" />
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/searchBookItemImgPremium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_premium"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:contentDescription="@string/premium" />
+                <ImageView
+                    android:src="@drawable/blazebooks_logo"
+                    android:id="@+id/searchBookItemImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/book_description" />
 
-            <!-- Title -->
-            <TextView
-                app:autoSizeTextType="uniform"
-                android:padding="2dp"
-                android:id="@+id/searchBookItemText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="@color/grayTransparent"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true"
-                android:textSize="22sp" />
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/searchBookItemImgPremium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_premium"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/premium" />
 
-    </androidx.cardview.widget.CardView>
+                <!-- Title -->
+                <TextView
+                    app:autoSizeTextType="uniform"
+                    android:padding="2dp"
+                    android:id="@+id/searchBookItemText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@color/grayTransparent"
+                    android:textColor="@color/white"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="22sp" />
+            </RelativeLayout>
 
-</LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</layout>

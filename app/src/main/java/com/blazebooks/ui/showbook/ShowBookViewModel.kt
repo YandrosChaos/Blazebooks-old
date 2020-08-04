@@ -2,6 +2,7 @@ package com.blazebooks.ui.showbook
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.blazebooks.R
 import com.blazebooks.data.models.Book
 import com.blazebooks.data.db.entities.StoredBook
 import com.blazebooks.data.preferences.PreferenceProvider
@@ -9,6 +10,11 @@ import com.blazebooks.data.repositories.CatalogRepository
 import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.Coroutines
+import com.blazebooks.util.toast
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.synthetic.main.activity_show_book.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Resource
@@ -89,11 +95,10 @@ class ShowBookViewModel(
         }
     }
 
-    fun bookExist() {
-        Coroutines.main {
-            exist = storedBooksRepository.exist(CURRENT_BOOK.title.toString())
-        }
+    suspend fun bookExist() = withContext(Dispatchers.IO){
+        exist = storedBooksRepository.exist(CURRENT_BOOK.title.toString())
     }
+
 
 
     /**

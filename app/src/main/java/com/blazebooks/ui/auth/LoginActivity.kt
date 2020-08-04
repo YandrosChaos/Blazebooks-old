@@ -53,10 +53,10 @@ class LoginActivity : PreconfiguredActivity(), ForgotPasswdDialogListener, Kodei
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             //true
-                            premium = true
+                            PREMIUM = true
                         }, {
                             //false
-                            premium = false
+                            PREMIUM = false
                         })
                 } catch (e: ApiException) {
                     binding.root.snackbar("Check your internet connection, please.")

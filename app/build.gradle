@@ -45,7 +45,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -72,17 +72,17 @@ dependencies {
 
     //Google extra: Gson, viewpager2, materal, preference
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'com.google.android.material:material:1.3.0-alpha01'
+    implementation 'com.google.android.material:material:1.3.0-alpha02'
     implementation "androidx.preference:preference-ktx:1.1.1"
     implementation 'com.google.code.gson:gson:2.8.6'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-analytics:17.4.3'
-    implementation 'com.google.firebase:firebase-auth:19.3.1'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
-    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
+    implementation 'com.google.firebase:firebase-firestore:21.5.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
-    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation 'com.google.gms:google-services:4.3.3'
 
     //SQLite ROOM
@@ -120,5 +120,10 @@ dependencies {
             details -> details.useVersion("3.3.2-5309881")
         }
     }*/
+
+    //Groupie
+    implementation 'com.xwray:groupie:2.3.0'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.3.0'
+    implementation 'com.xwray:groupie-databinding:2.3.0'
 
 }

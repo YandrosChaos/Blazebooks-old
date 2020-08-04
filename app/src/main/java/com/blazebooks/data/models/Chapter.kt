@@ -6,5 +6,4 @@ data class Chapter(
     val image: String? = " ",
     var readed: Boolean = false,
     val textOrConnection: Any = "unknown"
-) {
-}
+)

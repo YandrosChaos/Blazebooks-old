@@ -2,35 +2,57 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:id="@+id/searchActivityMainLayout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/dark_background"
-        tools:context=".ui.search.SearchActivity">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/search_Toolbar"
-            layout="@layout/app_bar_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!-- Custom RecyclerView ... Animated -->
-        <com.blazebooks.data.models.CustomGridRecyclerView
-            android:id="@+id/recyclerView_search"
+        <RelativeLayout
+            android:id="@+id/searchActivityMainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/search_Toolbar" />
+            android:background="@drawable/dark_background"
+            tools:context=".ui.search.SearchActivity">
 
-        <FrameLayout
-            android:id="@+id/searchActivityFilterFragment"
+            <include
+                android:id="@+id/search_Toolbar"
+                layout="@layout/app_bar_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Custom RecyclerView ... Animated -->
+            <com.blazebooks.data.models.CustomGridRecyclerView
+                android:id="@+id/recyclerView_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/search_Toolbar" />
+
+            <FrameLayout
+                android:id="@+id/searchActivityFilterFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/searchALoadingSKV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:background="@color/grayTransparent"
             android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone" />
+            android:focusable="true">
 
-    </RelativeLayout>
+            <com.github.ybq.android.spinkit.SpinKitView
+                style="@style/SpinKitView.WanderingCubes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

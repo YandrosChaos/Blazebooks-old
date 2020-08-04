@@ -20,8 +20,8 @@ class ChapterViewHolder(itemView: View) :
         }
 
         //cargar los datos del libro para mostrarlos
-        itemView.showChapterTvNumberAux.text = chapter.number.toString()
-        itemView.showChapterTvTitleAux.text = chapter.title
+        itemView.showChapter_number.text = chapter.number.toString()
+        itemView.showChapter_title.text = chapter.title
 
         if (chapter.readed)
             itemView.showChapterIvReaded.setBackgroundResource(R.drawable.ic_check)

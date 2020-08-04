@@ -7,7 +7,6 @@ import com.blazebooks.R
 import com.blazebooks.data.models.Chapter
 
 /**
- * @see com.blazebooks.ui.showbook.ShowBookActivity
  * @author Victor González
  */
 class ChapterAdapter(private val chapterList: ArrayList<Chapter>) :

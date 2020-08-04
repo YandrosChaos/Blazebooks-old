@@ -5,7 +5,7 @@
     -->
     <string-array name="genres">
         <item>Adventure</item>
-        <item>Terror</item>
+        <item>Horror</item>
         <item>Sci-Fy</item>
         <item>Novel</item>
         <item>Graphic</item>

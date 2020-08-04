@@ -51,6 +51,12 @@
             android:title="@string/email_account_title" />
 
         <Preference
+            android:icon="@drawable/ic_premium"
+            android:key="premiumAccount"
+            android:summary="Go to the next level! Become premium!"
+            android:title="Premium Account" />
+
+        <Preference
             android:icon="@drawable/ic_cross"
             android:key="deleteAccount"
             android:summary="@string/delete_account_desc"

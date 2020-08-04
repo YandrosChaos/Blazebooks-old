@@ -14,4 +14,6 @@ class AccountRepository(
     fun updatePassword(passwd: String) = firebase.updatePassword(passwd)
 
     fun deleteAccount() = firebase.deleteAccount()
+
+    fun deletePremiumAccount() = firebase.deletePremiumAccount()
 }

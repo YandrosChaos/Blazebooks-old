@@ -156,7 +156,7 @@
     <string name="delete_account_dialog">Delete Account?</string>
     <string name="delete_account_dialog_desc">Do you want to delete your Blazebooks account? We will miss you :c</string>
     <string name="delete_account_dialog_confirm">Delete</string>
-    <string name="delete_account_dialog_cancel">Cancel</string>
+    <string name="delete_account_button">Cancel</string>
     <string name="delete_account_desc">Removes your BlazeBooks account and all your current subscriptions will be cancelled. We will miss you Y_Y</string>
     <string name="delete_account_tittle">Delete Account</string>
     <string name="profile_img_desc">Choose one!</string>
@@ -170,6 +170,17 @@
     <string name="username_account_title">Username</string>
     <string name="username_account_desc">Choose new username.</string>
     <string name="username_account_dialog_title">New username</string>
+    <string name="premium_account_desc">Go to the next level! Become premium!</string>
+    <string name="premium_account_title">Premium Account</string>
+    <string name="premium_account_dialog_message">"You already have premium account. Do you want to change it?"</string>
+    <string name="premium_account_dialog_free">Free Account</string>
+    <string name="delete_premium_account">Delete Premium Account</string>
+    <string name="delete_premium_account_desc">"Are you sure? This action can not be undone."</string>
+    <string name="premium_account_deleted_message">You have a free account now.</string>
+    <string name="confirm_button">OK</string>
+    <string name="empty_text_err">Write something!</string>
+    <string name="successful_operation">Success!</string>
+    <string name="become_premium">Become Premium</string>
 
     <!-- Reader -->
     <string name="button_Next_Page_Description">Next page</string>

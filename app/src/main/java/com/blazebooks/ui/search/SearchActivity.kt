@@ -38,7 +38,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-private const val DELAYED_GETDATA_TIME: Long = 500
+private const val DELAYED_GETDATA_TIME: Long = 1000
 
 /**
  * Search book activity.
@@ -88,9 +88,9 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         Handler().postDelayed({
             mAdapter.updateList(bookList)
             mAdapter.notifyDataSetChanged()
+            binding.searchALoadingSKV.visibility = View.GONE
             runRecyclerViewAnimation()
         }, DELAYED_GETDATA_TIME)
-
 
         //Search Event. After text change, filter the list and updates the adapter
         mSearchView.addTextChangedListener(object : TextWatcher {
@@ -276,6 +276,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
             getString(R.string.my_books) -> getLocalBooks()
             else -> getAllBooks()
         }
+
         bookList = viewModel.dataList
     }
 
