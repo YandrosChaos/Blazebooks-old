@@ -27,6 +27,7 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
     private lateinit var setUsernameButton: Preference
     private lateinit var setEmailButton: Preference
     private lateinit var setPassButton: Preference
+    private lateinit var setPremiumAccount: Preference
 
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -39,6 +40,7 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
         setUsernameButton = findPreference(NEW_USERNAME_KEY)!!
         setEmailButton = findPreference(NEW_EMAIL_KEY)!!
         setPassButton = findPreference(NEW_PASSWD_KEY)!!
+        setPremiumAccount = findPreference(PREMIUM_ACCOUNT_KEY)!!
 
         setUsernameButton.setOnPreferenceClickListener {
             createSetUsernameDialog().show()
@@ -59,6 +61,11 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
             createDeleteDialog().show()
             true
         }
+
+        setPremiumAccount.setOnPreferenceClickListener {
+            createSetPremiumAccountDialog().show()
+            true
+        }
     }
 
     /**
@@ -71,7 +78,6 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
     private fun createDeleteDialog(): AlertDialog {
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
 
-        // set message of alert dialog
         dialogBuilder.setMessage(getString(R.string.delete_account_dialog_desc))
             .setCancelable(false)
             .setTitle(getString(R.string.delete_account_dialog))
@@ -81,16 +87,14 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
-                            //success
                             controller.logout()
                             startLoginActivity()
                         }, {
-                            //faliure
                             toast(it.message!!)
                         })
                 }
             }
-            .setNegativeButton(getString(R.string.delete_account_dialog_cancel)) { dialog, _ ->
+            .setNegativeButton(getString(R.string.delete_account_button)) { dialog, _ ->
                 dialog.cancel()
             }
         return dialogBuilder.create()
@@ -107,9 +111,9 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
         val editText = dialogLayout.findViewById<EditText>(R.id.editText)
 
         dialogBuilder
-            .setTitle("New Username")
+            .setTitle(getString(R.string.username_account_dialog_title))
             .setView(dialogLayout)
-            .setPositiveButton("OK") { _, _ ->
+            .setPositiveButton(getString(R.string.confirm_button)) { _, _ ->
                 editText.text?.let {
                     if (it.isNotEmpty()) {
 
@@ -118,15 +122,13 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe()
-
                         }
-
                     } else {
-                        toast("Write something!")
+                        toast(getString(R.string.empty_text_err))
                     }
                 }
             }
-            .setNegativeButton(getString(R.string.delete_account_dialog_cancel)) { dialog, _ ->
+            .setNegativeButton(getString(R.string.delete_account_button)) { dialog, _ ->
                 dialog.dismiss()
             }
         return dialogBuilder.create()
@@ -138,35 +140,31 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
         val editText = dialogLayout.findViewById<EditText>(R.id.editText)
 
         dialogBuilder
-            .setTitle("New Email")
+            .setTitle(getString(R.string.email_acount_dialog_title))
             .setView(dialogLayout)
-            .setPositiveButton("OK") { _, _ ->
-                editText.text?.let {editText ->
+            .setPositiveButton(getString(R.string.confirm_button)) { _, _ ->
+                editText.text?.let { editText ->
                     if (
                         editText.isNotEmpty()
                         || !Patterns.EMAIL_ADDRESS.matcher(editText.toString()).matches()
                     ) {
-
                         lifecycleScope.launch {
                             controller.updateEmail(editText.toString())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe({
-                                    //success
-                                    toast("Success!")
+                                    toast(getString(R.string.successful_operation))
                                 }, {
-                                    //faliure
                                     toast(it.message!!)
                                 })
-
                         }
 
                     } else {
-                        toast("Write something!")
+                        toast(getString(R.string.empty_text_err))
                     }
                 }
             }
-            .setNegativeButton(getString(R.string.delete_account_dialog_cancel)) { dialog, _ ->
+            .setNegativeButton(getString(R.string.delete_account_button)) { dialog, _ ->
                 dialog.dismiss()
             }
         return dialogBuilder.create()
@@ -178,9 +176,9 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
         val editText = dialogLayout.findViewById<EditText>(R.id.editText)
 
         dialogBuilder
-            .setTitle("New Password")
+            .setTitle(getString(R.string.passwd_account_dialog_title))
             .setView(dialogLayout)
-            .setPositiveButton("OK") { _, _ ->
+            .setPositiveButton(getString(R.string.confirm_button)) { _, _ ->
                 editText.text?.let { editText ->
                     if (editText.isNotEmpty()) {
 
@@ -189,23 +187,73 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe({
-                                    //success
-                                    toast("Success!")
+                                    toast(getString(R.string.successful_operation))
                                 }, {
-                                    //faliure
                                     toast(it.message!!)
                                 })
 
                         }
 
                     } else {
-                        toast("Write something!")
+                        toast(getString(R.string.empty_text_err))
                     }
                 }
             }
-            .setNegativeButton(getString(R.string.delete_account_dialog_cancel)) { dialog, _ ->
+            .setNegativeButton(getString(R.string.delete_account_button)) { dialog, _ ->
                 dialog.dismiss()
             }
+        return dialogBuilder.create()
+    }
+
+    private fun createSetPremiumAccountDialog(): AlertDialog {
+        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+
+        if (!PREMIUM) {
+            dialogBuilder.setMessage(getString(R.string.premium_account_desc))
+                .setCancelable(false)
+                .setTitle(getString(R.string.become_premium))
+                .setPositiveButton(getString(R.string.become_premium)) { _, _ ->
+                    requireContext().startBecomePremiumActivity()
+                }
+                .setNegativeButton(getString(R.string.delete_account_button)) { dialog, _ ->
+                    dialog.cancel()
+                }
+        } else {
+            dialogBuilder.setMessage(getString(R.string.delete_account_dialog_desc))
+                .setCancelable(false)
+                .setTitle(getString(R.string.premium_account_title))
+                .setMessage(getString(R.string.premium_account_dialog_message))
+                .setPositiveButton(getString(R.string.delete_account_button)) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .setNegativeButton(getString(R.string.premium_account_dialog_free)) { _, _ ->
+                    createConfirmDialog().show()
+                }
+        }
+        return dialogBuilder.create()
+    }
+
+    private fun createConfirmDialog(): AlertDialog {
+        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+        dialogBuilder.setMessage(getString(R.string.delete_account_dialog_desc))
+            .setCancelable(false)
+            .setTitle(getString(R.string.delete_premium_account))
+            .setMessage(getString(R.string.delete_premium_account_desc))
+            .setPositiveButton(getString(R.string.delete_account_button)) { dialog, _ ->
+                dialog.cancel()
+            }
+            .setNegativeButton(getString(R.string.premium_account_dialog_free)) { _, _ ->
+                lifecycleScope.launch {
+                    controller.deletePremiumAccount()
+                        .observeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            PREMIUM = false
+                            requireContext().toast(getString(R.string.premium_account_deleted_message))
+                        }
+                }
+            }
+
         return dialogBuilder.create()
     }
 

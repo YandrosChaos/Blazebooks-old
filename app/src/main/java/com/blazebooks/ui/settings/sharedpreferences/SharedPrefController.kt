@@ -22,4 +22,7 @@ class SharedPrefController(
 
     fun logout() = logRepo.logout()
 
+    suspend fun deletePremiumAccount() =
+        withContext(Dispatchers.IO) { repository.deletePremiumAccount() }
+
 }

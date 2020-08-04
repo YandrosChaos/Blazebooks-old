@@ -9,7 +9,7 @@ const val PATH_CODE = "PATH_CODE"
 const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
 
 //CURRENT DATA
-var premium = false
+var PREMIUM = false
 lateinit var CURRENT_BOOK: Book
 
 //SHARED PREFERENCES KEYS
@@ -23,6 +23,7 @@ const val NEW_PASSWD_KEY = "passwdPref"
 const val NEW_EMAIL_KEY = "emailPref"
 const val DELETE_ACCOUNT_KEY = "deleteAccount"
 const val LAST_BOOK_SELECTED_KEY = "lastBookSelected"
+const val PREMIUM_ACCOUNT_KEY = "premiumAccount"
 
 //Default values
 const val DEFAULT_USERNAME_VALUE = "Blazebooks User"

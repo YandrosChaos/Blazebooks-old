@@ -159,7 +159,7 @@
     <string name="delete_account_dialog">¿Borrar cuenta?</string>
     <string name="delete_account_dialog_desc">¿Quieres borrar tu cuenta? Te echaremos de menos :c</string>
     <string name="delete_account_dialog_confirm">Borrar</string>
-    <string name="delete_account_dialog_cancel">Cancelar</string>
+    <string name="delete_account_button">Cancelar</string>
     <string name="delete_account_desc">Borra tu cuenta de Blazebooks actual y todas tus suscripciones. Te echaremos de menos Y_Y</string>
     <string name="delete_account_tittle">Borrar Cuenta</string>
     <string name="profile_img_desc">¡Escoge Una!</string>
@@ -173,6 +173,17 @@
     <string name="username_account_title">Nombre de Usuario</string>
     <string name="username_account_desc">Escoge un nuevo nombre de usuario.</string>
     <string name="username_account_dialog_title">Nuevo nombre de usuario</string>
+    <string name="premium_account_desc">¡Ves al siguiente nivel!¡Hazte premium!</string>
+    <string name="premium_account_title">Cuenta Premium</string>
+    <string name="premium_account_dialog_message">"Ya tienes una cuenta premium. ¿Quieres cambiarla?"</string>
+    <string name="premium_account_dialog_free">Cuenta Gratuita</string>
+    <string name="delete_premium_account">Eliminar Cuenta Gratuita</string>
+    <string name="delete_premium_account_desc">"¿Está seguro? Esta acción no se puede deshacer."</string>
+    <string name="premium_account_deleted_message">Tu cuenta vuelve a ser gratuita</string>
+    <string name="confirm_button">OK</string>
+    <string name="empty_text_err">¡Escribe algo!</string>
+    <string name="successful_operation">¡Operación completada!</string>
+    <string name="become_premium">Become Premium</string>
 
     <!-- Reader -->
     <string name="button_Next_Page_Description">Página siguiente </string>

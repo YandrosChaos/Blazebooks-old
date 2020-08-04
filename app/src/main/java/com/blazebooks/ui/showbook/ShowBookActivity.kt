@@ -107,7 +107,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     fun download(view: View) {
 
         when {
-            !premium && CURRENT_BOOK.premium -> {
+            !PREMIUM && CURRENT_BOOK.premium -> {
                 startBecomePremiumActivity()
             }
 
@@ -179,7 +179,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      */
     fun read(view: View) {
 
-        if (!premium && CURRENT_BOOK.premium) {
+        if (!PREMIUM && CURRENT_BOOK.premium) {
             startBecomePremiumActivity()
         } else {
             if (viewModel.exist) {

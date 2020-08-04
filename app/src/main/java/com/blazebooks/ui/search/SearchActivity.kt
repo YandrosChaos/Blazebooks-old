@@ -31,7 +31,6 @@ import com.blazebooks.util.snackbar
 import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.app_bar_search.*
 import kotlinx.android.synthetic.main.app_bar_search.view.*
 import kotlinx.coroutines.launch

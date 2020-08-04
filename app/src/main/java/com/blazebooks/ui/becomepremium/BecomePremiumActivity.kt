@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.databinding.ActivityBecomePremiumBinding
-import com.blazebooks.util.premium
+import com.blazebooks.util.PREMIUM
 import com.blazebooks.util.scrollToView
 import com.blazebooks.util.snackbar
 import com.google.android.gms.common.api.ApiException
@@ -78,7 +78,7 @@ class BecomePremiumActivity : PreconfiguredActivity(), KodeinAware {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         //success
-                        premium = true
+                        PREMIUM = true
                         binding.root.snackbar("Your profile is updated!")
                     }, {
                         //failure
