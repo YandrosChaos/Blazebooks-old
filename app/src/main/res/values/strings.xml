@@ -204,10 +204,11 @@
 
     <string-array name="fonts">
         <item>Arial</item>
-        <item>MinionPro</item>
-        <item>Montserrat</item>
-        <item>Droid</item>
+        <item>Arial Narrow</item>
         <item>Verdana</item>
+        <item>Trebuchet MS</item>
+        <item>Gill Sans</item>
+        <item>Noto Sans</item>
     </string-array>
 
 </resources>

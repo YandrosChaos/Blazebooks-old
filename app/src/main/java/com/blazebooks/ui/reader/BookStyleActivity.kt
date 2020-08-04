@@ -57,7 +57,7 @@ class BookStyleActivity : PreconfiguredActivity(), KodeinAware {
             ) {
                 val item = adapterView.getItemAtPosition(position).toString()
 
-                inputAsString= inputAsString.replace("font-family:.*;".toRegex(), "font-family:$item;")
+                inputAsString= inputAsString.replace("font-family:.*;".toRegex(), "font-family:\"$item\", sans-serif;")
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
@@ -66,7 +66,7 @@ class BookStyleActivity : PreconfiguredActivity(), KodeinAware {
         //Al pulsar se confirman los cambios y se cierra la actividad
         btn_acceptStyleChanges.setOnClickListener {
 
-            inputAsString= inputAsString.replace("font-size:.*;".toRegex(), "font-size:$fontSize"+"px;")
+            inputAsString= inputAsString.replace("/\\*font-size p\\*/font-size:.*;".toRegex(), "/\\*font-size p\\*/font-size:$fontSize"+"px;")
             FileOutputStream(cssFile).use {
                 it.write(inputAsString.toByteArray())
             }
