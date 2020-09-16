@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_reader"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -11,6 +12,19 @@
             android:id="@+id/readerActivityCL"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/ibtn_music"
+                android:layout_width="29dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:tint="#000000"
+                app:layout_constraintBottom_toTopOf="@+id/webViewReader"
+                app:layout_constraintEnd_toEndOf="@+id/tTime"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/ibtn_orientation"
+                app:layout_constraintTop_toTopOf="@+id/tTime"
+                app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />
 
             <ImageView
                 android:id="@+id/ibtn_orientation"
@@ -32,7 +46,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNext"
                 app:layout_constraintStart_toStartOf="@+id/buttonPrevious"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout" >
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout">
 
             </WebView>
 
@@ -123,8 +137,10 @@
                 android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
                 app:layout_constraintEnd_toStartOf="@+id/btn_readerSettings"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/ibtn_orientation"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/btn_readerSettings"

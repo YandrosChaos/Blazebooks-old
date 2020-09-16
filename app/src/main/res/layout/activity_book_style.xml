@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.reader.BookStyleActivity">
+    tools:context=".ui.reader.ReaderActivity">
 
     <Spinner
         android:id="@+id/spinner2"
@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.032" />
 
@@ -23,24 +23,28 @@
         android:id="@+id/textView"
         android:layout_width="59dp"
         android:layout_height="22dp"
+        android:layout_marginStart="8dp"
         android:text="Font"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.06" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <Button
+        android:id="@+id/btn_acceptStyleChanges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Font Size"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="48dp"
+        android:text="Accept"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibtn_sepia"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_fontSizeNumber"
@@ -52,6 +56,29 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_decreaseSize"
         app:layout_constraintStart_toEndOf="@+id/btn_increaseSize"
         app:layout_constraintTop_toTopOf="@+id/btn_increaseSize" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:text="Font Size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+
+    <ImageButton
+        android:id="@+id/btn_decreaseSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_increaseSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_increaseSize"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/baseline_remove_black_48" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -74,26 +101,131 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/baseline_add_black_48" />
 
-    <ImageButton
-        android:id="@+id/btn_decreaseSize"
+    <TextView
+        android:id="@+id/tv_MarginNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_increaseSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_increaseSize"
-        app:layout_constraintVertical_bias="0.0"
+        android:text="0"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_increaseMargin"
+        app:layout_constraintEnd_toEndOf="@+id/tv_fontSizeNumber"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_fontSizeNumber"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fontSizeNumber"
+        app:layout_constraintVertical_bias="0.914" />
+
+    <ImageButton
+        android:id="@+id/btn_decreaseMargin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_increaseMargin"
+        app:layout_constraintEnd_toEndOf="@+id/btn_decreaseSize"
+        app:layout_constraintStart_toStartOf="@+id/btn_decreaseSize"
+        app:layout_constraintTop_toBottomOf="@+id/btn_decreaseSize"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/baseline_remove_black_48" />
 
-    <Button
-        android:id="@+id/btn_acceptStyleChanges"
+    <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:text="Accept"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/spinner2"
+        app:layout_constraintTop_toTopOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/baseline_format_indent_increase_black_24" />
+
+    <ImageButton
+        android:id="@+id/btn_increaseMargin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_increaseSize"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/baseline_add_black_48" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:text="Margin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/btn_increaseSize" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:text="Background Color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/btn_increaseMargin" />
+
+    <ImageButton
+        android:id="@+id/ibtn_black"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ibtn_white"
+        app:layout_constraintEnd_toEndOf="@+id/btn_decreaseSize"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_decreaseSize"
+        app:layout_constraintTop_toTopOf="@+id/ibtn_white"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@color/black" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/spinner2"
+        app:layout_constraintTop_toTopOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/baseline_color_lens_black_24" />
+
+    <ImageButton
+        android:id="@+id/ibtn_white"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_increaseSize"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.008"
+        app:srcCompat="@color/white" />
+
+    <ImageButton
+        android:id="@+id/ibtn_sepia"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ibtn_white"
+        app:layout_constraintEnd_toStartOf="@+id/ibtn_black"
+        app:layout_constraintStart_toEndOf="@+id/ibtn_white"
+        app:layout_constraintTop_toTopOf="@+id/ibtn_white"
+        app:srcCompat="@color/colorPrimary" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_title_black_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

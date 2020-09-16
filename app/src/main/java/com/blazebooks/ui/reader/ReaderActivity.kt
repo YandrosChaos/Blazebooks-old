@@ -2,16 +2,22 @@ package com.blazebooks.ui.reader
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.R
 import com.blazebooks.databinding.ActivityReaderBinding
+import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.PATH_CODE
+import com.blazebooks.util.toast
+import kotlinx.android.synthetic.main.activity_book_style.*
 import kotlinx.android.synthetic.main.activity_reader.*
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.epub.EpubReader
@@ -19,6 +25,8 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.InputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -39,9 +47,10 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
     private lateinit var viewModel: ReaderViewModel
     private lateinit var binding: ActivityReaderBinding
     private var bookPath : String? = ""
-
+    private val mediaPlayer: MediaPlayer= MediaPlayer()
     private lateinit var layoutFilter: ImageView
     private var lastPage: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +62,18 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         loadLightMode()
         clock()
 
-        bookPath = intent.getStringExtra(PATH_CODE)
+        val titleBook = CURRENT_BOOK.title.toString()
 
-        val bookFolder = intent.getStringExtra("documents")
+        val bookFolder = "books/$titleBook"
+
+        bookPath = "$bookFolder/$titleBook.epub"
+
+
 
         viewModel.filesPath = this.getExternalFilesDir(null)?.absolutePath
 
-        viewModel.currentPage= viewModel.getLastPage(bookPath+"Page")
+        viewModel.currentPage = intent.getIntExtra("CHAPTER",  viewModel.getLastPage(bookPath + "Page"))
+
 
         val book = readEPub(bookPath)
 
@@ -80,10 +94,12 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         //Botón para acceder a los ajustes del libro
         btn_readerSettings.setOnClickListener{
 
+
             val cssPath= this.getExternalFilesDir(null)?.absolutePath+"/"+bookFolder+"/Styles/style.css"
-            val i= Intent(this, BookStyleActivity::class.java)
-            i.putExtra("cssPath", cssPath)
-            startActivity(i)
+
+            val fm= supportFragmentManager
+            val frag= SettingsDialogFragment(kodein, cssPath)
+            frag.show( fm, "si")
         }
 
         //Botón que cambia la orientación de la activity
@@ -94,7 +110,22 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
+        //Obtiene la canción a reproducir (Cuando esten las canciones se pondra el link como propiedad del libro y cada uno tendra la suya, de momento esta es de prueba)
+        mediaPlayer.setDataSource("https://firebasestorage.googleapis.com/v0/b/blazebooks-5e827.appspot.com/o/Songs%2FTheWitcher.mp3?alt=media&token=c9567bff-3764-43ee-aa66-ab83cf366849")
+        mediaPlayer.prepare()
+
+        ibtn_music.setOnClickListener {
+
+            if (mediaPlayer.isPlaying){
+                mediaPlayer.pause()
+            }else {
+                mediaPlayer.start()
+            }
+        }
+
     }
+
+
 
     /**
      * Lee el epub y lo guarda en un objeto book
@@ -110,6 +141,7 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         return book
     }
 
+
     /**
      * Al volver a la actividad se actualiza para mostrar los cambios
      *
@@ -119,7 +151,6 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         super.onRestart()
         recreate()
     }
-
 
     /**
      * Este método coge el contenido del libro y lo lee por capitulos dependiendo
@@ -235,7 +266,7 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
     override fun onStop() {
         super.onStop()
         viewModel.saveLastPagePref(bookPath+"Page")
-
+        mediaPlayer.stop()
     }
 
 }//class

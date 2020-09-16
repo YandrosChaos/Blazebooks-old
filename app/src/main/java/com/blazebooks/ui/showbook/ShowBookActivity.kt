@@ -24,7 +24,6 @@ import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_show_book.*
-import kotlinx.android.synthetic.main.item_show_book.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -55,10 +54,14 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_show_book)
         binding.activityShowBookViewPager.adapter = adapter
 
+
+
         viewModel = ViewModelProvider(this, factory).get(ShowBookViewModel::class.java)
         createTabs()
         isLiked()
         isDownloaded()
+
+
 
         Handler().postDelayed({
             setLikeUI()
@@ -200,14 +203,12 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
             startBecomePremiumActivity()
         } else {
             if (viewModel.exist) {
-                val titleBook = showBookTvTitle.text.toString()
+                val titleBook = CURRENT_BOOK.title.toString()
                 val documents = "books/$titleBook"
                 val i = Intent(this, ReaderActivity::class.java)
                 val bookUrl = "$documents/$titleBook.epub"
 
                 viewModel.saveIntoSharedPreferences(bookUrl)
-                i.putExtra(PATH_CODE, bookUrl)
-                i.putExtra("documents", documents)
 
                 startActivity(i)
                 overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)

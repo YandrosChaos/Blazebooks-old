@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blazebooks.R
 import com.blazebooks.data.models.Chapter
 
+
 /**
  * @author Victor González
  */
@@ -28,6 +29,7 @@ class ChapterAdapter(private val chapterList: ArrayList<Chapter>) :
         val item = chapterList[position]
         holder.bindChapter(item)
     }
+
 
     /**
      * Devuelve la posición del elemento a onCreateViewHolder. De esta forma se
