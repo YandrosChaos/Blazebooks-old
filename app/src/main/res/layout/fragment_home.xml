@@ -57,7 +57,7 @@
                 android:layout_margin="5sp"
                 android:background="@drawable/container_round_orange"
                 android:gravity="center"
-                android:onClick="@{viewModel::notImplemented}"
+                android:onClick="@{viewModel::onNewBooks}"
                 android:padding="10sp">
 
                 <ImageView

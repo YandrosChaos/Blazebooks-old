@@ -10,7 +10,7 @@ const val TOOLBAR_TITLE_CODE = "TOOLBAR_TITLE_CODE"
 
 //CURRENT DATA
 var PREMIUM = false
-lateinit var CURRENT_BOOK: Book
+lateinit var CURRENT_BOOK: Book;
 
 //SHARED PREFERENCES KEYS
 const val LANGUAGE_SETTING_KEY = "language"
@@ -22,7 +22,7 @@ const val NEW_USERNAME_KEY = "usernamePref"
 const val NEW_PASSWD_KEY = "passwdPref"
 const val NEW_EMAIL_KEY = "emailPref"
 const val DELETE_ACCOUNT_KEY = "deleteAccount"
-const val LAST_BOOK_SELECTED_KEY = "lastBookSelected"
+const val  LAST_BOOK_SELECTED_KEY = "lastBookSelected"
 const val PREMIUM_ACCOUNT_KEY = "premiumAccount"
 
 //Default values

@@ -46,7 +46,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
             this
         )
     }
-    private lateinit var viewModel: ShowBookViewModel
+    lateinit var viewModel: ShowBookViewModel
     private lateinit var binding: ActivityShowBookBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,8 +60,6 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
         createTabs()
         isLiked()
         isDownloaded()
-
-
 
         Handler().postDelayed({
             setLikeUI()
@@ -128,6 +126,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 binding.showBookBtnDownload.playAnimation()
                 view.refreshDrawableState()
 
+                //Al no estar descargado el botón de lectura se bloquea
                 binding.showBookBtnRead.isEnabled = false
                 binding.showBookBtnRead.isEnabled = false
                 binding.showBookBtnRead.isClickable = false
@@ -199,13 +198,18 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      */
     fun read(view: View) {
 
+       readChapter(0, view)
+
+    }
+
+    fun readChapter(pag: Int, view: View){
         if (!PREMIUM && CURRENT_BOOK.premium) {
             startBecomePremiumActivity()
         } else {
             if (viewModel.exist) {
                 val titleBook = CURRENT_BOOK.title.toString()
                 val documents = "books/$titleBook"
-                val i = Intent(this, ReaderActivity::class.java)
+                val i = Intent(this, ReaderActivity::class.java).putExtra("CHAPTER", pag)
                 val bookUrl = "$documents/$titleBook.epub"
 
                 viewModel.saveIntoSharedPreferences(bookUrl)
@@ -217,7 +221,6 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 view.snackbar(getString(R.string.not_dwnload_yet))
             }
         }
-
     }
 
     /**
@@ -236,6 +239,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                         dirPath
                     )
 
+                    //Cuando la descarga está completa el botón de Read se desbloquea.
                     showBookBtnRead.isEnabled = true
                     showBookBtnRead.isClickable = true
 
@@ -279,13 +283,13 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * Crea las diferentes tabs
      */
     private fun createTabs() {
-        TabLayoutMediator(binding.activityShowBookTabLayout, binding.activityShowBookViewPager,
-            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                when (position) {
-                    0 -> tab.text = getString(R.string.synopsis)
-                    1 -> tab.text = getString(R.string.chapters)
-                }
-            }).attach()
+        TabLayoutMediator(binding.activityShowBookTabLayout, binding.activityShowBookViewPager
+        ) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.synopsis)
+                1 -> tab.text = getString(R.string.chapters)
+            }
+        }.attach()
     }
 
     /**

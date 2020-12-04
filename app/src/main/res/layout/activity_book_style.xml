@@ -53,9 +53,11 @@
         android:text="14"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_increaseSize"
-        app:layout_constraintEnd_toStartOf="@+id/btn_decreaseSize"
-        app:layout_constraintStart_toEndOf="@+id/btn_increaseSize"
-        app:layout_constraintTop_toTopOf="@+id/btn_increaseSize" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_increaseSize"
+        app:layout_constraintHorizontal_bias="0.744"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_increaseSize"
+        app:layout_constraintVertical_bias="0.526" />
 
     <TextView
         android:id="@+id/textView2"
@@ -73,9 +75,10 @@
         android:id="@+id/btn_decreaseSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_increaseSize"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_fontSizeNumber"
+        app:layout_constraintHorizontal_bias="0.345"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_increaseSize"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/baseline_remove_black_48" />
@@ -96,6 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.869"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintVertical_bias="0.0"
@@ -109,7 +114,7 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_increaseMargin"
         app:layout_constraintEnd_toEndOf="@+id/tv_fontSizeNumber"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tv_fontSizeNumber"
         app:layout_constraintTop_toBottomOf="@+id/tv_fontSizeNumber"
         app:layout_constraintVertical_bias="0.914" />
@@ -120,6 +125,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/btn_increaseMargin"
         app:layout_constraintEnd_toEndOf="@+id/btn_decreaseSize"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/btn_decreaseSize"
         app:layout_constraintTop_toBottomOf="@+id/btn_decreaseSize"
         app:layout_constraintVertical_bias="1.0"
@@ -142,10 +148,10 @@
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btn_increaseSize"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.032"
         app:srcCompat="@drawable/baseline_add_black_48" />
 
     <TextView
@@ -178,10 +184,10 @@
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="@+id/ibtn_white"
         app:layout_constraintEnd_toEndOf="@+id/btn_decreaseSize"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btn_decreaseSize"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_decreaseMargin"
         app:layout_constraintTop_toTopOf="@+id/ibtn_white"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@color/black" />
 
     <ImageView
@@ -201,7 +207,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btn_increaseSize"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:layout_constraintVertical_bias="0.008"
@@ -213,8 +219,10 @@
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="@+id/ibtn_white"
         app:layout_constraintEnd_toStartOf="@+id/ibtn_black"
-        app:layout_constraintStart_toEndOf="@+id/ibtn_white"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_increaseMargin"
         app:layout_constraintTop_toTopOf="@+id/ibtn_white"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@color/colorPrimary" />
 
     <ImageView

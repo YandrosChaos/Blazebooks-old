@@ -18,6 +18,8 @@ class CatalogRepository(
 
     fun getAllFavBooks() = firebaseSource.getAllFavBooks()
 
+    fun getNewBooks() = firebaseSource.getNewBooks()
+
     fun getAllBooks() = firebaseSource.getAllBooks()
 
 }

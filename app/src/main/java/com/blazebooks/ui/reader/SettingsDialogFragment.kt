@@ -1,6 +1,5 @@
 package com.blazebooks.ui.reader
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +41,7 @@ class SettingsDialogFragment(override val kodein: Kodein, private val cssPath: S
         return rootView
     }
 
-    fun options(rootView: View){
+    private fun options(rootView: View){
 
         val btnAcceptStyleChanges= rootView.findViewById<Button>(R.id.btn_acceptStyleChanges)
         val tvFontSizeNumber= rootView.findViewById<TextView>(R.id.tv_fontSizeNumber)

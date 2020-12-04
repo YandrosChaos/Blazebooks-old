@@ -26,6 +26,7 @@ import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialog
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialogListener
 import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.ui.settings.SettingsActivity
+import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.PATH_CODE
 import com.blazebooks.util.snackbar
 import com.blazebooks.util.startLoginActivity

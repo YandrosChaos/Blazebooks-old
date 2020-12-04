@@ -54,6 +54,12 @@ class SearchActivityViewModel(
         catalogRepository.getAllFavBooks()
     }
 
+    suspend fun getNewBooks() = withContext(Dispatchers.IO) {
+        catalogRepository.getNewBooks()
+    }
+
+
+
     private fun addStoredBookToDataList(book: StoredBook) =
         dataList.add(book.transformFromJsonData())
 

@@ -66,6 +66,7 @@ class SharedPreferencesFragment : PreferenceFragmentCompat(), KodeinAware {
             createSetPremiumAccountDialog().show()
             true
         }
+
     }
 
     /**

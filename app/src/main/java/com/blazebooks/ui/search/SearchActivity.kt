@@ -275,6 +275,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         when (downloadType) {
             getString(R.string.fav_books) -> getFavBooks()
             getString(R.string.my_books) -> getLocalBooks()
+            getString(R.string.new_books) -> getNewBooks()
             else -> getAllBooks()
         }
 
@@ -296,6 +297,22 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         } catch (e: ApiException) {
         }
     }
+
+    private fun getNewBooks() = lifecycleScope.launch {
+        try {
+            viewModel.getNewBooks()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    viewModel.dataList.addAll(it)
+                }, {
+                    binding.root.snackbar(it.message.toString())
+                })
+        } catch (e: ApiException) {
+        }
+    }
+
+
 
     private fun getAllBooks() = lifecycleScope.launch {
         try {

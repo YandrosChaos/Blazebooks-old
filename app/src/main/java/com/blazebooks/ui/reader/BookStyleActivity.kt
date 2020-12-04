@@ -27,7 +27,7 @@ class BookStyleActivity : PreconfiguredActivity(), KodeinAware {
 
         viewModel = ViewModelProvider(this, factory).get(BookStyleViewModel::class.java)
 
-        val cssPath= intent.getStringExtra("cssPath")
+        val cssPath= intent?.getStringExtra("cssPath").toString()
         val cssFile= File(cssPath)
         var inputAsString = FileInputStream(cssFile).bufferedReader().use { it.readText() }
         var fontSize= viewModel.getFontSize(cssPath+"_fontSize")

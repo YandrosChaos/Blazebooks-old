@@ -12,8 +12,11 @@ import com.google.firebase.auth.UserProfileChangeRequest.Builder
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
 import io.reactivex.Observable
+import java.util.*
+import kotlin.collections.ArrayList
 
 private const val FAV_BOOKS_COLLECTION = "FavBooks"
+private const val BOOKS_COLLECTION = "Books"
 private const val FAV_BOOKS_SUBCOLLECTION = "likedBooks"
 private const val PREMIUM_ACCOUNTS_COLLECTION = "PremiumAccounts"
 private const val PREMIUM_ACCOUNT_KEY = "account"
@@ -204,6 +207,33 @@ class FirebaseSource {
                 }
             }
     }
+
+    fun getNewBooks() = Observable.create<MutableList<Book>> { emitter ->
+
+        val c: Calendar = Calendar.getInstance()
+        val today: Date = c.time
+        c.add(Calendar.DATE, -15)
+        val nDaysAgo: Date = c.time
+        val dataList = mutableListOf<Book>()
+        db.collection(BOOKS_COLLECTION)
+            .whereGreaterThan("creationDate", nDaysAgo)
+            .whereLessThan("creationDate", today)
+            .get()
+            .addOnCompleteListener { task ->
+                if (!emitter.isDisposed) {
+                    if (task.isSuccessful) {
+                        for (document in task.result!!) {
+                            dataList.add(document.toObject(Book::class.java))
+                        }
+                        emitter.onNext(dataList)
+                    } else {
+                        emitter.onError(task.exception!!)
+                    }
+                }
+            }
+    }
+
+
 
     fun getAllBooks() = Observable.create<MutableList<Book>> { emitter ->
         val dataList = mutableListOf<Book>()
