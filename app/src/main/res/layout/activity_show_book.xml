@@ -68,7 +68,7 @@
                 android:layout_marginTop="5sp"
                 android:layout_marginEnd="20sp"
                 android:layout_marginBottom="5sp"
-                android:background="@drawable/ic_search"
+                android:background="@drawable/ic_reading_book"
                 android:backgroundTint="@color/colorPrimary"
                 android:contentDescription="@string/read"
                 android:onClick="read"

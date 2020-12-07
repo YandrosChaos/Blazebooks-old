@@ -1,5 +1,6 @@
 package com.blazebooks.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -107,6 +108,16 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
         })
     }
 
+    override fun onPause() {
+        super.onPause()
+        finish()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
 
     /**
      * If search view is occult, finishes the activity. Else, closes the search view, updates
@@ -173,7 +184,6 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
      * @author Victor Gonzalez
      */
     override fun onClearFilters(dialog: FilterDialog) = searchFilter.clearFilters()
-
 
     /**
      * Closes the filter dialog and updates the view.
@@ -290,6 +300,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    viewModel.dataList.clear()
                     viewModel.dataList.addAll(it)
                 }, {
                     binding.root.snackbar(it.message.toString())
@@ -304,6 +315,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    viewModel.dataList.clear()
                     viewModel.dataList.addAll(it)
                 }, {
                     binding.root.snackbar(it.message.toString())
@@ -320,6 +332,7 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    viewModel.dataList.clear()
                     viewModel.dataList.addAll(it)
                 }, {
                     binding.root.snackbar(it.message.toString())

@@ -18,6 +18,7 @@ import com.blazebooks.ui.auth.LoginActivity
 import com.blazebooks.ui.auth.SignUpActivity
 import com.blazebooks.ui.becomepremium.BecomePremiumActivity
 import com.blazebooks.ui.main.MainActivity
+import com.blazebooks.ui.search.SearchActivity
 import com.google.android.material.snackbar.Snackbar
 
 fun Context.startMainActivity() =
