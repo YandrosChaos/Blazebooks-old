@@ -68,5 +68,9 @@ class PreferenceProvider(
 
     fun getFontSize(key: String) = preferences.getInt(key, 14)
 
+    fun setMargin(key: String, margin: Int) = preferences.edit().putInt(key ,margin).apply()
+
+    fun getMargin(key: String) = preferences.getInt(key, 0)
+
 
 }

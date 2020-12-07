@@ -25,7 +25,6 @@
         <activity android:name=".PreconfiguredActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.showbook.ShowBookActivity" />
-        <activity android:name=".ui.reader.BookStyleActivity"/>
         <activity
             android:name=".ui.auth.SignUpActivity"
             android:theme="@style/LoginPage"
