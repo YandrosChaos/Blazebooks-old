@@ -16,7 +16,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.R
 import com.blazebooks.databinding.ActivityReaderBinding
+import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.LAST_BOOK_SELECTED_KEY
+import com.blazebooks.util.toast
 import kotlinx.android.synthetic.main.activity_reader.*
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.epub.EpubReader
@@ -24,6 +26,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 import java.io.File
+import java.io.IOException
 import java.io.InputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -101,12 +104,23 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         }
 
         //Obtiene la canción a reproducir (Cuando esten las canciones se pondra el link como propiedad del libro y cada uno tendra la suya, de momento esta es de prueba)
-        mediaPlayer.setDataSource("https://firebasestorage.googleapis.com/v0/b/blazebooks-5e827.appspot.com/o/Songs%2FTheWitcher.mp3?alt=media&token=c9567bff-3764-43ee-aa66-ab83cf366849")
-        mediaPlayer.prepare()
+        //mediaPlayer.setDataSource("https://firebasestorage.googleapis.com/v0/b/blazebooks-5e827.appspot.com/o/Songs%2FTheWitcher.mp3?alt=media&token=c9567bff-3764-43ee-aa66-ab83cf366849")
+        try {
+            mediaPlayer.setDataSource(CURRENT_BOOK.music)
+        } catch (e: UninitializedPropertyAccessException) {
+            mediaPlayer.setDataSource("https://firebasestorage.googleapis.com/v0/b/blazebooks-5e827.appspot.com/o/Songs%2FTheWitcher.mp3?alt=media&token=c9567bff-3764-43ee-aa66-ab83cf366849")
+            toast("Reinicie para escuchar la música")
+        }
 
-        ibtn_music.setOnClickListener {
-            if (mediaPlayer.isPlaying) mediaPlayer.pause()
-            else mediaPlayer.start()
+
+        try{
+            mediaPlayer.prepare()
+            ibtn_music.setOnClickListener {
+                if (mediaPlayer.isPlaying) mediaPlayer.pause()
+                else mediaPlayer.start()
+            }
+        } catch (e: IOException){
+            toast("si")
         }
 
     }
@@ -131,6 +145,13 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
      */
     override fun onRestart() {
         super.onRestart()
+        finish()
+        overridePendingTransition(0,0)
+        startActivity(intent)
+        overridePendingTransition(0,0)
+    }
+
+    fun refresh() {
         finish()
         overridePendingTransition(0,0)
         startActivity(intent)

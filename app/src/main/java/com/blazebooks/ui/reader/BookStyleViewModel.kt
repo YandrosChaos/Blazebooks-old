@@ -9,5 +9,7 @@ class BookStyleViewModel(
 
     fun setFontSize(key: String, fontSize: Int) = preferenceProvider.setFontSize(key, fontSize)
     fun getFontSize(key: String) = preferenceProvider.getFontSize(key)
+    fun setMargin(key: String, margin: Int) = preferenceProvider.setMargin(key, margin)
+    fun getMargin(key: String) = preferenceProvider.getMargin(key)
 
 }//class
