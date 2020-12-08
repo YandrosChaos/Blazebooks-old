@@ -32,7 +32,8 @@
     <string name="fav_books">Libros Favoritos</string>
     <string name="my_books">Mis Libros</string>
 
-    <!-- ABOUT FRAGMENT Strings-->
+    <!-- ABOUT FRAGMENT -->
+    <string name="follow_us">Siguenos</string>
     <string name="credits_title">Creditos</string>
     <string name="become_author">Conviertete en Autor</string>
     <string name="social_networks">Redes Sociales</string>
@@ -41,29 +42,9 @@
     <string name="instagram_button">Ir a Instagram</string>
     <string name="twiter_button">Ir a Twitter</string>
     <string name="credits">
-        Developer I - Victor Develops  \n
-        Developer II - Mounir Zbayr Samadi \n\n
-
-        Sound Efects - Dirge Inferno \n\n
-        Composer I - Victor Develops \n
-
-        RESOURCES\n
-        icons - prettycons from flaticon.com\n
-        icons - Freepik from freepik.com\n
-        Font - github.com/theleagueof/league-spartan
-        Images - pixabay.com\n\n
-
-        DEPENDENCIES\n
-        Android-SpinKit\n
-        Firebase\n
-        Viewpager2\n
-        Material\n
-        Coil\n
-        Epublib\n
-        Kodein\n
-        RxJava\n
-        SQLite Room\n
-        Airbnb Lottie Android\n\n
+Victor Develops - Programador\nMounir Zbayr Samadi - Programador\n\n
+        RECURSOS\n\nicons - prettycons from flaticon.com\nicons - Freepik from freepik.com\nFont - github.com/theleagueof/league-spartan\nImages - pixabay.com\n\n
+        LIBRERÍAS\n\nAndroid-SpinKit\nFirebase\nViewpager2\nMaterial\nCoil\nEpublib\nKodein\nRxJava\nSQLite Room\nAirbnb Lottie Android\n\n
     </string>
 
     <!-- Type of Accounts-->

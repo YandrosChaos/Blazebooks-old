@@ -32,7 +32,7 @@
         android:layout_marginTop="10sp"
         android:layout_marginBottom="5sp"
         android:background="@color/black"
-        android:text="Visit us in the Internet"
+        android:text="@string/follow_us"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp" />

@@ -72,7 +72,8 @@ class AboutFragmentAdapter(
                 item.first,
                 when (item.first) {
                     activity.getString(R.string.about) -> {
-                        "We are blazebooks and bleh bleh bleh... blah blah blah... lorem impsum lorem impsum lorem ipsum ..."
+                        "Blazebooks nace dentro de la mente de dos programadores, como trabajo final de grado.\n" +
+                                "\nEs una aplicación que interconecta lo nuevo y lo viejo; una nueva forma de vivir la literatura y la cultura."
                     }
                     activity.resources.getString(R.string.become_author) -> {
                         "Not implemented... by de moment >:v"

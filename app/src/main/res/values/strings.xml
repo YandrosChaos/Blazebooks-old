@@ -32,6 +32,7 @@
     <string name="my_books">My Books</string>
 
     <!-- ABOUT FRAGMENT Strings-->
+    <string name="follow_us">Follow Us</string>
     <string name="facebook_button">Go to Facebook</string>
     <string name="instagram_button">Go to Instagram</string>
     <string name="twiter_button">Go to Twitter</string>
@@ -40,29 +41,9 @@
     <string name="social_networks">Social Networks</string>
     <string name="about">About Blazebooks</string>
     <string name="credits">
-        Developer I - Victor Develops  \n
-        Developer II - Mounir Zbayr Samadi \n\n
-
-        Sound Efects - Dirge Inferno \n\n
-        Composer I - Victor Develops \n
-
-        RESOURCES\n
-        icons - prettycons from flaticon.com\n
-        icons - Freepik from freepik.com\n
-        Font - github.com/theleagueof/league-spartan
-        Images - pixabay.com\n\n
-
-        DEPENDENCIES\n
-        Android-SpinKit\n
-        Firebase\n
-        Viewpager2\n
-        Material\n
-        Coil\n
-        Epublib\n
-        Kodein\n
-        RxJava\n
-        SQLite Room\n
-        Airbnb Lottie Android\n\n
+        Victor Develops - Developer\nMounir Zbayr Samadi - Developer\n\n
+        RESOURCES\n\nicons - prettycons from flaticon.com\nicons - Freepik from freepik.com\nFont - github.com/theleagueof/league-spartan\nImages - pixabay.com\n\n
+        DEPENDENCIES\n\nAndroid-SpinKit\nFirebase\nViewpager2\nMaterial\nCoil\nEpublib\nKodein\nRxJava\nSQLite Room\nAirbnb Lottie Android\n\n
     </string>
 
     <!-- Type of Accounts-->
