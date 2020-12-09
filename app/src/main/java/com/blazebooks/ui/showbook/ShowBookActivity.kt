@@ -131,7 +131,6 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 binding.showBookBtnRead.isEnabled = false
                 binding.showBookBtnRead.isClickable = false
 
-
                 toast(getString(R.string.dwnloading))
 
                 documentsFolder.mkdirs() // Crea la carpeta en la direccion dada
@@ -150,10 +149,10 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                     documentsFolder.delete() //Borra la carpeta creada al dar error
                 }
 
+                //Almacena la info dentro de la base de datos local
                 viewModel.storeBookIntoLocalDatabase(
-                    titleBook,
-                    documents
-                )//almacena la info dentro de la base de datos local
+                    titleBook, documents
+                )
 
                 binding.showBookBtnRead.isEnabled = true
             }
@@ -169,19 +168,16 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                     .setCancelable(false)
                     .setPositiveButton((getString(R.string.accept_delete_book))) { _, _ ->
                         viewModel.deleteBookFromLocalDatabase(
-                            titleBook,
-                            documents
+                            titleBook, documents
                         )
 
                         File( "$filesPath/$documents" ).deleteRecursively()
                         finish()
-
                     }
                     .setNegativeButton((getString(R.string.cancel_delete_book))) { dialog, _ ->
                         dialog.cancel()
                     }
                 dialogBuilder.create().show()
-
             }
         }
     }//download
@@ -197,9 +193,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * @author Victor Gonzalez
      */
     fun read(view: View) {
-
        readChapter(0, view)
-
     }
 
     fun readChapter(pag: Int, view: View){
@@ -211,9 +205,7 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
                 val documents = "books/$titleBook"
                 val i = Intent(this, ReaderActivity::class.java).putExtra("CHAPTER", pag)
                 val bookUrl = "$documents/$titleBook.epub"
-
                 viewModel.saveIntoSharedPreferences(bookUrl)
-
                 startActivity(i)
                 overridePendingTransition(R.anim.zoom_in, R.anim.static_animation)
                 finish()
@@ -245,7 +237,6 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
 
                     toast(getString(R.string.dwnload_cmplete))
                 }
-
                 override fun onError(error: com.downloader.Error?) {
                     toast(getString(R.string.dwnload_error))
                 }
@@ -283,8 +274,8 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
      * Crea las diferentes tabs
      */
     private fun createTabs() {
-        TabLayoutMediator(binding.activityShowBookTabLayout, binding.activityShowBookViewPager
-        ) { tab, position ->
+        TabLayoutMediator(binding.activityShowBookTabLayout, binding.activityShowBookViewPager )
+        { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.synopsis)
                 1 -> tab.text = getString(R.string.chapters)

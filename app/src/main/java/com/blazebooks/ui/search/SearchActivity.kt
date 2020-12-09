@@ -110,13 +110,22 @@ class SearchActivity : PreconfiguredActivity(), FilterDialogListener, KodeinAwar
 
     override fun onPause() {
         super.onPause()
-        finish()
+        //finish()
     }
 
     override fun onStop() {
         super.onStop()
-        finish()
+        //finish()
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        finish()
+        overridePendingTransition(0,0)
+        startActivity(intent)
+        overridePendingTransition(0,0)
+    }
+
 
 
     /**

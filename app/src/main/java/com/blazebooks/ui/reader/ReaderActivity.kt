@@ -104,14 +104,11 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         }
 
         //Obtiene la canción a reproducir (Cuando esten las canciones se pondra el link como propiedad del libro y cada uno tendra la suya, de momento esta es de prueba)
-        //mediaPlayer.setDataSource("https://firebasestorage.googleapis.com/v0/b/blazebooks-5e827.appspot.com/o/Songs%2FTheWitcher.mp3?alt=media&token=c9567bff-3764-43ee-aa66-ab83cf366849")
         try {
             mediaPlayer.setDataSource(CURRENT_BOOK.music)
         } catch (e: UninitializedPropertyAccessException) {
             mediaPlayer.setDataSource("https://firebasestorage.googleapis.com/v0/b/blazebooks-5e827.appspot.com/o/Songs%2FTheWitcher.mp3?alt=media&token=c9567bff-3764-43ee-aa66-ab83cf366849")
-            toast("Reinicie para escuchar la música")
         }
-
 
         try{
             mediaPlayer.prepare()
@@ -119,9 +116,7 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
                 if (mediaPlayer.isPlaying) mediaPlayer.pause()
                 else mediaPlayer.start()
             }
-        } catch (e: IOException){
-            toast("si")
-        }
+        } catch (e: IOException){ }
 
     }
 
@@ -177,26 +172,19 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
     }
 
     /**
-     * Método que añade al textview tTime la hora en tiempo real
+     * Método que añade al TextView tTime la hora en tiempo real
      *
      * @author Mounir Zbayr
      */
     private fun clock() {
-
-        val thread = Thread(Runnable {
+        val thread = Thread {
             try {
                 while (!Thread.interrupted()) {
                     Thread.sleep(1000)
-                    runOnUiThread {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            tTime.text =
-                                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        }
-                    }
+                    runOnUiThread { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) tTime.text = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")) }
                 }
-            } catch (e: InterruptedException) {
-            }
-        })
+            } catch (e: InterruptedException) {}
+        }
         thread.start()
     }
 

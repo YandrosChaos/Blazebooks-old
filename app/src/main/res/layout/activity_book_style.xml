@@ -218,12 +218,12 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="@+id/ibtn_white"
-        app:layout_constraintEnd_toStartOf="@+id/ibtn_black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/btn_increaseMargin"
         app:layout_constraintTop_toTopOf="@+id/ibtn_white"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@color/colorPrimary" />
+        app:srcCompat="@color/sepiaTransparent" />
 
     <ImageView
         android:id="@+id/imageView2"
