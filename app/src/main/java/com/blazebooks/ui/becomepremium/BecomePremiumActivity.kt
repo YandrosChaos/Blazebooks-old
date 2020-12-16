@@ -61,7 +61,8 @@ class BecomePremiumActivity : PreconfiguredActivity(), KodeinAware {
         }
 
         becomePremiumYearlyBtn.setOnClickListener {
-            newYearlySubscription()
+            binding.root.snackbar("Not implemented yet =>")
+            //newYearlySubscription()
         }
 
         //finish the activity
