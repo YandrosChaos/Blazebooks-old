@@ -39,7 +39,7 @@ class BookPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val rootView = inflater.inflate(R.layout.fragment_a, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_page, container, false)
         val webViewReader = rootView.findViewById<WebView>(R.id.webViewReader)
         (activity as ReaderActivity?)?.updatePageTextView(arguments?.getInt(POSITION)!!-1)
         webViewReader.loadDataWithBaseURL(

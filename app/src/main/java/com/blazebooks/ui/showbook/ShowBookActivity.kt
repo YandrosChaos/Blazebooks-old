@@ -1,10 +1,12 @@
 package com.blazebooks.ui.showbook
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -49,17 +51,17 @@ class ShowBookActivity : PreconfiguredActivity(), KodeinAware {
     lateinit var viewModel: ShowBookViewModel
     private lateinit var binding: ActivityShowBookBinding
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_show_book)
         binding.activityShowBookViewPager.adapter = adapter
-
-
-
         viewModel = ViewModelProvider(this, factory).get(ShowBookViewModel::class.java)
         createTabs()
         isLiked()
         isDownloaded()
+
+        //binding.showBookBtnDownload.isEnabled = viewModel.isNetworkAvailable(this)
 
         Handler().postDelayed({
             setLikeUI()

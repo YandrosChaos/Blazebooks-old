@@ -1,6 +1,7 @@
 package com.blazebooks.ui.main
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,24 +18,24 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import coil.api.clear
 import coil.api.load
 import com.blazebooks.R
 import com.blazebooks.PreconfiguredActivity
+import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.databinding.ActivityMainCompleteBinding
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialog
 import com.blazebooks.ui.customdialogs.profileimage.ProfileImageDialogListener
 import com.blazebooks.ui.reader.ReaderActivity
 import com.blazebooks.ui.settings.SettingsActivity
-import com.blazebooks.util.CURRENT_BOOK
-import com.blazebooks.util.PATH_CODE
-import com.blazebooks.util.snackbar
-import com.blazebooks.util.startLoginActivity
+import com.blazebooks.util.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main_complete.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.io.File
 
 class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener, KodeinAware {
     override val kodein by kodein()
@@ -47,6 +48,12 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener, Kodein
     private lateinit var name: TextView
     private lateinit var email: TextView
     private lateinit var appBarConfiguration: AppBarConfiguration
+    //private val storedBooksRepository: StoredBooksRepository
+
+    private val preferences: SharedPreferences
+        get() = PreferenceManager.getDefaultSharedPreferences(
+            applicationContext
+        )
 
     /**
      * @param savedInstanceState
@@ -103,9 +110,12 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener, Kodein
      * shows a snackbar.
      *
      * @author Victor Gonzalez
+     * @author Mounir Zbayr
      */
     private fun onLastBookClicked() {
-        if (!viewModel.urlBook.isNullOrEmpty()) {
+        val lastBook= preferences.getString(LAST_BOOK_SELECTED_KEY, null)
+        val book= File(this.getExternalFilesDir(null)?.absolutePath!!+"/"+lastBook)
+        if (!lastBook.isNullOrEmpty() && book.exists()) {
             Intent(this, ReaderActivity::class.java).also {
                 it.putExtra(PATH_CODE, viewModel.urlBook)
                 startActivity(it)
@@ -204,4 +214,6 @@ class MainActivity : PreconfiguredActivity(), ProfileImageDialogListener, Kodein
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
         }
     }
+
+
 }

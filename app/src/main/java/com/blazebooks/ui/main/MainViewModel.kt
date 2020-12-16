@@ -3,6 +3,7 @@ package com.blazebooks.ui.main
 import androidx.lifecycle.ViewModel
 import com.blazebooks.data.preferences.PreferenceProvider
 import com.blazebooks.data.repositories.LoginRepository
+import com.blazebooks.data.repositories.StoredBooksRepository
 import com.blazebooks.ui.auth.LoginActivity
 import com.blazebooks.util.DEFAULT_PROFILE_IMAGE
 import com.blazebooks.util.DEFAULT_USERNAME_VALUE

@@ -2,23 +2,24 @@ package com.blazebooks.ui.reader
 
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.blazebooks.PreconfiguredActivity
 import com.blazebooks.R
 import com.blazebooks.databinding.ActivityReaderBinding
 import com.blazebooks.util.CURRENT_BOOK
 import com.blazebooks.util.LAST_BOOK_SELECTED_KEY
-import com.blazebooks.util.toast
 import kotlinx.android.synthetic.main.activity_reader.*
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.epub.EpubReader
@@ -42,11 +43,11 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
     private val factory by instance<ReaderViewModelFactory>()
     private lateinit var viewModel: ReaderViewModel
     private lateinit var binding: ActivityReaderBinding
-    private var bookPath : String? = ""
-    private val mediaPlayer: MediaPlayer= MediaPlayer()
+    private var bookPath: String? = ""
+    private val mediaPlayer: MediaPlayer = MediaPlayer()
     private lateinit var layoutFilter: ImageView
     private var lastPage: Int = 0
-    private val fragments:ArrayList<Fragment> = arrayListOf();
+    private val fragments: ArrayList<Fragment> = arrayListOf();
     private lateinit var viewPager2: ViewPager2
     private lateinit var absolutePath: String
 
@@ -56,15 +57,16 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         )
 
 
-
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reader)
         layoutFilter = findViewById(R.id.readerFilterImageView)
         viewPager2 = findViewById(R.id.viewpager)
+        viewPager2.reduceDragSensitivity()
         viewModel = ViewModelProvider(this, factory).get(ReaderViewModel::class.java)
-        absolutePath= this.getExternalFilesDir(null)?.absolutePath!!
+        absolutePath = this.getExternalFilesDir(null)?.absolutePath!!
 
         loadLightMode()
         clock()
@@ -72,17 +74,20 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         bookPath = preferences.getString(LAST_BOOK_SELECTED_KEY, null)
         viewModel.filesPath = absolutePath
 
-        val chapter = intent.getIntExtra("CHAPTER",0)
-        if(chapter!=0){
+        val chapter = intent.getIntExtra("CHAPTER", 0)
+        if (chapter != 0) {
             viewModel.currentPage = chapter
-        }else {
+        } else {
             viewModel.currentPage = viewModel.getLastPage(bookPath + "Page")
         }
 
         val book = readEPub(bookPath)
 
         val splitParts = bookPath?.split("/")
-        val bookFolder = bookPath?.replace("/"+splitParts?.get(splitParts.size-1).toString(), "")
+        val bookFolder = bookPath?.replace(
+            "/" + splitParts?.get(splitParts.size - 1).toString(),
+            ""
+        )
 
         //obtiene el número de la última página del epub
         lastPage = book.spine.spineReferences.size
@@ -90,34 +95,57 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
         loadData(book, lastPage, viewModel.currentPage, bookFolder)
 
         //Botón para acceder a los ajustes del libro
-        btn_readerSettings.setOnClickListener{
-            val cssPath= "$absolutePath/$bookFolder/Styles/style.css"
-            val fm= supportFragmentManager
-            val frag= SettingsDialogFragment(kodein, cssPath)
+        btn_readerSettings.setOnClickListener {
+            val cssPath = "$absolutePath/$bookFolder/Styles/style.css"
+            val fm = supportFragmentManager
+            val frag = SettingsDialogFragment(kodein, cssPath)
             frag.show(fm, "si")
         }
 
         //Botón que cambia la orientación de la activity
-        ibtn_orientation.setOnClickListener{
-            requestedOrientation = if(this.resources.configuration.orientation== ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            else  ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        ibtn_orientation.setOnClickListener {
+            requestedOrientation =
+                if (this.resources.configuration.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
         //Obtiene la canción a reproducir (Cuando esten las canciones se pondra el link como propiedad del libro y cada uno tendra la suya, de momento esta es de prueba)
         try {
             mediaPlayer.setDataSource(CURRENT_BOOK.music)
+            if (viewModel.isNetworkAvailable(this)) {
+                try {
+                    mediaPlayer.setAudioAttributes(
+                        AudioAttributes
+                            .Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                    mediaPlayer.prepare()
+                    ibtn_music.setOnClickListener {
+                        if (mediaPlayer.isPlaying) mediaPlayer.pause()
+                        else mediaPlayer.start()
+                    }
+                } catch (e: IOException) {}
+            }
+
         } catch (e: UninitializedPropertyAccessException) {
-            mediaPlayer.setDataSource("https://firebasestorage.googleapis.com/v0/b/blazebooks-5e827.appspot.com/o/Songs%2FTheWitcher.mp3?alt=media&token=c9567bff-3764-43ee-aa66-ab83cf366849")
         }
 
-        try{
-            mediaPlayer.prepare()
-            ibtn_music.setOnClickListener {
-                if (mediaPlayer.isPlaying) mediaPlayer.pause()
-                else mediaPlayer.start()
-            }
-        } catch (e: IOException){ }
+    }
 
+
+    /**
+     * Reduce la sensibilidad del ViewPager para evitar cambios de página involuntarios.
+     */
+    private fun ViewPager2.reduceDragSensitivity() {
+        val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+        recyclerViewField.isAccessible = true
+        val recyclerView = recyclerViewField.get(this) as RecyclerView
+
+        val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+        touchSlopField.isAccessible = true
+        val touchSlop = touchSlopField.get(recyclerView) as Int
+        touchSlopField.set(recyclerView, touchSlop * 8)
     }
 
     /**
@@ -140,31 +168,38 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
      */
     override fun onRestart() {
         super.onRestart()
-        finish()
-        overridePendingTransition(0,0)
-        startActivity(intent)
-        overridePendingTransition(0,0)
+        refresh()
     }
 
+    /**
+     * Actualiza para mostrar los cambios
+     *
+     * @author Mounir Zbayr
+     */
     fun refresh() {
         finish()
-        overridePendingTransition(0,0)
+        overridePendingTransition(0, 0)
         startActivity(intent)
-        overridePendingTransition(0,0)
+        overridePendingTransition(0, 0)
     }
 
+    /**
+     * Carga las paginas del libro en el ViewPager
+     *
+     * @author Mounir Zbayr
+     */
     private fun loadData(book: Book, pages: Int, currentPage: Int, documents: String?) {
 
-        for (i in 1..pages){
-            val datas= viewModel.loadData(book, i, documents);
-            fragments.add(BookPageFragment.newInstance("file://${absolutePath}", datas, i+1))
+        for (i in 1..pages) {
+            val datas = viewModel.loadData(book, i, documents);
+            fragments.add(BookPageFragment.newInstance("file://${absolutePath}", datas, i + 1))
         }
         initViewPager2WithFragments(fragments, currentPage)
 
     }
 
-    private fun initViewPager2WithFragments(data: ArrayList<Fragment>, currentPage: Int)
-    {
+    //Inicia el ViewPager en la última página
+    private fun initViewPager2WithFragments(data: ArrayList<Fragment>, currentPage: Int) {
         val adapter = ViewPagerAdapter(supportFragmentManager, lifecycle, data, this, binding)
         viewPager2.adapter = adapter
         viewPager2.currentItem = currentPage
@@ -181,9 +216,17 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
             try {
                 while (!Thread.interrupted()) {
                     Thread.sleep(1000)
-                    runOnUiThread { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) tTime.text = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")) }
+                    runOnUiThread {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) tTime.text =
+                            LocalDateTime.now().format(
+                                DateTimeFormatter.ofPattern(
+                                    "HH:mm"
+                                )
+                            )
+                    }
                 }
-            } catch (e: InterruptedException) {}
+            } catch (e: InterruptedException) {
+            }
         }
         thread.start()
     }
@@ -231,7 +274,7 @@ class ReaderActivity : PreconfiguredActivity(), KodeinAware {
      */
     override fun onStop() {
         super.onStop()
-        viewModel.currentPage= viewPager2.currentItem
+        viewModel.currentPage = viewPager2.currentItem
         viewModel.saveLastPagePref(bookPath + "Page")
         mediaPlayer.stop()
     }

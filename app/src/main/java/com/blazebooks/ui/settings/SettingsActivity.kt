@@ -40,6 +40,15 @@ class SettingsActivity : PreconfiguredActivity() {
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        toast("si")
+    }
+
+
+
+
+
     /**
      * Preload the app language selected by the user. If none selected, then uses the phone
      * language.
@@ -55,6 +64,7 @@ class SettingsActivity : PreconfiguredActivity() {
         )) {
             "Spanish" -> defaultLocale = Locale("es")
             "English" -> defaultLocale = Locale("en")
+
         }
     }//loadNewConfig
 

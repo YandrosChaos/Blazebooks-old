@@ -80,17 +80,16 @@ class SettingsDialogFragment(override val kodein: Kodein, private val cssPath: S
 
         //Incrementa el tamaño de fuente con el tope en 80px
         btnIncreaseMargin.setOnClickListener {
-            toast("toasr")
             margin += 2
-            if (margin > 15) margin = 15
+            if (margin > 16) margin = 16
             tv_MarginNumber.text = margin.toString()
         }
 
-        //Decrementa el tamaño de fuente con el tope en 14px
+        //Decrementa el tamaño de fuente con el tope en 0px
         btnDecreaseMargin.setOnClickListener {
             margin -= 2
             if (margin < 0) margin = 0
-            tv_MarginNumber.text = fontSize.toString()
+            tv_MarginNumber.text = margin.toString()
         }
 
         //Selecciona la fuente de la lista elegida por el usuario y la cambia en el archivo CSS
