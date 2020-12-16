@@ -76,7 +76,9 @@ class AboutFragmentAdapter(
                                 "\nEs una aplicación que interconecta lo nuevo y lo viejo; una nueva forma de vivir la literatura y la cultura."
                     }
                     activity.resources.getString(R.string.become_author) -> {
-                        "Not implemented... by de moment >:v"
+                        "Blazebooks está encantado de sumar nuevos talentos a sus filas.\n\n" +
+                                "Si quieres trabajar con nosotros, puedes enviarnos un email a blazebooks.rules@gmail.com. " +
+                                "\n\nEnvíanos información sobre tí y tu trabajo y nos pondremos en contacto contigo."
                     }
                     activity.getString(R.string.credits_title) -> {
                         activity.getString(R.string.credits)
